@@ -1,7 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { useAccount, useSignMessage } from 'wagmi'
+import { useAccount, useSignMessage, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
 import { verifyMessage as verifyMessageViem } from 'viem'
+import { sepolia } from 'wagmi/chains'
+import CollaborationRegistryABI from './contracts/contracts/CollaborationRegistry.sol/CollaborationRegistry.json'
+
+// Contract address on Sepolia
+const COLLABORATION_REGISTRY_ADDRESS = '0x3160C2494Be65947F4a47fAF0ad0Dc3e2857DE25' as `0x${string}`
 
 export default function App() {
   const { address, isConnected } = useAccount()
@@ -14,6 +19,39 @@ export default function App() {
   const [verifySignature, setVerifySignature] = useState('')
   const [verificationResult, setVerificationResult] = useState<boolean | null>(null)
   const [verificationError, setVerificationError] = useState<string | null>(null)
+
+  // Acknowledgment submission state
+  const [targetAddress, setTargetAddress] = useState('')
+  const [acknowledgmentMessage, setAcknowledgmentMessage] = useState('')
+  const [acknowledgmentSignature, setAcknowledgmentSignature] = useState<string | null>(null)
+  const [submissionTxHash, setSubmissionTxHash] = useState<string | null>(null)
+  const [submissionError, setSubmissionError] = useState<string | null>(null)
+
+  // Hook for signing acknowledgment message
+  const { 
+    signMessage: signAcknowledgmentMessage, 
+    isPending: isSigningAcknowledgment,
+    error: signAcknowledgmentError 
+  } = useSignMessage({
+    mutation: {
+      onSuccess: (data) => {
+        setAcknowledgmentSignature(data)
+      },
+    },
+  })
+
+  // Hook for writing to contract
+  const { 
+    writeContract, 
+    data: writeData, 
+    isPending: isSubmitting,
+    error: writeError 
+  } = useWriteContract()
+
+  // Wait for transaction receipt
+  const { isLoading: isConfirming, isSuccess: isSubmitted } = useWaitForTransactionReceipt({
+    hash: writeData,
+  })
   
   const { signMessage, isPending, error } = useSignMessage({
     mutation: {
@@ -83,6 +121,81 @@ export default function App() {
     navigator.clipboard.writeText(JSON.stringify(data, null, 2))
     alert('Copied message, address, and signature to clipboard!')
   }
+
+  // Generate acknowledgment message automatically
+  const generateAcknowledgmentMessage = () => {
+    if (!targetAddress.trim()) {
+      alert('Please enter target address first')
+      return
+    }
+    const message = `I acknowledge collaboration with ${targetAddress}`
+    setAcknowledgmentMessage(message)
+  }
+
+  // Sign the acknowledgment message
+  const handleSignAcknowledgment = async () => {
+    if (!acknowledgmentMessage.trim()) {
+      alert('Please enter or generate an acknowledgment message')
+      return
+    }
+    if (!targetAddress.trim()) {
+      alert('Please enter target address')
+      return
+    }
+    setAcknowledgmentSignature(null)
+    setSubmissionError(null)
+    signAcknowledgmentMessage({ message: acknowledgmentMessage })
+  }
+
+  // Submit acknowledgment to contract
+  const handleSubmitAcknowledgment = async () => {
+    if (!targetAddress.trim() || !acknowledgmentMessage.trim() || !acknowledgmentSignature) {
+      alert('Please complete all steps: enter target address, sign message, then submit')
+      return
+    }
+
+    // Validate address format
+    if (!targetAddress.startsWith('0x') || targetAddress.length !== 42) {
+      setSubmissionError('Invalid target address format')
+      return
+    }
+
+    if (targetAddress.toLowerCase() === address?.toLowerCase()) {
+      setSubmissionError('Cannot acknowledge yourself')
+      return
+    }
+
+    setSubmissionError(null)
+
+    try {
+      writeContract({
+        address: COLLABORATION_REGISTRY_ADDRESS,
+        abi: CollaborationRegistryABI.abi,
+        functionName: 'submitAcknowledgment',
+        args: [
+          targetAddress as `0x${string}`,
+          acknowledgmentMessage,
+          acknowledgmentSignature as `0x${string}`,
+        ],
+        chainId: sepolia.id,
+      })
+    } catch (err: any) {
+      setSubmissionError(err.message || 'Failed to submit acknowledgment')
+    }
+  }
+
+  // Reset form when transaction succeeds
+  useEffect(() => {
+    if (isSubmitted && writeData && !submissionTxHash) {
+      setSubmissionTxHash(writeData)
+      // Optionally reset form after success
+      setTimeout(() => {
+        setTargetAddress('')
+        setAcknowledgmentMessage('')
+        setAcknowledgmentSignature(null)
+      }, 5000)
+    }
+  }, [isSubmitted, writeData, submissionTxHash])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
@@ -199,6 +312,163 @@ export default function App() {
                   </div>
                 </>
               )}
+            </div>
+          )}
+        </div>
+
+        {/* Submit Acknowledgment Section */}
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+            Submit Acknowledgment to Contract
+          </h2>
+          <p className="text-sm text-gray-600 mb-6">
+            Create and submit a mutual acknowledgment to the CollaborationRegistry contract
+          </p>
+
+          {!isConnected ? (
+            <div className="text-center py-8">
+              <p className="text-gray-600 mb-4">
+                Please connect your wallet to submit acknowledgments
+              </p>
+              <ConnectButton />
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {/* Step 1: Target Address */}
+              <div>
+                <label 
+                  htmlFor="target-address" 
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Step 1: Target Address (The party you're acknowledging)
+                </label>
+                <input
+                  id="target-address"
+                  type="text"
+                  value={targetAddress}
+                  onChange={(e) => setTargetAddress(e.target.value)}
+                  placeholder="0x..."
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent font-mono text-sm"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Enter the Ethereum address of the party you want to acknowledge
+                </p>
+              </div>
+
+              {/* Step 2: Message */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label 
+                    htmlFor="acknowledgment-message" 
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Step 2: Acknowledgment Message
+                  </label>
+                  <button
+                    onClick={generateAcknowledgmentMessage}
+                    className="text-xs text-green-600 hover:text-green-800 underline"
+                  >
+                    Auto-generate message
+                  </button>
+                </div>
+                <textarea
+                  id="acknowledgment-message"
+                  value={acknowledgmentMessage}
+                  onChange={(e) => setAcknowledgmentMessage(e.target.value)}
+                  placeholder="I acknowledge collaboration with 0x..."
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
+                  rows={3}
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  This is the message you'll sign. It should acknowledge the target address.
+                </p>
+              </div>
+
+              {/* Step 3: Sign Message */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Step 3: Sign the Message
+                </label>
+                <button
+                  onClick={handleSignAcknowledgment}
+                  disabled={isSigningAcknowledgment || !acknowledgmentMessage.trim() || !targetAddress.trim()}
+                  className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                >
+                  {isSigningAcknowledgment ? 'Signing...' : 'Sign Acknowledgment Message'}
+                </button>
+                
+                {signAcknowledgmentError && (
+                  <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-red-800 text-sm">
+                      Error: {signAcknowledgmentError.message}
+                    </p>
+                  </div>
+                )}
+
+                {acknowledgmentSignature && (
+                  <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <p className="text-green-800 text-sm font-medium mb-1">✓ Message signed successfully!</p>
+                    <p className="text-xs text-green-700 font-mono break-all">
+                      {acknowledgmentSignature}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Step 4: Submit to Contract */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Step 4: Submit to Contract
+                </label>
+                <button
+                  onClick={handleSubmitAcknowledgment}
+                  disabled={isSubmitting || isConfirming || !acknowledgmentSignature || !targetAddress.trim() || !acknowledgmentMessage.trim()}
+                  className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                >
+                  {isSubmitting ? 'Submitting...' : isConfirming ? 'Confirming...' : 'Submit to Contract'}
+                </button>
+
+                {(writeError || submissionError) && (
+                  <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-red-800 text-sm">
+                      Error: {(writeError as any)?.message || submissionError}
+                    </p>
+                  </div>
+                )}
+
+                {isSubmitted && submissionTxHash && (
+                  <div className="mt-3 p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <p className="text-green-800 font-medium mb-2">✅ Acknowledgment submitted successfully!</p>
+                    <p className="text-xs text-green-700 mb-2">
+                      Transaction Hash: <span className="font-mono break-all">{submissionTxHash}</span>
+                    </p>
+                    <a
+                      href={`https://eth-sepolia.blockscout.com/tx/${submissionTxHash}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-indigo-600 hover:text-indigo-800 underline"
+                    >
+                      View on Blockscout →
+                    </a>
+                  </div>
+                )}
+              </div>
+
+              {/* Info Box */}
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h3 className="font-semibold text-gray-800 mb-2">
+                  How it works:
+                </h3>
+                <ol className="text-sm text-gray-700 space-y-1 list-decimal list-inside">
+                  <li>Enter the address of the party you want to acknowledge</li>
+                  <li>Generate or write an acknowledgment message</li>
+                  <li>Sign the message with your wallet</li>
+                  <li>Submit the signed message to the contract</li>
+                </ol>
+                <p className="text-xs text-gray-600 mt-3">
+                  💡 <strong>Tip:</strong> When both parties submit acknowledgments, a mutual handshake is automatically created on-chain!
+                </p>
+              </div>
             </div>
           )}
         </div>

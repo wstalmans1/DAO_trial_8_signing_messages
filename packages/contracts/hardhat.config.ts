@@ -58,9 +58,22 @@ const config: HardhatUserConfig = {
   defaultNetwork: 'hardhat',
   networks: {
     hardhat: {},
-    ...(process.env.SEPOLIA_RPC ? { sepolia: { url: process.env.SEPOLIA_RPC!, accounts } } : {}),
+    ...(process.env.SEPOLIA_RPC ? { 
+      sepolia: { 
+        url: process.env.SEPOLIA_RPC!, 
+        accounts,
+        timeout: 120000, // 120 seconds timeout
+        httpHeaders: {},
+      } 
+    } : {}),
     // Optional alias network to use Blockscout endpoints for verification while reusing Sepolia RPC
-    ...(process.env.SEPOLIA_RPC ? { 'sepolia-blockscout': { url: process.env.SEPOLIA_RPC!, accounts } } : {}),
+    ...(process.env.SEPOLIA_RPC ? { 
+      'sepolia-blockscout': { 
+        url: process.env.SEPOLIA_RPC!, 
+        accounts,
+        timeout: 120000,
+      } 
+    } : {}),
     ...(process.env.MAINNET_RPC ? { mainnet: { url: process.env.MAINNET_RPC!, accounts } } : {}),
     ...(process.env.POLYGON_RPC ? { polygon: { url: process.env.POLYGON_RPC!, accounts } } : {}),
     ...(process.env.OPTIMISM_RPC ? { optimism: { url: process.env.OPTIMISM_RPC!, accounts } } : {}),

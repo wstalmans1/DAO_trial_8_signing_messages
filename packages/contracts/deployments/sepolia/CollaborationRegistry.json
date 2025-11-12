@@ -1,0 +1,824 @@
+{
+  "address": "0xaf8458DF6678e544E14c9777BAB40749E8225D1E",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "initialOwner",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "signer",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "acknowledgmentHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "AcknowledgmentSubmitted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "partyA",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "partyB",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "handshakeHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "MutualHandshakeCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "name": "acknowledgments",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "signer",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "message",
+          "type": "string"
+        },
+        {
+          "internalType": "bytes",
+          "name": "signature",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "exists",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "acknowledgmentsByAddress",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "acknowledgmentHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getAcknowledgment",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "signer",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "target",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "message",
+              "type": "string"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "exists",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct CollaborationRegistry.Acknowledgment",
+          "name": "acknowledgment",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "addr",
+          "type": "address"
+        }
+      ],
+      "name": "getAcknowledgmentHashes",
+      "outputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "hashes",
+          "type": "bytes32[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "addr",
+          "type": "address"
+        }
+      ],
+      "name": "getHandshakeHashes",
+      "outputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "hashes",
+          "type": "bytes32[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "partyA",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "partyB",
+          "type": "address"
+        }
+      ],
+      "name": "getMutualHandshake",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "isActive",
+          "type": "bool"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "partyA",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "partyB",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "acknowledgmentAHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "acknowledgmentBHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isActive",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct CollaborationRegistry.MutualHandshake",
+          "name": "handshake",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getOwner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "name": "handshakes",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "partyA",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "partyB",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "acknowledgmentAHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "acknowledgmentBHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "isActive",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "handshakesByAddress",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "message",
+          "type": "string"
+        },
+        {
+          "internalType": "bytes",
+          "name": "signature",
+          "type": "bytes"
+        }
+      ],
+      "name": "submitAcknowledgment",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x507e73ebed03b8637293822e18fd7a3b4e78899dc2cb2e3de4eda484281774a9",
+  "receipt": {
+    "to": null,
+    "from": "0xD78C12137087D394c0FA49634CAa80D0a1985A8A",
+    "contractAddress": "0xaf8458DF6678e544E14c9777BAB40749E8225D1E",
+    "transactionIndex": 54,
+    "gasUsed": "1189787",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000800000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000040000000000000000000000000000020000000000000000000800000000000000000000000000000000400000000000000000000000000000000000000000000000000400000020000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000100000000000000",
+    "blockHash": "0x1b7a6b09f762a1a047950e79476db00f25de65b227762fcb39735949155a7392",
+    "transactionHash": "0x507e73ebed03b8637293822e18fd7a3b4e78899dc2cb2e3de4eda484281774a9",
+    "logs": [
+      {
+        "transactionIndex": 54,
+        "blockNumber": 9614147,
+        "transactionHash": "0x507e73ebed03b8637293822e18fd7a3b4e78899dc2cb2e3de4eda484281774a9",
+        "address": "0xaf8458DF6678e544E14c9777BAB40749E8225D1E",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x000000000000000000000000d78c12137087d394c0fa49634caa80d0a1985a8a"
+        ],
+        "data": "0x",
+        "logIndex": 93,
+        "blockHash": "0x1b7a6b09f762a1a047950e79476db00f25de65b227762fcb39735949155a7392"
+      }
+    ],
+    "blockNumber": 9614147,
+    "cumulativeGasUsed": "8527574",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0xD78C12137087D394c0FA49634CAa80D0a1985A8A"
+  ],
+  "numDeployments": 2,
+  "solcInputHash": "cea2c4d82290210d80a1006fa7df332e",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.28+commit.7893614a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"initialOwner\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"signer\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"acknowledgmentHash\",\"type\":\"bytes32\"}],\"name\":\"AcknowledgmentSubmitted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"partyA\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"partyB\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"handshakeHash\",\"type\":\"bytes32\"}],\"name\":\"MutualHandshakeCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"name\":\"acknowledgments\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"signer\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"message\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"exists\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"acknowledgmentsByAddress\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"acknowledgmentHash\",\"type\":\"bytes32\"}],\"name\":\"getAcknowledgment\",\"outputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"signer\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"message\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"exists\",\"type\":\"bool\"}],\"internalType\":\"struct CollaborationRegistry.Acknowledgment\",\"name\":\"acknowledgment\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getAcknowledgmentHashes\",\"outputs\":[{\"internalType\":\"bytes32[]\",\"name\":\"hashes\",\"type\":\"bytes32[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getHandshakeHashes\",\"outputs\":[{\"internalType\":\"bytes32[]\",\"name\":\"hashes\",\"type\":\"bytes32[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"partyA\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"partyB\",\"type\":\"address\"}],\"name\":\"getMutualHandshake\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isActive\",\"type\":\"bool\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"partyA\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"partyB\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"acknowledgmentAHash\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"acknowledgmentBHash\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"isActive\",\"type\":\"bool\"}],\"internalType\":\"struct CollaborationRegistry.MutualHandshake\",\"name\":\"handshake\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getOwner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"name\":\"handshakes\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"partyA\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"partyB\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"acknowledgmentAHash\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"acknowledgmentBHash\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"isActive\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"handshakesByAddress\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"message\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"}],\"name\":\"submitAcknowledgment\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Step 2: Now Ownable - can be controlled by a multisig wallet  LEARNING POINT: This contract inherits from OpenZeppelin's Ownable. The owner (initially deployer, later multisig) can control certain functions. This allows the multisig to manage the registry settings.\",\"errors\":{\"OwnableInvalidOwner(address)\":[{\"details\":\"The owner is not a valid owner account. (eg. `address(0)`)\"}],\"OwnableUnauthorizedAccount(address)\":[{\"details\":\"The caller account is not authorized to perform an operation.\"}]},\"kind\":\"dev\",\"methods\":{\"constructor\":{\"details\":\"The deployer becomes the owner. Later, ownership can be transferred to a multisig.\",\"params\":{\"initialOwner\":\"The address that will be the initial owner  LEARNING POINT: Ownable requires an initial owner. We pass it to the Ownable constructor. This owner can later transfer ownership to a multisig wallet.\"}},\"getAcknowledgment(bytes32)\":{\"params\":{\"acknowledgmentHash\":\"The hash of the acknowledgment\"},\"returns\":{\"acknowledgment\":\"The acknowledgment data\"}},\"getAcknowledgmentHashes(address)\":{\"params\":{\"addr\":\"The address to query\"},\"returns\":{\"hashes\":\"Array of acknowledgment hashes  LEARNING POINT: This helps you see all acknowledgments someone has made.\"}},\"getHandshakeHashes(address)\":{\"params\":{\"addr\":\"The address to query\"},\"returns\":{\"hashes\":\"Array of handshake hashes that this address is part of  LEARNING POINT: This function returns all handshake hashes where the address is either partyA or partyB. You can then use getMutualHandshake() to get the full handshake details for each hash.\"}},\"getMutualHandshake(address,address)\":{\"params\":{\"partyA\":\"First party's address\",\"partyB\":\"Second party's address\"},\"returns\":{\"handshake\":\"The handshake data  LEARNING POINT: This is a view function (doesn't cost gas to call). Anyone can check if two parties have mutually acknowledged.\",\"isActive\":\"True if both parties have acknowledged each other\"}},\"getOwner()\":{\"returns\":{\"_0\":\"The address of the current owner  LEARNING POINT: This function comes from Ownable. It's useful to check who controls the contract. After transferring to multisig, this will return the multisig address.  NOTE: transferOwnership() is already available from Ownable. The owner can call: transferOwnership(newOwner) to transfer ownership.\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.\"},\"submitAcknowledgment(address,string,bytes)\":{\"details\":\"Party A or Party B calls this with their signature\",\"params\":{\"message\":\"The message they signed (must match what was signed off-chain)\",\"signature\":\"Their signature of the message  LEARNING POINT: This function stores the acknowledgment.\",\"target\":\"The address of the other party they're acknowledging\"}},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"}},\"title\":\"CollaborationRegistry\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"constructor\":{\"notice\":\"Constructor sets the initial owner\"},\"getAcknowledgment(bytes32)\":{\"notice\":\"Get a specific acknowledgment by its hash\"},\"getAcknowledgmentHashes(address)\":{\"notice\":\"Get all acknowledgments made by an address\"},\"getHandshakeHashes(address)\":{\"notice\":\"Get all handshake hashes for an address\"},\"getMutualHandshake(address,address)\":{\"notice\":\"Check if two parties have mutually acknowledged each other\"},\"getOwner()\":{\"notice\":\"Get the current owner of the contract\"},\"submitAcknowledgment(address,string,bytes)\":{\"notice\":\"Submit an acknowledgment\"}},\"notice\":\"This contract stores mutual acknowledgments between two parties\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/CollaborationRegistry.sol\":\"CollaborationRegistry\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {Context} from \\\"../utils/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which provides a basic access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * The initial owner is set to the address provided by the deployer. This can\\n * later be changed with {transferOwnership}.\\n *\\n * This module is used through inheritance. It will make available the modifier\\n * `onlyOwner`, which can be applied to your functions to restrict their use to\\n * the owner.\\n */\\nabstract contract Ownable is Context {\\n    address private _owner;\\n\\n    /**\\n     * @dev The caller account is not authorized to perform an operation.\\n     */\\n    error OwnableUnauthorizedAccount(address account);\\n\\n    /**\\n     * @dev The owner is not a valid owner account. (eg. `address(0)`)\\n     */\\n    error OwnableInvalidOwner(address owner);\\n\\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n    /**\\n     * @dev Initializes the contract setting the address provided by the deployer as the initial owner.\\n     */\\n    constructor(address initialOwner) {\\n        if (initialOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(initialOwner);\\n    }\\n\\n    /**\\n     * @dev Throws if called by any account other than the owner.\\n     */\\n    modifier onlyOwner() {\\n        _checkOwner();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns the address of the current owner.\\n     */\\n    function owner() public view virtual returns (address) {\\n        return _owner;\\n    }\\n\\n    /**\\n     * @dev Throws if the sender is not the owner.\\n     */\\n    function _checkOwner() internal view virtual {\\n        if (owner() != _msgSender()) {\\n            revert OwnableUnauthorizedAccount(_msgSender());\\n        }\\n    }\\n\\n    /**\\n     * @dev Leaves the contract without owner. It will not be possible to call\\n     * `onlyOwner` functions. Can only be called by the current owner.\\n     *\\n     * NOTE: Renouncing ownership will leave the contract without an owner,\\n     * thereby disabling any functionality that is only available to the owner.\\n     */\\n    function renounceOwnership() public virtual onlyOwner {\\n        _transferOwnership(address(0));\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Can only be called by the current owner.\\n     */\\n    function transferOwnership(address newOwner) public virtual onlyOwner {\\n        if (newOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Internal function without access restriction.\\n     */\\n    function _transferOwnership(address newOwner) internal virtual {\\n        address oldOwner = _owner;\\n        _owner = newOwner;\\n        emit OwnershipTransferred(oldOwner, newOwner);\\n    }\\n}\\n\",\"keccak256\":\"0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Context.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\nabstract contract Context {\\n    function _msgSender() internal view virtual returns (address) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view virtual returns (bytes calldata) {\\n        return msg.data;\\n    }\\n\\n    function _contextSuffixLength() internal view virtual returns (uint256) {\\n        return 0;\\n    }\\n}\\n\",\"keccak256\":\"0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2\",\"license\":\"MIT\"},\"contracts/CollaborationRegistry.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.28;\\n\\nimport {Ownable} from \\\"@openzeppelin/contracts/access/Ownable.sol\\\";\\n\\n/**\\n * @title CollaborationRegistry\\n * @notice This contract stores mutual acknowledgments between two parties\\n * @dev Step 2: Now Ownable - can be controlled by a multisig wallet\\n * \\n * LEARNING POINT: This contract inherits from OpenZeppelin's Ownable.\\n * The owner (initially deployer, later multisig) can control certain functions.\\n * This allows the multisig to manage the registry settings.\\n */\\ncontract CollaborationRegistry is Ownable {\\n    /**\\n     * @notice Structure to store an acknowledgment\\n     * @dev Contains all the data needed to verify a signature\\n     */\\n    struct Acknowledgment {\\n        address signer;        // Who signed (Party A or Party B)\\n        address target;        // Who they're acknowledging (the other party)\\n        string message;        // The message they signed\\n        bytes signature;       // Their signature\\n        uint256 timestamp;     // When it was submitted\\n        bool exists;           // Whether this acknowledgment exists\\n    }\\n\\n    /**\\n     * @notice Structure to represent a mutual handshake\\n     * @dev Both parties must acknowledge each other for this to be complete\\n     */\\n    struct MutualHandshake {\\n        address partyA;              // First party's address\\n        address partyB;              // Second party's address\\n        bytes32 acknowledgmentAHash; // Hash of Party A's acknowledgment\\n        bytes32 acknowledgmentBHash; // Hash of Party B's acknowledgment\\n        uint256 timestamp;          // When handshake was completed\\n        bool isActive;               // True when both parties have acknowledged\\n    }\\n\\n    // Mapping: acknowledgment hash => Acknowledgment data\\n    mapping(bytes32 => Acknowledgment) public acknowledgments;\\n    \\n    // Mapping: address => array of acknowledgment hashes they've made\\n    mapping(address => bytes32[]) public acknowledgmentsByAddress;\\n    \\n    // Mapping: hash(partyA, partyB) => MutualHandshake\\n    // We use a hash to ensure consistent ordering (smaller address first)\\n    mapping(bytes32 => MutualHandshake) public handshakes;\\n    \\n    // Mapping: address => array of handshake hashes they're part of\\n    // LEARNING POINT: This allows us to quickly find all handshakes for an address\\n    mapping(address => bytes32[]) public handshakesByAddress;\\n\\n    // Events for tracking what happens\\n    event AcknowledgmentSubmitted(\\n        address indexed signer,\\n        address indexed target,\\n        bytes32 indexed acknowledgmentHash\\n    );\\n\\n    event MutualHandshakeCreated(\\n        address indexed partyA,\\n        address indexed partyB,\\n        bytes32 indexed handshakeHash\\n    );\\n\\n    /**\\n     * @notice Constructor sets the initial owner\\n     * @dev The deployer becomes the owner. Later, ownership can be transferred to a multisig.\\n     * @param initialOwner The address that will be the initial owner\\n     * \\n     * LEARNING POINT: Ownable requires an initial owner. We pass it to the Ownable constructor.\\n     * This owner can later transfer ownership to a multisig wallet.\\n     */\\n    constructor(address initialOwner) Ownable(initialOwner) {}\\n\\n    /**\\n     * @notice Submit an acknowledgment\\n     * @dev Party A or Party B calls this with their signature\\n     * @param target The address of the other party they're acknowledging\\n     * @param message The message they signed (must match what was signed off-chain)\\n     * @param signature Their signature of the message\\n     * \\n     * LEARNING POINT: This function stores the acknowledgment.\\n     */\\n    function submitAcknowledgment(\\n        address target,\\n        string memory message,\\n        bytes memory signature\\n    ) external {\\n        require(target != address(0), \\\"CollaborationRegistry: target cannot be zero address\\\");\\n        require(target != msg.sender, \\\"CollaborationRegistry: cannot acknowledge yourself\\\");\\n        require(bytes(message).length > 0, \\\"CollaborationRegistry: message cannot be empty\\\");\\n        require(signature.length > 0, \\\"CollaborationRegistry: signature cannot be empty\\\");\\n\\n        // Create a unique hash for this acknowledgment\\n        bytes32 acknowledgmentHash = keccak256(\\n            abi.encodePacked(msg.sender, target, message, signature, block.timestamp)\\n        );\\n\\n        // Check if this acknowledgment already exists\\n        require(\\n            !acknowledgments[acknowledgmentHash].exists,\\n            \\\"CollaborationRegistry: acknowledgment already exists\\\"\\n        );\\n\\n        // Store the acknowledgment\\n        acknowledgments[acknowledgmentHash] = Acknowledgment({\\n            signer: msg.sender,\\n            target: target,\\n            message: message,\\n            signature: signature,\\n            timestamp: block.timestamp,\\n            exists: true\\n        });\\n\\n        // Track this acknowledgment by the signer's address\\n        acknowledgmentsByAddress[msg.sender].push(acknowledgmentHash);\\n\\n        emit AcknowledgmentSubmitted(msg.sender, target, acknowledgmentHash);\\n\\n        // Check if we can create a mutual handshake\\n        _checkAndCreateHandshake(msg.sender, target, acknowledgmentHash);\\n    }\\n\\n    /**\\n     * @notice Internal function to check if both parties have acknowledged each other\\n     * @dev If both have acknowledged, creates a mutual handshake\\n     * @param signer The person who just submitted an acknowledgment\\n     * @param target The person they acknowledged\\n     * @param newAcknowledgmentHash The hash of the new acknowledgment\\n     * \\n     * LEARNING POINT: This checks if there's a reverse acknowledgment.\\n     * If Party A acknowledges Party B, we check if Party B has acknowledged Party A.\\n     * If both exist, we create a mutual handshake!\\n     */\\n    function _checkAndCreateHandshake(\\n        address signer,\\n        address target,\\n        bytes32 newAcknowledgmentHash\\n    ) internal {\\n        // Create a consistent key for the handshake (always smaller address first)\\n        (address partyA, address partyB) = signer < target \\n            ? (signer, target) \\n            : (target, signer);\\n\\n        bytes32 handshakeKey = keccak256(abi.encodePacked(partyA, partyB));\\n\\n        // Get existing handshake or create new one\\n        MutualHandshake storage handshake = handshakes[handshakeKey];\\n\\n        // If this is the first acknowledgment, initialize the handshake\\n        if (handshake.partyA == address(0)) {\\n            handshake.partyA = partyA;\\n            handshake.partyB = partyB;\\n        }\\n\\n        // Determine which acknowledgment this is (A or B)\\n        if (signer == partyA) {\\n            handshake.acknowledgmentAHash = newAcknowledgmentHash;\\n        } else {\\n            handshake.acknowledgmentBHash = newAcknowledgmentHash;\\n        }\\n\\n        // Check if both acknowledgments exist\\n        if (\\n            handshake.acknowledgmentAHash != bytes32(0) &&\\n            handshake.acknowledgmentBHash != bytes32(0) &&\\n            !handshake.isActive\\n        ) {\\n            // Both parties have acknowledged! Activate the handshake\\n            handshake.timestamp = block.timestamp;\\n            handshake.isActive = true;\\n\\n            // Track this handshake for both parties\\n            // LEARNING POINT: We add the handshake hash to both parties' arrays\\n            // so we can quickly query all handshakes for any address\\n            handshakesByAddress[partyA].push(handshakeKey);\\n            handshakesByAddress[partyB].push(handshakeKey);\\n\\n            emit MutualHandshakeCreated(partyA, partyB, handshakeKey);\\n        }\\n    }\\n\\n    /**\\n     * @notice Check if two parties have mutually acknowledged each other\\n     * @param partyA First party's address\\n     * @param partyB Second party's address\\n     * @return isActive True if both parties have acknowledged each other\\n     * @return handshake The handshake data\\n     * \\n     * LEARNING POINT: This is a view function (doesn't cost gas to call).\\n     * Anyone can check if two parties have mutually acknowledged.\\n     */\\n    function getMutualHandshake(address partyA, address partyB)\\n        external\\n        view\\n        returns (bool isActive, MutualHandshake memory handshake)\\n    {\\n        // Ensure consistent ordering\\n        (address a, address b) = partyA < partyB \\n            ? (partyA, partyB) \\n            : (partyB, partyA);\\n\\n        bytes32 handshakeKey = keccak256(abi.encodePacked(a, b));\\n        handshake = handshakes[handshakeKey];\\n        isActive = handshake.isActive;\\n    }\\n\\n    /**\\n     * @notice Get all acknowledgments made by an address\\n     * @param addr The address to query\\n     * @return hashes Array of acknowledgment hashes\\n     * \\n     * LEARNING POINT: This helps you see all acknowledgments someone has made.\\n     */\\n    function getAcknowledgmentHashes(address addr)\\n        external\\n        view\\n        returns (bytes32[] memory hashes)\\n    {\\n        return acknowledgmentsByAddress[addr];\\n    }\\n\\n    /**\\n     * @notice Get a specific acknowledgment by its hash\\n     * @param acknowledgmentHash The hash of the acknowledgment\\n     * @return acknowledgment The acknowledgment data\\n     */\\n    function getAcknowledgment(bytes32 acknowledgmentHash)\\n        external\\n        view\\n        returns (Acknowledgment memory acknowledgment)\\n    {\\n        require(\\n            acknowledgments[acknowledgmentHash].exists,\\n            \\\"CollaborationRegistry: acknowledgment does not exist\\\"\\n        );\\n        return acknowledgments[acknowledgmentHash];\\n    }\\n\\n    /**\\n     * @notice Get all handshake hashes for an address\\n     * @param addr The address to query\\n     * @return hashes Array of handshake hashes that this address is part of\\n     * \\n     * LEARNING POINT: This function returns all handshake hashes where the address\\n     * is either partyA or partyB. You can then use getMutualHandshake() to get\\n     * the full handshake details for each hash.\\n     */\\n    function getHandshakeHashes(address addr)\\n        external\\n        view\\n        returns (bytes32[] memory hashes)\\n    {\\n        return handshakesByAddress[addr];\\n    }\\n\\n    // ============ OWNER-ONLY FUNCTIONS ============\\n    // LEARNING POINT: The Ownable contract provides transferOwnership() function.\\n    // Only the owner can call it. We don't need to implement it ourselves.\\n\\n    /**\\n     * @notice Get the current owner of the contract\\n     * @return The address of the current owner\\n     * \\n     * LEARNING POINT: This function comes from Ownable. It's useful to check\\n     * who controls the contract. After transferring to multisig, this will\\n     * return the multisig address.\\n     * \\n     * NOTE: transferOwnership() is already available from Ownable.\\n     * The owner can call: transferOwnership(newOwner) to transfer ownership.\\n     */\\n    function getOwner() external view returns (address) {\\n        return owner();\\n    }\\n}\\n\\n\",\"keccak256\":\"0xe3625a17e1f1b4fcde9d93ec15171325a51ec96de81ef305a3af01b458cccc91\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5060405161150938038061150983398101604081905261002f916100be565b806001600160a01b03811661005e57604051631e4fbdf760e01b81526000600482015260240160405180910390fd5b6100678161006e565b50506100ee565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b6000602082840312156100d057600080fd5b81516001600160a01b03811681146100e757600080fd5b9392505050565b61140c806100fd6000396000f3fe608060405234801561001057600080fd5b50600436106100cf5760003560e01c8063c279d3681161008c578063d58e435011610066578063d58e435014610289578063f2fde38b1461029c578063f573af6b146102af578063f773d746146102c257600080fd5b8063c279d36814610235578063cbfb8dd314610256578063d05086f91461026957600080fd5b80634237af7a146100d4578063715018a61461014857806385e4f2d914610152578063893d20e8146101df5780638da5cb5b1461020457806399fc51d314610215575b600080fd5b6100e76100e2366004610eec565b6102e7565b60408051921515835281516001600160a01b03908116602080860191909152830151168382015281015160608084019190915281015160808084019190915281015160a0808401919091520151151560c082015260e0015b60405180910390f35b6101506103f3565b005b6101a5610160366004610f1f565b60036020819052600091825260409091208054600182015460028301549383015460048401546005909401546001600160a01b03938416959390921693909160ff1686565b604080516001600160a01b0397881681529690951660208701529385019290925260608401526080830152151560a082015260c00161013f565b6000546001600160a01b03165b6040516001600160a01b03909116815260200161013f565b6000546001600160a01b03166101ec565b610228610223366004610f1f565b610407565b60405161013f9190610f88565b610248610243366004611006565b610659565b60405190815260200161013f565b6101506102643660046110c0565b61068a565b61027c610277366004611161565b610a23565b60405161013f9190611183565b61027c610297366004611161565b610a8f565b6101506102aa366004611161565b610af9565b6102486102bd366004611006565b610b37565b6102d56102d0366004610f1f565b610b53565b60405161013f969594939291906111c6565b6040805160c081018252600080825260208201819052918101829052606081018290526080810182905260a08101829052600080846001600160a01b0316866001600160a01b03161061033b57848661033e565b85855b6040516bffffffffffffffffffffffff19606084811b8216602084015283901b166034820152919350915060009060480160408051601f198184030181528282528051602091820120600090815260038083529083902060c08501845280546001600160a01b03908116865260018201541692850192909252600282015492840192909252908101546060830152600481015460808301526005015460ff16151560a082018190529890975095505050505050565b6103fb610cab565b6104056000610cd8565b565b6104546040518060c0016040528060006001600160a01b0316815260200160006001600160a01b031681526020016060815260200160608152602001600081526020016000151581525090565b60008281526001602052604090206005015460ff166104d75760405162461bcd60e51b815260206004820152603460248201527f436f6c6c61626f726174696f6e52656769737472793a2061636b6e6f776c656460448201527319db595b9d08191bd95cc81b9bdd08195e1a5cdd60621b60648201526084015b60405180910390fd5b600082815260016020818152604092839020835160c08101855281546001600160a01b039081168252938201549093169183019190915260028101805492939192918401916105259061121f565b80601f01602080910402602001604051908101604052809291908181526020018280546105519061121f565b801561059e5780601f106105735761010080835404028352916020019161059e565b820191906000526020600020905b81548152906001019060200180831161058157829003601f168201915b505050505081526020016003820180546105b79061121f565b80601f01602080910402602001604051908101604052809291908181526020018280546105e39061121f565b80156106305780601f1061060557610100808354040283529160200191610630565b820191906000526020600020905b81548152906001019060200180831161061357829003601f168201915b50505091835250506004820154602082015260059091015460ff16151560409091015292915050565b6004602052816000526040600020818154811061067557600080fd5b90600052602060002001600091509150505481565b6001600160a01b0383166106fd5760405162461bcd60e51b815260206004820152603460248201527f436f6c6c61626f726174696f6e52656769737472793a207461726765742063616044820152736e6e6f74206265207a65726f206164647265737360601b60648201526084016104ce565b336001600160a01b038416036107705760405162461bcd60e51b815260206004820152603260248201527f436f6c6c61626f726174696f6e52656769737472793a2063616e6e6f7420616360448201527135b737bbb632b233b2903cb7bab939b2b63360711b60648201526084016104ce565b60008251116107d85760405162461bcd60e51b815260206004820152602e60248201527f436f6c6c61626f726174696f6e52656769737472793a206d657373616765206360448201526d616e6e6f7420626520656d70747960901b60648201526084016104ce565b60008151116108425760405162461bcd60e51b815260206004820152603060248201527f436f6c6c61626f726174696f6e52656769737472793a207369676e617475726560448201526f2063616e6e6f7420626520656d70747960801b60648201526084016104ce565b6000338484844260405160200161085d959493929190611259565b60408051601f1981840301815291815281516020928301206000818152600190935291206005015490915060ff16156108f55760405162461bcd60e51b815260206004820152603460248201527f436f6c6c61626f726174696f6e52656769737472793a2061636b6e6f776c6564604482015273676d656e7420616c72656164792065786973747360601b60648201526084016104ce565b6040805160c0810182523381526001600160a01b03868116602080840191825283850188815260608501889052426080860152600160a0860181905260008881529281905295909120845181549085166001600160a01b0319918216178255925195810180549690941695909216949094179091559151909190600282019061097e9082611317565b50606082015160038201906109939082611317565b506080820151600482015560a0909101516005909101805460ff191691151591909117905533600081815260026020908152604080832080546001810182559084529183209091018490555183926001600160a01b0388169290917f315eb5b7fbae715ed243dce358cb7bc7339a432f6d7cda78b0e18ae766e252f39190a4610a1d338583610d28565b50505050565b6001600160a01b038116600090815260026020908152604091829020805483518184028101840190945280845260609392830182828015610a8357602002820191906000526020600020905b815481526020019060010190808311610a6f575b50505050509050919050565b6001600160a01b038116600090815260046020908152604091829020805483518184028101840190945280845260609392830182828015610a835760200282019190600052602060002090815481526020019060010190808311610a6f5750505050509050919050565b610b01610cab565b6001600160a01b038116610b2b57604051631e4fbdf760e01b8152600060048201526024016104ce565b610b3481610cd8565b50565b6002602052816000526040600020818154811061067557600080fd5b60016020819052600091825260409091208054918101546002820180546001600160a01b03948516949092169291610b8a9061121f565b80601f0160208091040260200160405190810160405280929190818152602001828054610bb69061121f565b8015610c035780601f10610bd857610100808354040283529160200191610c03565b820191906000526020600020905b815481529060010190602001808311610be657829003601f168201915b505050505090806003018054610c189061121f565b80601f0160208091040260200160405190810160405280929190818152602001828054610c449061121f565b8015610c915780601f10610c6657610100808354040283529160200191610c91565b820191906000526020600020905b815481529060010190602001808311610c7457829003601f168201915b50505050600483015460059093015491929160ff16905086565b6000546001600160a01b031633146104055760405163118cdaa760e01b81523360048201526024016104ce565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b600080836001600160a01b0316856001600160a01b031610610d4b578385610d4e565b84845b6040516bffffffffffffffffffffffff19606084811b8216602084015283901b166034820152919350915060009060480160408051601f1981840301815291815281516020928301206000818152600390935291208054919250906001600160a01b0316610de35780546001600160a01b038086166001600160a01b0319928316178355600183018054918616919092161790555b836001600160a01b0316876001600160a01b031603610e085760028101859055610e10565b600381018590555b600281015415801590610e265750600381015415155b8015610e375750600581015460ff16155b15610ec7574260048083019190915560058201805460ff191660019081179091556001600160a01b03808716600081815260209485526040808220805480870182559083528683200188905592881680825283822080549586018155825294812090930186905590518593927f3ca907b78a950f3d68bbe97c84c6a4bf9a1714fca9a8406a82b60ad832ed3ec691a45b50505050505050565b80356001600160a01b0381168114610ee757600080fd5b919050565b60008060408385031215610eff57600080fd5b610f0883610ed0565b9150610f1660208401610ed0565b90509250929050565b600060208284031215610f3157600080fd5b5035919050565b60005b83811015610f53578181015183820152602001610f3b565b50506000910152565b60008151808452610f74816020860160208601610f38565b601f01601f19169290920160200192915050565b602080825282516001600160a01b0390811683830152908301511660408083019190915282015160c06060830152600090610fc660e0840182610f5c565b90506060840151601f19848303016080850152610fe38282610f5c565b915050608084015160a084015260a0840151151560c08401528091505092915050565b6000806040838503121561101957600080fd5b61102283610ed0565b946020939093013593505050565b634e487b7160e01b600052604160045260246000fd5b60008067ffffffffffffffff84111561106157611061611030565b50604051601f19601f85018116603f0116810181811067ffffffffffffffff8211171561109057611090611030565b6040528381529050808284018510156110a857600080fd5b83836020830137600060208583010152509392505050565b6000806000606084860312156110d557600080fd5b6110de84610ed0565b9250602084013567ffffffffffffffff8111156110fa57600080fd5b8401601f8101861361110b57600080fd5b61111a86823560208401611046565b925050604084013567ffffffffffffffff81111561113757600080fd5b8401601f8101861361114857600080fd5b61115786823560208401611046565b9150509250925092565b60006020828403121561117357600080fd5b61117c82610ed0565b9392505050565b602080825282518282018190526000918401906040840190835b818110156111bb57835183526020938401939092019160010161119d565b509095945050505050565b6001600160a01b0387811682528616602082015260c0604082018190526000906111f290830187610f5c565b82810360608401526112048187610f5c565b6080840195909552505090151560a090910152949350505050565b600181811c9082168061123357607f821691505b60208210810361125357634e487b7160e01b600052602260045260246000fd5b50919050565b6bffffffffffffffffffffffff198660601b1681526bffffffffffffffffffffffff198560601b1660148201526000845161129b816028850160208901610f38565b8451908301906112b2816028840160208901610f38565b0160288101939093525050604801949350505050565b601f82111561131257806000526020600020601f840160051c810160208510156112ef5750805b601f840160051c820191505b8181101561130f57600081556001016112fb565b50505b505050565b815167ffffffffffffffff81111561133157611331611030565b6113458161133f845461121f565b846112c8565b6020601f82116001811461137957600083156113615750848201515b600019600385901b1c1916600184901b17845561130f565b600084815260208120601f198516915b828110156113a95787850151825560209485019460019092019101611389565b50848210156113c75786840151600019600387901b60f8161c191681555b50505050600190811b0190555056fea264697066735822122005b987192c5437289adb79aa5fe73608f63a827aaf6c0dd0dedce942310e61a964736f6c634300081c0033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100cf5760003560e01c8063c279d3681161008c578063d58e435011610066578063d58e435014610289578063f2fde38b1461029c578063f573af6b146102af578063f773d746146102c257600080fd5b8063c279d36814610235578063cbfb8dd314610256578063d05086f91461026957600080fd5b80634237af7a146100d4578063715018a61461014857806385e4f2d914610152578063893d20e8146101df5780638da5cb5b1461020457806399fc51d314610215575b600080fd5b6100e76100e2366004610eec565b6102e7565b60408051921515835281516001600160a01b03908116602080860191909152830151168382015281015160608084019190915281015160808084019190915281015160a0808401919091520151151560c082015260e0015b60405180910390f35b6101506103f3565b005b6101a5610160366004610f1f565b60036020819052600091825260409091208054600182015460028301549383015460048401546005909401546001600160a01b03938416959390921693909160ff1686565b604080516001600160a01b0397881681529690951660208701529385019290925260608401526080830152151560a082015260c00161013f565b6000546001600160a01b03165b6040516001600160a01b03909116815260200161013f565b6000546001600160a01b03166101ec565b610228610223366004610f1f565b610407565b60405161013f9190610f88565b610248610243366004611006565b610659565b60405190815260200161013f565b6101506102643660046110c0565b61068a565b61027c610277366004611161565b610a23565b60405161013f9190611183565b61027c610297366004611161565b610a8f565b6101506102aa366004611161565b610af9565b6102486102bd366004611006565b610b37565b6102d56102d0366004610f1f565b610b53565b60405161013f969594939291906111c6565b6040805160c081018252600080825260208201819052918101829052606081018290526080810182905260a08101829052600080846001600160a01b0316866001600160a01b03161061033b57848661033e565b85855b6040516bffffffffffffffffffffffff19606084811b8216602084015283901b166034820152919350915060009060480160408051601f198184030181528282528051602091820120600090815260038083529083902060c08501845280546001600160a01b03908116865260018201541692850192909252600282015492840192909252908101546060830152600481015460808301526005015460ff16151560a082018190529890975095505050505050565b6103fb610cab565b6104056000610cd8565b565b6104546040518060c0016040528060006001600160a01b0316815260200160006001600160a01b031681526020016060815260200160608152602001600081526020016000151581525090565b60008281526001602052604090206005015460ff166104d75760405162461bcd60e51b815260206004820152603460248201527f436f6c6c61626f726174696f6e52656769737472793a2061636b6e6f776c656460448201527319db595b9d08191bd95cc81b9bdd08195e1a5cdd60621b60648201526084015b60405180910390fd5b600082815260016020818152604092839020835160c08101855281546001600160a01b039081168252938201549093169183019190915260028101805492939192918401916105259061121f565b80601f01602080910402602001604051908101604052809291908181526020018280546105519061121f565b801561059e5780601f106105735761010080835404028352916020019161059e565b820191906000526020600020905b81548152906001019060200180831161058157829003601f168201915b505050505081526020016003820180546105b79061121f565b80601f01602080910402602001604051908101604052809291908181526020018280546105e39061121f565b80156106305780601f1061060557610100808354040283529160200191610630565b820191906000526020600020905b81548152906001019060200180831161061357829003601f168201915b50505091835250506004820154602082015260059091015460ff16151560409091015292915050565b6004602052816000526040600020818154811061067557600080fd5b90600052602060002001600091509150505481565b6001600160a01b0383166106fd5760405162461bcd60e51b815260206004820152603460248201527f436f6c6c61626f726174696f6e52656769737472793a207461726765742063616044820152736e6e6f74206265207a65726f206164647265737360601b60648201526084016104ce565b336001600160a01b038416036107705760405162461bcd60e51b815260206004820152603260248201527f436f6c6c61626f726174696f6e52656769737472793a2063616e6e6f7420616360448201527135b737bbb632b233b2903cb7bab939b2b63360711b60648201526084016104ce565b60008251116107d85760405162461bcd60e51b815260206004820152602e60248201527f436f6c6c61626f726174696f6e52656769737472793a206d657373616765206360448201526d616e6e6f7420626520656d70747960901b60648201526084016104ce565b60008151116108425760405162461bcd60e51b815260206004820152603060248201527f436f6c6c61626f726174696f6e52656769737472793a207369676e617475726560448201526f2063616e6e6f7420626520656d70747960801b60648201526084016104ce565b6000338484844260405160200161085d959493929190611259565b60408051601f1981840301815291815281516020928301206000818152600190935291206005015490915060ff16156108f55760405162461bcd60e51b815260206004820152603460248201527f436f6c6c61626f726174696f6e52656769737472793a2061636b6e6f776c6564604482015273676d656e7420616c72656164792065786973747360601b60648201526084016104ce565b6040805160c0810182523381526001600160a01b03868116602080840191825283850188815260608501889052426080860152600160a0860181905260008881529281905295909120845181549085166001600160a01b0319918216178255925195810180549690941695909216949094179091559151909190600282019061097e9082611317565b50606082015160038201906109939082611317565b506080820151600482015560a0909101516005909101805460ff191691151591909117905533600081815260026020908152604080832080546001810182559084529183209091018490555183926001600160a01b0388169290917f315eb5b7fbae715ed243dce358cb7bc7339a432f6d7cda78b0e18ae766e252f39190a4610a1d338583610d28565b50505050565b6001600160a01b038116600090815260026020908152604091829020805483518184028101840190945280845260609392830182828015610a8357602002820191906000526020600020905b815481526020019060010190808311610a6f575b50505050509050919050565b6001600160a01b038116600090815260046020908152604091829020805483518184028101840190945280845260609392830182828015610a835760200282019190600052602060002090815481526020019060010190808311610a6f5750505050509050919050565b610b01610cab565b6001600160a01b038116610b2b57604051631e4fbdf760e01b8152600060048201526024016104ce565b610b3481610cd8565b50565b6002602052816000526040600020818154811061067557600080fd5b60016020819052600091825260409091208054918101546002820180546001600160a01b03948516949092169291610b8a9061121f565b80601f0160208091040260200160405190810160405280929190818152602001828054610bb69061121f565b8015610c035780601f10610bd857610100808354040283529160200191610c03565b820191906000526020600020905b815481529060010190602001808311610be657829003601f168201915b505050505090806003018054610c189061121f565b80601f0160208091040260200160405190810160405280929190818152602001828054610c449061121f565b8015610c915780601f10610c6657610100808354040283529160200191610c91565b820191906000526020600020905b815481529060010190602001808311610c7457829003601f168201915b50505050600483015460059093015491929160ff16905086565b6000546001600160a01b031633146104055760405163118cdaa760e01b81523360048201526024016104ce565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b600080836001600160a01b0316856001600160a01b031610610d4b578385610d4e565b84845b6040516bffffffffffffffffffffffff19606084811b8216602084015283901b166034820152919350915060009060480160408051601f1981840301815291815281516020928301206000818152600390935291208054919250906001600160a01b0316610de35780546001600160a01b038086166001600160a01b0319928316178355600183018054918616919092161790555b836001600160a01b0316876001600160a01b031603610e085760028101859055610e10565b600381018590555b600281015415801590610e265750600381015415155b8015610e375750600581015460ff16155b15610ec7574260048083019190915560058201805460ff191660019081179091556001600160a01b03808716600081815260209485526040808220805480870182559083528683200188905592881680825283822080549586018155825294812090930186905590518593927f3ca907b78a950f3d68bbe97c84c6a4bf9a1714fca9a8406a82b60ad832ed3ec691a45b50505050505050565b80356001600160a01b0381168114610ee757600080fd5b919050565b60008060408385031215610eff57600080fd5b610f0883610ed0565b9150610f1660208401610ed0565b90509250929050565b600060208284031215610f3157600080fd5b5035919050565b60005b83811015610f53578181015183820152602001610f3b565b50506000910152565b60008151808452610f74816020860160208601610f38565b601f01601f19169290920160200192915050565b602080825282516001600160a01b0390811683830152908301511660408083019190915282015160c06060830152600090610fc660e0840182610f5c565b90506060840151601f19848303016080850152610fe38282610f5c565b915050608084015160a084015260a0840151151560c08401528091505092915050565b6000806040838503121561101957600080fd5b61102283610ed0565b946020939093013593505050565b634e487b7160e01b600052604160045260246000fd5b60008067ffffffffffffffff84111561106157611061611030565b50604051601f19601f85018116603f0116810181811067ffffffffffffffff8211171561109057611090611030565b6040528381529050808284018510156110a857600080fd5b83836020830137600060208583010152509392505050565b6000806000606084860312156110d557600080fd5b6110de84610ed0565b9250602084013567ffffffffffffffff8111156110fa57600080fd5b8401601f8101861361110b57600080fd5b61111a86823560208401611046565b925050604084013567ffffffffffffffff81111561113757600080fd5b8401601f8101861361114857600080fd5b61115786823560208401611046565b9150509250925092565b60006020828403121561117357600080fd5b61117c82610ed0565b9392505050565b602080825282518282018190526000918401906040840190835b818110156111bb57835183526020938401939092019160010161119d565b509095945050505050565b6001600160a01b0387811682528616602082015260c0604082018190526000906111f290830187610f5c565b82810360608401526112048187610f5c565b6080840195909552505090151560a090910152949350505050565b600181811c9082168061123357607f821691505b60208210810361125357634e487b7160e01b600052602260045260246000fd5b50919050565b6bffffffffffffffffffffffff198660601b1681526bffffffffffffffffffffffff198560601b1660148201526000845161129b816028850160208901610f38565b8451908301906112b2816028840160208901610f38565b0160288101939093525050604801949350505050565b601f82111561131257806000526020600020601f840160051c810160208510156112ef5750805b601f840160051c820191505b8181101561130f57600081556001016112fb565b50505b505050565b815167ffffffffffffffff81111561133157611331611030565b6113458161133f845461121f565b846112c8565b6020601f82116001811461137957600083156113615750848201515b600019600385901b1c1916600184901b17845561130f565b600084815260208120601f198516915b828110156113a95787850151825560209485019460019092019101611389565b50848210156113c75786840151600019600387901b60f8161c191681555b50505050600190811b0190555056fea264697066735822122005b987192c5437289adb79aa5fe73608f63a827aaf6c0dd0dedce942310e61a964736f6c634300081c0033",
+  "devdoc": {
+    "details": "Step 2: Now Ownable - can be controlled by a multisig wallet  LEARNING POINT: This contract inherits from OpenZeppelin's Ownable. The owner (initially deployer, later multisig) can control certain functions. This allows the multisig to manage the registry settings.",
+    "errors": {
+      "OwnableInvalidOwner(address)": [
+        {
+          "details": "The owner is not a valid owner account. (eg. `address(0)`)"
+        }
+      ],
+      "OwnableUnauthorizedAccount(address)": [
+        {
+          "details": "The caller account is not authorized to perform an operation."
+        }
+      ]
+    },
+    "kind": "dev",
+    "methods": {
+      "constructor": {
+        "details": "The deployer becomes the owner. Later, ownership can be transferred to a multisig.",
+        "params": {
+          "initialOwner": "The address that will be the initial owner  LEARNING POINT: Ownable requires an initial owner. We pass it to the Ownable constructor. This owner can later transfer ownership to a multisig wallet."
+        }
+      },
+      "getAcknowledgment(bytes32)": {
+        "params": {
+          "acknowledgmentHash": "The hash of the acknowledgment"
+        },
+        "returns": {
+          "acknowledgment": "The acknowledgment data"
+        }
+      },
+      "getAcknowledgmentHashes(address)": {
+        "params": {
+          "addr": "The address to query"
+        },
+        "returns": {
+          "hashes": "Array of acknowledgment hashes  LEARNING POINT: This helps you see all acknowledgments someone has made."
+        }
+      },
+      "getHandshakeHashes(address)": {
+        "params": {
+          "addr": "The address to query"
+        },
+        "returns": {
+          "hashes": "Array of handshake hashes that this address is part of  LEARNING POINT: This function returns all handshake hashes where the address is either partyA or partyB. You can then use getMutualHandshake() to get the full handshake details for each hash."
+        }
+      },
+      "getMutualHandshake(address,address)": {
+        "params": {
+          "partyA": "First party's address",
+          "partyB": "Second party's address"
+        },
+        "returns": {
+          "handshake": "The handshake data  LEARNING POINT: This is a view function (doesn't cost gas to call). Anyone can check if two parties have mutually acknowledged.",
+          "isActive": "True if both parties have acknowledged each other"
+        }
+      },
+      "getOwner()": {
+        "returns": {
+          "_0": "The address of the current owner  LEARNING POINT: This function comes from Ownable. It's useful to check who controls the contract. After transferring to multisig, this will return the multisig address.  NOTE: transferOwnership() is already available from Ownable. The owner can call: transferOwnership(newOwner) to transfer ownership."
+        }
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+      },
+      "submitAcknowledgment(address,string,bytes)": {
+        "details": "Party A or Party B calls this with their signature",
+        "params": {
+          "message": "The message they signed (must match what was signed off-chain)",
+          "signature": "Their signature of the message  LEARNING POINT: This function stores the acknowledgment.",
+          "target": "The address of the other party they're acknowledging"
+        }
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      }
+    },
+    "title": "CollaborationRegistry",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "constructor": {
+        "notice": "Constructor sets the initial owner"
+      },
+      "getAcknowledgment(bytes32)": {
+        "notice": "Get a specific acknowledgment by its hash"
+      },
+      "getAcknowledgmentHashes(address)": {
+        "notice": "Get all acknowledgments made by an address"
+      },
+      "getHandshakeHashes(address)": {
+        "notice": "Get all handshake hashes for an address"
+      },
+      "getMutualHandshake(address,address)": {
+        "notice": "Check if two parties have mutually acknowledged each other"
+      },
+      "getOwner()": {
+        "notice": "Get the current owner of the contract"
+      },
+      "submitAcknowledgment(address,string,bytes)": {
+        "notice": "Submit an acknowledgment"
+      }
+    },
+    "notice": "This contract stores mutual acknowledgments between two parties",
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 8,
+        "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 217,
+        "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+        "label": "acknowledgments",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_mapping(t_bytes32,t_struct(Acknowledgment)198_storage)"
+      },
+      {
+        "astId": 222,
+        "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+        "label": "acknowledgmentsByAddress",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_mapping(t_address,t_array(t_bytes32)dyn_storage)"
+      },
+      {
+        "astId": 227,
+        "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+        "label": "handshakes",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_mapping(t_bytes32,t_struct(MutualHandshake)212_storage)"
+      },
+      {
+        "astId": 232,
+        "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+        "label": "handshakesByAddress",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_mapping(t_address,t_array(t_bytes32)dyn_storage)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_bytes32)dyn_storage": {
+        "base": "t_bytes32",
+        "encoding": "dynamic_array",
+        "label": "bytes32[]",
+        "numberOfBytes": "32"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_bytes32": {
+        "encoding": "inplace",
+        "label": "bytes32",
+        "numberOfBytes": "32"
+      },
+      "t_bytes_storage": {
+        "encoding": "bytes",
+        "label": "bytes",
+        "numberOfBytes": "32"
+      },
+      "t_mapping(t_address,t_array(t_bytes32)dyn_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => bytes32[])",
+        "numberOfBytes": "32",
+        "value": "t_array(t_bytes32)dyn_storage"
+      },
+      "t_mapping(t_bytes32,t_struct(Acknowledgment)198_storage)": {
+        "encoding": "mapping",
+        "key": "t_bytes32",
+        "label": "mapping(bytes32 => struct CollaborationRegistry.Acknowledgment)",
+        "numberOfBytes": "32",
+        "value": "t_struct(Acknowledgment)198_storage"
+      },
+      "t_mapping(t_bytes32,t_struct(MutualHandshake)212_storage)": {
+        "encoding": "mapping",
+        "key": "t_bytes32",
+        "label": "mapping(bytes32 => struct CollaborationRegistry.MutualHandshake)",
+        "numberOfBytes": "32",
+        "value": "t_struct(MutualHandshake)212_storage"
+      },
+      "t_string_storage": {
+        "encoding": "bytes",
+        "label": "string",
+        "numberOfBytes": "32"
+      },
+      "t_struct(Acknowledgment)198_storage": {
+        "encoding": "inplace",
+        "label": "struct CollaborationRegistry.Acknowledgment",
+        "members": [
+          {
+            "astId": 187,
+            "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+            "label": "signer",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 189,
+            "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+            "label": "target",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address"
+          },
+          {
+            "astId": 191,
+            "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+            "label": "message",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 193,
+            "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+            "label": "signature",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_bytes_storage"
+          },
+          {
+            "astId": 195,
+            "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+            "label": "timestamp",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 197,
+            "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+            "label": "exists",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_bool"
+          }
+        ],
+        "numberOfBytes": "192"
+      },
+      "t_struct(MutualHandshake)212_storage": {
+        "encoding": "inplace",
+        "label": "struct CollaborationRegistry.MutualHandshake",
+        "members": [
+          {
+            "astId": 201,
+            "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+            "label": "partyA",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 203,
+            "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+            "label": "partyB",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address"
+          },
+          {
+            "astId": 205,
+            "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+            "label": "acknowledgmentAHash",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_bytes32"
+          },
+          {
+            "astId": 207,
+            "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+            "label": "acknowledgmentBHash",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_bytes32"
+          },
+          {
+            "astId": 209,
+            "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+            "label": "timestamp",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 211,
+            "contract": "contracts/CollaborationRegistry.sol:CollaborationRegistry",
+            "label": "isActive",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_bool"
+          }
+        ],
+        "numberOfBytes": "192"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
