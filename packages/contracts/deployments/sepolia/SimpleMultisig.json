@@ -1,0 +1,586 @@
+{
+  "address": "0xc453cBAA518EDBa7955b97a8DE49FA6926A2a2C7",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_owner1",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_owner2",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "transactionId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "approver",
+          "type": "address"
+        }
+      ],
+      "name": "TransactionApproved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "transactionId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "TransactionCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "transactionId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "TransactionExecuted",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "approvals",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "approveTransaction",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "createTransaction",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "executeTransaction",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getTransaction",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bool",
+              "name": "executed",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "approvals",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct SimpleMultisig.Transaction",
+          "name": "transaction",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "transactionId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "hasApproved",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner1",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner2",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "transactionCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "transactions",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        },
+        {
+          "internalType": "bool",
+          "name": "executed",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "approvals",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ],
+  "transactionHash": "0x0d230ebe11bca503358b01adc8cc6f9f2a013b08b0102fee9f9c87e7321135fd",
+  "receipt": {
+    "to": null,
+    "from": "0xD78C12137087D394c0FA49634CAa80D0a1985A8A",
+    "contractAddress": "0xc453cBAA518EDBa7955b97a8DE49FA6926A2a2C7",
+    "transactionIndex": 30,
+    "gasUsed": "947927",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x44187708b732930ed8b505243870bbc2f3a482712eeffd220d46bd645be3b188",
+    "transactionHash": "0x0d230ebe11bca503358b01adc8cc6f9f2a013b08b0102fee9f9c87e7321135fd",
+    "logs": [],
+    "blockNumber": 9614694,
+    "cumulativeGasUsed": "5282048",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0xD78C12137087D394c0FA49634CAa80D0a1985A8A",
+    "0x16c8df447537a0a15a87d439d9d7ea8790f563a4"
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "03443d979dbf7f8d97d2c31460197e8e",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.28+commit.7893614a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner1\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_owner2\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"transactionId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"approver\",\"type\":\"address\"}],\"name\":\"TransactionApproved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"transactionId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"TransactionCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"transactionId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"TransactionExecuted\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"approvals\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"transactionId\",\"type\":\"uint256\"}],\"name\":\"approveTransaction\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"createTransaction\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"transactionId\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"transactionId\",\"type\":\"uint256\"}],\"name\":\"executeTransaction\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"transactionId\",\"type\":\"uint256\"}],\"name\":\"getTransaction\",\"outputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"},{\"internalType\":\"bool\",\"name\":\"executed\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"approvals\",\"type\":\"uint256\"}],\"internalType\":\"struct SimpleMultisig.Transaction\",\"name\":\"transaction\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"transactionId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"hasApproved\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner1\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner2\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"transactionCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"transactions\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"},{\"internalType\":\"bool\",\"name\":\"executed\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"approvals\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}],\"devdoc\":{\"details\":\"Step 3: Learning how multisig wallets work  LEARNING POINT: This is a simple multisig wallet that requires both parties to approve any transaction before it can be executed. This ensures shared control.\",\"kind\":\"dev\",\"methods\":{\"approveTransaction(uint256)\":{\"details\":\"Each owner can approve once. When both approve, transaction can be executed.\",\"params\":{\"transactionId\":\"The ID of the transaction to approve  LEARNING POINT: This is the core of multisig - both parties must approve. If you approve, you can't un-approve (for simplicity in this learning version).\"}},\"constructor\":{\"params\":{\"_owner1\":\"First owner address\",\"_owner2\":\"Second owner address  LEARNING POINT: Both owners must be different addresses. This creates a 2-of-2 multisig where both must approve transactions.\"}},\"createTransaction(address,uint256,bytes)\":{\"details\":\"Either owner can create a transaction, but both must approve to execute\",\"params\":{\"data\":\"Call data (encoded function call)\",\"to\":\"Destination address for the transaction\",\"value\":\"Amount of ETH to send (in wei)\"},\"returns\":{\"transactionId\":\"The ID of the created transaction  LEARNING POINT: Creating a transaction doesn't execute it. Both owners must approve before it can be executed.\"}},\"executeTransaction(uint256)\":{\"details\":\"Can only execute if both owners have approved (2-of-2 requirement)\",\"params\":{\"transactionId\":\"The ID of the transaction to execute  LEARNING POINT: This is where the 2-of-2 requirement is enforced. Both owners must have approved before execution is possible.\"}},\"getBalance()\":{\"returns\":{\"_0\":\"The balance in wei\"}},\"getTransaction(uint256)\":{\"params\":{\"transactionId\":\"The ID of the transaction\"},\"returns\":{\"transaction\":\"The transaction details  LEARNING POINT: This is a view function - anyone can check transaction status.\"}},\"hasApproved(uint256,address)\":{\"params\":{\"owner\":\"The owner address to check\",\"transactionId\":\"The ID of the transaction\"},\"returns\":{\"_0\":\"True if the owner has approved\"}}},\"title\":\"SimpleMultisig\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"approveTransaction(uint256)\":{\"notice\":\"Approve a transaction\"},\"constructor\":{\"notice\":\"Constructor sets the two owners\"},\"createTransaction(address,uint256,bytes)\":{\"notice\":\"Create a new transaction\"},\"executeTransaction(uint256)\":{\"notice\":\"Execute a transaction\"},\"getBalance()\":{\"notice\":\"Get the balance of this multisig wallet\"},\"getTransaction(uint256)\":{\"notice\":\"Get transaction details\"},\"hasApproved(uint256,address)\":{\"notice\":\"Check if an owner has approved a transaction\"}},\"notice\":\"A simple 2-of-2 multisig wallet for collaboration\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/SimpleMultisig.sol\":\"SimpleMultisig\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/SimpleMultisig.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.28;\\n\\n/**\\n * @title SimpleMultisig\\n * @notice A simple 2-of-2 multisig wallet for collaboration\\n * @dev Step 3: Learning how multisig wallets work\\n * \\n * LEARNING POINT: This is a simple multisig wallet that requires both parties\\n * to approve any transaction before it can be executed. This ensures shared control.\\n */\\ncontract SimpleMultisig {\\n    /**\\n     * @notice Structure to represent a pending transaction\\n     * @dev Stores transaction details until both parties approve\\n     */\\n    struct Transaction {\\n        address to;           // Destination address\\n        uint256 value;        // Amount of ETH to send (in wei)\\n        bytes data;           // Call data (function call + parameters)\\n        bool executed;        // Whether transaction has been executed\\n        uint256 approvals;    // Number of approvals (0, 1, or 2)\\n    }\\n\\n    // The two owners of this multisig wallet\\n    address public owner1;\\n    address public owner2;\\n\\n    // Mapping: transaction ID => Transaction details\\n    mapping(uint256 => Transaction) public transactions;\\n\\n    // Mapping: transaction ID => owner address => has approved\\n    mapping(uint256 => mapping(address => bool)) public approvals;\\n\\n    // Counter for transaction IDs\\n    uint256 public transactionCount;\\n\\n    // Events\\n    event TransactionCreated(\\n        uint256 indexed transactionId,\\n        address indexed to,\\n        uint256 value,\\n        bytes data\\n    );\\n\\n    event TransactionApproved(\\n        uint256 indexed transactionId,\\n        address indexed approver\\n    );\\n\\n    event TransactionExecuted(\\n        uint256 indexed transactionId,\\n        address indexed to,\\n        uint256 value\\n    );\\n\\n    /**\\n     * @notice Constructor sets the two owners\\n     * @param _owner1 First owner address\\n     * @param _owner2 Second owner address\\n     * \\n     * LEARNING POINT: Both owners must be different addresses.\\n     * This creates a 2-of-2 multisig where both must approve transactions.\\n     */\\n    constructor(address _owner1, address _owner2) {\\n        require(_owner1 != address(0), \\\"SimpleMultisig: owner1 cannot be zero address\\\");\\n        require(_owner2 != address(0), \\\"SimpleMultisig: owner2 cannot be zero address\\\");\\n        require(_owner1 != _owner2, \\\"SimpleMultisig: owners must be different\\\");\\n\\n        owner1 = _owner1;\\n        owner2 = _owner2;\\n    }\\n\\n    /**\\n     * @notice Modifier to check if caller is one of the owners\\n     * @dev Only owner1 or owner2 can call functions with this modifier\\n     */\\n    modifier onlyOwner() {\\n        require(\\n            msg.sender == owner1 || msg.sender == owner2,\\n            \\\"SimpleMultisig: caller is not an owner\\\"\\n        );\\n        _;\\n    }\\n\\n    /**\\n     * @notice Create a new transaction\\n     * @dev Either owner can create a transaction, but both must approve to execute\\n     * @param to Destination address for the transaction\\n     * @param value Amount of ETH to send (in wei)\\n     * @param data Call data (encoded function call)\\n     * @return transactionId The ID of the created transaction\\n     * \\n     * LEARNING POINT: Creating a transaction doesn't execute it.\\n     * Both owners must approve before it can be executed.\\n     */\\n    function createTransaction(\\n        address to,\\n        uint256 value,\\n        bytes memory data\\n    ) external onlyOwner returns (uint256 transactionId) {\\n        require(to != address(0), \\\"SimpleMultisig: destination cannot be zero address\\\");\\n\\n        transactionId = transactionCount;\\n        transactionCount++;\\n\\n        transactions[transactionId] = Transaction({\\n            to: to,\\n            value: value,\\n            data: data,\\n            executed: false,\\n            approvals: 0\\n        });\\n\\n        emit TransactionCreated(transactionId, to, value, data);\\n    }\\n\\n    /**\\n     * @notice Approve a transaction\\n     * @dev Each owner can approve once. When both approve, transaction can be executed.\\n     * @param transactionId The ID of the transaction to approve\\n     * \\n     * LEARNING POINT: This is the core of multisig - both parties must approve.\\n     * If you approve, you can't un-approve (for simplicity in this learning version).\\n     */\\n    function approveTransaction(uint256 transactionId) external onlyOwner {\\n        Transaction storage transaction = transactions[transactionId];\\n        require(transaction.to != address(0), \\\"SimpleMultisig: transaction does not exist\\\");\\n        require(!transaction.executed, \\\"SimpleMultisig: transaction already executed\\\");\\n        require(!approvals[transactionId][msg.sender], \\\"SimpleMultisig: already approved\\\");\\n\\n        // Mark this owner as having approved\\n        approvals[transactionId][msg.sender] = true;\\n        transaction.approvals++;\\n\\n        emit TransactionApproved(transactionId, msg.sender);\\n    }\\n\\n    /**\\n     * @notice Execute a transaction\\n     * @dev Can only execute if both owners have approved (2-of-2 requirement)\\n     * @param transactionId The ID of the transaction to execute\\n     * \\n     * LEARNING POINT: This is where the 2-of-2 requirement is enforced.\\n     * Both owners must have approved before execution is possible.\\n     */\\n    function executeTransaction(uint256 transactionId) external onlyOwner {\\n        Transaction storage transaction = transactions[transactionId];\\n        require(transaction.to != address(0), \\\"SimpleMultisig: transaction does not exist\\\");\\n        require(!transaction.executed, \\\"SimpleMultisig: transaction already executed\\\");\\n        require(transaction.approvals == 2, \\\"SimpleMultisig: both owners must approve\\\");\\n\\n        // Mark as executed before external call (reentrancy protection)\\n        transaction.executed = true;\\n\\n        // Execute the transaction\\n        (bool success, ) = transaction.to.call{value: transaction.value}(transaction.data);\\n        require(success, \\\"SimpleMultisig: transaction execution failed\\\");\\n\\n        emit TransactionExecuted(transactionId, transaction.to, transaction.value);\\n    }\\n\\n    /**\\n     * @notice Get transaction details\\n     * @param transactionId The ID of the transaction\\n     * @return transaction The transaction details\\n     * \\n     * LEARNING POINT: This is a view function - anyone can check transaction status.\\n     */\\n    function getTransaction(uint256 transactionId)\\n        external\\n        view\\n        returns (Transaction memory transaction)\\n    {\\n        require(transactions[transactionId].to != address(0), \\\"SimpleMultisig: transaction does not exist\\\");\\n        return transactions[transactionId];\\n    }\\n\\n    /**\\n     * @notice Check if an owner has approved a transaction\\n     * @param transactionId The ID of the transaction\\n     * @param owner The owner address to check\\n     * @return True if the owner has approved\\n     */\\n    function hasApproved(uint256 transactionId, address owner)\\n        external\\n        view\\n        returns (bool)\\n    {\\n        return approvals[transactionId][owner];\\n    }\\n\\n    /**\\n     * @notice Receive ETH\\n     * @dev Allows the multisig wallet to receive ETH\\n     */\\n    receive() external payable {}\\n\\n    /**\\n     * @notice Get the balance of this multisig wallet\\n     * @return The balance in wei\\n     */\\n    function getBalance() external view returns (uint256) {\\n        return address(this).balance;\\n    }\\n}\\n\\n\",\"keccak256\":\"0x880c272100b96eb3ef6350ceb14ed44d4ba174ad9749b2b5be26eed7b87c042d\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5060405161114438038061114483398101604081905261002f916101cb565b6001600160a01b0382166100a05760405162461bcd60e51b815260206004820152602d60248201527f53696d706c654d756c74697369673a206f776e6572312063616e6e6f7420626560448201526c207a65726f206164647265737360981b60648201526084015b60405180910390fd5b6001600160a01b03811661010c5760405162461bcd60e51b815260206004820152602d60248201527f53696d706c654d756c74697369673a206f776e6572322063616e6e6f7420626560448201526c207a65726f206164647265737360981b6064820152608401610097565b806001600160a01b0316826001600160a01b03160361017e5760405162461bcd60e51b815260206004820152602860248201527f53696d706c654d756c74697369673a206f776e657273206d75737420626520646044820152671a5999995c995b9d60c21b6064820152608401610097565b600080546001600160a01b039384166001600160a01b031991821617909155600180549290931691161790556101fe565b80516001600160a01b03811681146101c657600080fd5b919050565b600080604083850312156101de57600080fd5b6101e7836101af565b91506101f5602084016101af565b90509250929050565b610f378061020d6000396000f3fe6080604052600436106100a05760003560e01c8063736889141161006457806373688914146101ab5780639ace38c2146101cb578063a9496e75146101fc578063ab2850da1461021c578063b77bf60014610257578063ee22610b1461026d57600080fd5b806312065fe0146100ac5780632358d5a8146100ce578063242232d11461012457806333ea3dc814610146578063527097251461017357600080fd5b366100a757005b600080fd5b3480156100b857600080fd5b50475b6040519081526020015b60405180910390f35b3480156100da57600080fd5b506101146100e9366004610a17565b60009182526003602090815260408084206001600160a01b0393909316845291905290205460ff1690565b60405190151581526020016100c5565b34801561013057600080fd5b5061014461013f366004610a43565b61028d565b005b34801561015257600080fd5b50610166610161366004610a43565b610403565b6040516100c59190610aa2565b34801561017f57600080fd5b50600154610193906001600160a01b031681565b6040516001600160a01b0390911681526020016100c5565b3480156101b757600080fd5b50600054610193906001600160a01b031681565b3480156101d757600080fd5b506101eb6101e6366004610a43565b61055c565b6040516100c5959493929190610afc565b34801561020857600080fd5b506100bb610217366004610b4d565b610623565b34801561022857600080fd5b50610114610237366004610a17565b600360209081526000928352604080842090915290825290205460ff1681565b34801561026357600080fd5b506100bb60045481565b34801561027957600080fd5b50610144610288366004610a43565b6107d1565b6000546001600160a01b03163314806102b057506001546001600160a01b031633145b6102d55760405162461bcd60e51b81526004016102cc90610c20565b60405180910390fd5b600081815260026020526040902080546001600160a01b031661030a5760405162461bcd60e51b81526004016102cc90610c66565b600381015460ff161561032f5760405162461bcd60e51b81526004016102cc90610cb0565b600082815260036020908152604080832033845290915290205460ff16156103995760405162461bcd60e51b815260206004820181905260248201527f53696d706c654d756c74697369673a20616c726561647920617070726f76656460448201526064016102cc565b60008281526003602090815260408083203384529091528120805460ff19166001179055600482018054916103cd83610cfc565b9091555050604051339083907f924813d717e221b5f46dcd8a56da1679e4612584ab3237d55e5faabf6f6a307990600090a35050565b6104406040518060a0016040528060006001600160a01b031681526020016000815260200160608152602001600015158152602001600081525090565b6000828152600260205260409020546001600160a01b03166104745760405162461bcd60e51b81526004016102cc90610c66565b600082815260026020818152604092839020835160a08101855281546001600160a01b03168152600182015492810192909252918201805491938401916104ba90610d23565b80601f01602080910402602001604051908101604052809291908181526020018280546104e690610d23565b80156105335780601f1061050857610100808354040283529160200191610533565b820191906000526020600020905b81548152906001019060200180831161051657829003601f168201915b5050509183525050600382015460ff161515602082015260049091015460409091015292915050565b60026020819052600091825260409091208054600182015492820180546001600160a01b0390921693929161059090610d23565b80601f01602080910402602001604051908101604052809291908181526020018280546105bc90610d23565b80156106095780601f106105de57610100808354040283529160200191610609565b820191906000526020600020905b8154815290600101906020018083116105ec57829003601f168201915b505050506003830154600490930154919260ff1691905085565b600080546001600160a01b031633148061064757506001546001600160a01b031633145b6106635760405162461bcd60e51b81526004016102cc90610c20565b6001600160a01b0384166106d45760405162461bcd60e51b815260206004820152603260248201527f53696d706c654d756c74697369673a2064657374696e6174696f6e2063616e6e6044820152716f74206265207a65726f206164647265737360701b60648201526084016102cc565b506004805490819060006106e783610cfc565b90915550506040805160a0810182526001600160a01b03868116825260208083018781528385018781526000606086018190526080860181905287815260029384905295909520845181546001600160a01b03191694169390931783555160018301559251919290919082019061075e9082610dac565b50606082015160038201805460ff19169115159190911790556080909101516004909101556040516001600160a01b0385169082907f453e07a951b5abb44cc647534a150065e3a308fec0dc01fda6ca43a4984f835b906107c29087908790610e6b565b60405180910390a39392505050565b6000546001600160a01b03163314806107f457506001546001600160a01b031633145b6108105760405162461bcd60e51b81526004016102cc90610c20565b600081815260026020526040902080546001600160a01b03166108455760405162461bcd60e51b81526004016102cc90610c66565b600381015460ff161561086a5760405162461bcd60e51b81526004016102cc90610cb0565b80600401546002146108cf5760405162461bcd60e51b815260206004820152602860248201527f53696d706c654d756c74697369673a20626f7468206f776e657273206d75737460448201526720617070726f766560c01b60648201526084016102cc565b60038101805460ff191660019081179091558154908201546040516000926001600160a01b03169190610906906002860190610e8c565b60006040518083038185875af1925050503d8060008114610943576040519150601f19603f3d011682016040523d82523d6000602084013e610948565b606091505b50509050806109ae5760405162461bcd60e51b815260206004820152602c60248201527f53696d706c654d756c74697369673a207472616e73616374696f6e206578656360448201526b1d5d1a5bdb8819985a5b195960a21b60648201526084016102cc565b815460018301546040519081526001600160a01b039091169084907fda19024f6708ce28e75d9c0ec389fb05a8e5cc9dfe520f61239c10d51a11e59c9060200160405180910390a3505050565b80356001600160a01b0381168114610a1257600080fd5b919050565b60008060408385031215610a2a57600080fd5b82359150610a3a602084016109fb565b90509250929050565b600060208284031215610a5557600080fd5b5035919050565b6000815180845260005b81811015610a8257602081850181015186830182015201610a66565b506000602082860101526020601f19601f83011685010191505092915050565b6020815260018060a01b038251166020820152602082015160408201526000604083015160a06060840152610ada60c0840182610a5c565b9050606084015115156080840152608084015160a08401528091505092915050565b60018060a01b038616815284602082015260a060408201526000610b2360a0830186610a5c565b931515606083015250608001529392505050565b634e487b7160e01b600052604160045260246000fd5b600080600060608486031215610b6257600080fd5b610b6b846109fb565b925060208401359150604084013567ffffffffffffffff811115610b8e57600080fd5b8401601f81018613610b9f57600080fd5b803567ffffffffffffffff811115610bb957610bb9610b37565b604051601f8201601f19908116603f0116810167ffffffffffffffff81118282101715610be857610be8610b37565b604052818152828201602001881015610c0057600080fd5b816020840160208301376000602083830101528093505050509250925092565b60208082526026908201527f53696d706c654d756c74697369673a2063616c6c6572206973206e6f7420616e6040820152651037bbb732b960d11b606082015260800190565b6020808252602a908201527f53696d706c654d756c74697369673a207472616e73616374696f6e20646f6573604082015269081b9bdd08195e1a5cdd60b21b606082015260800190565b6020808252602c908201527f53696d706c654d756c74697369673a207472616e73616374696f6e20616c726560408201526b18591e48195e1958dd5d195960a21b606082015260800190565b600060018201610d1c57634e487b7160e01b600052601160045260246000fd5b5060010190565b600181811c90821680610d3757607f821691505b602082108103610d5757634e487b7160e01b600052602260045260246000fd5b50919050565b601f821115610da757806000526020600020601f840160051c81016020851015610d845750805b601f840160051c820191505b81811015610da45760008155600101610d90565b50505b505050565b815167ffffffffffffffff811115610dc657610dc6610b37565b610dda81610dd48454610d23565b84610d5d565b6020601f821160018114610e0e5760008315610df65750848201515b600019600385901b1c1916600184901b178455610da4565b600084815260208120601f198516915b82811015610e3e5787850151825560209485019460019092019101610e1e565b5084821015610e5c5786840151600019600387901b60f8161c191681555b50505050600190811b01905550565b828152604060208201526000610e846040830184610a5c565b949350505050565b6000808354610e9a81610d23565b600182168015610eb15760018114610ec657610ef6565b60ff1983168652811515820286019350610ef6565b86600052602060002060005b83811015610eee57815488820152600190910190602001610ed2565b505081860193505b50919594505050505056fea2646970667358221220af63f06a9050387b115d5e7d32131db6c0546d8d8088a6368c9dd333a8f5f48464736f6c634300081c0033",
+  "deployedBytecode": "0x6080604052600436106100a05760003560e01c8063736889141161006457806373688914146101ab5780639ace38c2146101cb578063a9496e75146101fc578063ab2850da1461021c578063b77bf60014610257578063ee22610b1461026d57600080fd5b806312065fe0146100ac5780632358d5a8146100ce578063242232d11461012457806333ea3dc814610146578063527097251461017357600080fd5b366100a757005b600080fd5b3480156100b857600080fd5b50475b6040519081526020015b60405180910390f35b3480156100da57600080fd5b506101146100e9366004610a17565b60009182526003602090815260408084206001600160a01b0393909316845291905290205460ff1690565b60405190151581526020016100c5565b34801561013057600080fd5b5061014461013f366004610a43565b61028d565b005b34801561015257600080fd5b50610166610161366004610a43565b610403565b6040516100c59190610aa2565b34801561017f57600080fd5b50600154610193906001600160a01b031681565b6040516001600160a01b0390911681526020016100c5565b3480156101b757600080fd5b50600054610193906001600160a01b031681565b3480156101d757600080fd5b506101eb6101e6366004610a43565b61055c565b6040516100c5959493929190610afc565b34801561020857600080fd5b506100bb610217366004610b4d565b610623565b34801561022857600080fd5b50610114610237366004610a17565b600360209081526000928352604080842090915290825290205460ff1681565b34801561026357600080fd5b506100bb60045481565b34801561027957600080fd5b50610144610288366004610a43565b6107d1565b6000546001600160a01b03163314806102b057506001546001600160a01b031633145b6102d55760405162461bcd60e51b81526004016102cc90610c20565b60405180910390fd5b600081815260026020526040902080546001600160a01b031661030a5760405162461bcd60e51b81526004016102cc90610c66565b600381015460ff161561032f5760405162461bcd60e51b81526004016102cc90610cb0565b600082815260036020908152604080832033845290915290205460ff16156103995760405162461bcd60e51b815260206004820181905260248201527f53696d706c654d756c74697369673a20616c726561647920617070726f76656460448201526064016102cc565b60008281526003602090815260408083203384529091528120805460ff19166001179055600482018054916103cd83610cfc565b9091555050604051339083907f924813d717e221b5f46dcd8a56da1679e4612584ab3237d55e5faabf6f6a307990600090a35050565b6104406040518060a0016040528060006001600160a01b031681526020016000815260200160608152602001600015158152602001600081525090565b6000828152600260205260409020546001600160a01b03166104745760405162461bcd60e51b81526004016102cc90610c66565b600082815260026020818152604092839020835160a08101855281546001600160a01b03168152600182015492810192909252918201805491938401916104ba90610d23565b80601f01602080910402602001604051908101604052809291908181526020018280546104e690610d23565b80156105335780601f1061050857610100808354040283529160200191610533565b820191906000526020600020905b81548152906001019060200180831161051657829003601f168201915b5050509183525050600382015460ff161515602082015260049091015460409091015292915050565b60026020819052600091825260409091208054600182015492820180546001600160a01b0390921693929161059090610d23565b80601f01602080910402602001604051908101604052809291908181526020018280546105bc90610d23565b80156106095780601f106105de57610100808354040283529160200191610609565b820191906000526020600020905b8154815290600101906020018083116105ec57829003601f168201915b505050506003830154600490930154919260ff1691905085565b600080546001600160a01b031633148061064757506001546001600160a01b031633145b6106635760405162461bcd60e51b81526004016102cc90610c20565b6001600160a01b0384166106d45760405162461bcd60e51b815260206004820152603260248201527f53696d706c654d756c74697369673a2064657374696e6174696f6e2063616e6e6044820152716f74206265207a65726f206164647265737360701b60648201526084016102cc565b506004805490819060006106e783610cfc565b90915550506040805160a0810182526001600160a01b03868116825260208083018781528385018781526000606086018190526080860181905287815260029384905295909520845181546001600160a01b03191694169390931783555160018301559251919290919082019061075e9082610dac565b50606082015160038201805460ff19169115159190911790556080909101516004909101556040516001600160a01b0385169082907f453e07a951b5abb44cc647534a150065e3a308fec0dc01fda6ca43a4984f835b906107c29087908790610e6b565b60405180910390a39392505050565b6000546001600160a01b03163314806107f457506001546001600160a01b031633145b6108105760405162461bcd60e51b81526004016102cc90610c20565b600081815260026020526040902080546001600160a01b03166108455760405162461bcd60e51b81526004016102cc90610c66565b600381015460ff161561086a5760405162461bcd60e51b81526004016102cc90610cb0565b80600401546002146108cf5760405162461bcd60e51b815260206004820152602860248201527f53696d706c654d756c74697369673a20626f7468206f776e657273206d75737460448201526720617070726f766560c01b60648201526084016102cc565b60038101805460ff191660019081179091558154908201546040516000926001600160a01b03169190610906906002860190610e8c565b60006040518083038185875af1925050503d8060008114610943576040519150601f19603f3d011682016040523d82523d6000602084013e610948565b606091505b50509050806109ae5760405162461bcd60e51b815260206004820152602c60248201527f53696d706c654d756c74697369673a207472616e73616374696f6e206578656360448201526b1d5d1a5bdb8819985a5b195960a21b60648201526084016102cc565b815460018301546040519081526001600160a01b039091169084907fda19024f6708ce28e75d9c0ec389fb05a8e5cc9dfe520f61239c10d51a11e59c9060200160405180910390a3505050565b80356001600160a01b0381168114610a1257600080fd5b919050565b60008060408385031215610a2a57600080fd5b82359150610a3a602084016109fb565b90509250929050565b600060208284031215610a5557600080fd5b5035919050565b6000815180845260005b81811015610a8257602081850181015186830182015201610a66565b506000602082860101526020601f19601f83011685010191505092915050565b6020815260018060a01b038251166020820152602082015160408201526000604083015160a06060840152610ada60c0840182610a5c565b9050606084015115156080840152608084015160a08401528091505092915050565b60018060a01b038616815284602082015260a060408201526000610b2360a0830186610a5c565b931515606083015250608001529392505050565b634e487b7160e01b600052604160045260246000fd5b600080600060608486031215610b6257600080fd5b610b6b846109fb565b925060208401359150604084013567ffffffffffffffff811115610b8e57600080fd5b8401601f81018613610b9f57600080fd5b803567ffffffffffffffff811115610bb957610bb9610b37565b604051601f8201601f19908116603f0116810167ffffffffffffffff81118282101715610be857610be8610b37565b604052818152828201602001881015610c0057600080fd5b816020840160208301376000602083830101528093505050509250925092565b60208082526026908201527f53696d706c654d756c74697369673a2063616c6c6572206973206e6f7420616e6040820152651037bbb732b960d11b606082015260800190565b6020808252602a908201527f53696d706c654d756c74697369673a207472616e73616374696f6e20646f6573604082015269081b9bdd08195e1a5cdd60b21b606082015260800190565b6020808252602c908201527f53696d706c654d756c74697369673a207472616e73616374696f6e20616c726560408201526b18591e48195e1958dd5d195960a21b606082015260800190565b600060018201610d1c57634e487b7160e01b600052601160045260246000fd5b5060010190565b600181811c90821680610d3757607f821691505b602082108103610d5757634e487b7160e01b600052602260045260246000fd5b50919050565b601f821115610da757806000526020600020601f840160051c81016020851015610d845750805b601f840160051c820191505b81811015610da45760008155600101610d90565b50505b505050565b815167ffffffffffffffff811115610dc657610dc6610b37565b610dda81610dd48454610d23565b84610d5d565b6020601f821160018114610e0e5760008315610df65750848201515b600019600385901b1c1916600184901b178455610da4565b600084815260208120601f198516915b82811015610e3e5787850151825560209485019460019092019101610e1e565b5084821015610e5c5786840151600019600387901b60f8161c191681555b50505050600190811b01905550565b828152604060208201526000610e846040830184610a5c565b949350505050565b6000808354610e9a81610d23565b600182168015610eb15760018114610ec657610ef6565b60ff1983168652811515820286019350610ef6565b86600052602060002060005b83811015610eee57815488820152600190910190602001610ed2565b505081860193505b50919594505050505056fea2646970667358221220af63f06a9050387b115d5e7d32131db6c0546d8d8088a6368c9dd333a8f5f48464736f6c634300081c0033",
+  "devdoc": {
+    "details": "Step 3: Learning how multisig wallets work  LEARNING POINT: This is a simple multisig wallet that requires both parties to approve any transaction before it can be executed. This ensures shared control.",
+    "kind": "dev",
+    "methods": {
+      "approveTransaction(uint256)": {
+        "details": "Each owner can approve once. When both approve, transaction can be executed.",
+        "params": {
+          "transactionId": "The ID of the transaction to approve  LEARNING POINT: This is the core of multisig - both parties must approve. If you approve, you can't un-approve (for simplicity in this learning version)."
+        }
+      },
+      "constructor": {
+        "params": {
+          "_owner1": "First owner address",
+          "_owner2": "Second owner address  LEARNING POINT: Both owners must be different addresses. This creates a 2-of-2 multisig where both must approve transactions."
+        }
+      },
+      "createTransaction(address,uint256,bytes)": {
+        "details": "Either owner can create a transaction, but both must approve to execute",
+        "params": {
+          "data": "Call data (encoded function call)",
+          "to": "Destination address for the transaction",
+          "value": "Amount of ETH to send (in wei)"
+        },
+        "returns": {
+          "transactionId": "The ID of the created transaction  LEARNING POINT: Creating a transaction doesn't execute it. Both owners must approve before it can be executed."
+        }
+      },
+      "executeTransaction(uint256)": {
+        "details": "Can only execute if both owners have approved (2-of-2 requirement)",
+        "params": {
+          "transactionId": "The ID of the transaction to execute  LEARNING POINT: This is where the 2-of-2 requirement is enforced. Both owners must have approved before execution is possible."
+        }
+      },
+      "getBalance()": {
+        "returns": {
+          "_0": "The balance in wei"
+        }
+      },
+      "getTransaction(uint256)": {
+        "params": {
+          "transactionId": "The ID of the transaction"
+        },
+        "returns": {
+          "transaction": "The transaction details  LEARNING POINT: This is a view function - anyone can check transaction status."
+        }
+      },
+      "hasApproved(uint256,address)": {
+        "params": {
+          "owner": "The owner address to check",
+          "transactionId": "The ID of the transaction"
+        },
+        "returns": {
+          "_0": "True if the owner has approved"
+        }
+      }
+    },
+    "title": "SimpleMultisig",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "approveTransaction(uint256)": {
+        "notice": "Approve a transaction"
+      },
+      "constructor": {
+        "notice": "Constructor sets the two owners"
+      },
+      "createTransaction(address,uint256,bytes)": {
+        "notice": "Create a new transaction"
+      },
+      "executeTransaction(uint256)": {
+        "notice": "Execute a transaction"
+      },
+      "getBalance()": {
+        "notice": "Get the balance of this multisig wallet"
+      },
+      "getTransaction(uint256)": {
+        "notice": "Get transaction details"
+      },
+      "hasApproved(uint256,address)": {
+        "notice": "Check if an owner has approved a transaction"
+      }
+    },
+    "notice": "A simple 2-of-2 multisig wallet for collaboration",
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 16,
+        "contract": "contracts/SimpleMultisig.sol:SimpleMultisig",
+        "label": "owner1",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 18,
+        "contract": "contracts/SimpleMultisig.sol:SimpleMultisig",
+        "label": "owner2",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_address"
+      },
+      {
+        "astId": 23,
+        "contract": "contracts/SimpleMultisig.sol:SimpleMultisig",
+        "label": "transactions",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_mapping(t_uint256,t_struct(Transaction)14_storage)"
+      },
+      {
+        "astId": 29,
+        "contract": "contracts/SimpleMultisig.sol:SimpleMultisig",
+        "label": "approvals",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_mapping(t_uint256,t_mapping(t_address,t_bool))"
+      },
+      {
+        "astId": 31,
+        "contract": "contracts/SimpleMultisig.sol:SimpleMultisig",
+        "label": "transactionCount",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_uint256"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_bytes_storage": {
+        "encoding": "bytes",
+        "label": "bytes",
+        "numberOfBytes": "32"
+      },
+      "t_mapping(t_address,t_bool)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => bool)",
+        "numberOfBytes": "32",
+        "value": "t_bool"
+      },
+      "t_mapping(t_uint256,t_mapping(t_address,t_bool))": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => mapping(address => bool))",
+        "numberOfBytes": "32",
+        "value": "t_mapping(t_address,t_bool)"
+      },
+      "t_mapping(t_uint256,t_struct(Transaction)14_storage)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => struct SimpleMultisig.Transaction)",
+        "numberOfBytes": "32",
+        "value": "t_struct(Transaction)14_storage"
+      },
+      "t_struct(Transaction)14_storage": {
+        "encoding": "inplace",
+        "label": "struct SimpleMultisig.Transaction",
+        "members": [
+          {
+            "astId": 5,
+            "contract": "contracts/SimpleMultisig.sol:SimpleMultisig",
+            "label": "to",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 7,
+            "contract": "contracts/SimpleMultisig.sol:SimpleMultisig",
+            "label": "value",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 9,
+            "contract": "contracts/SimpleMultisig.sol:SimpleMultisig",
+            "label": "data",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_bytes_storage"
+          },
+          {
+            "astId": 11,
+            "contract": "contracts/SimpleMultisig.sol:SimpleMultisig",
+            "label": "executed",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_bool"
+          },
+          {
+            "astId": 13,
+            "contract": "contracts/SimpleMultisig.sol:SimpleMultisig",
+            "label": "approvals",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_uint256"
+          }
+        ],
+        "numberOfBytes": "160"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
