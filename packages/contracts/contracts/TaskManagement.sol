@@ -5,18 +5,17 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title TaskManagement
- * @notice A contract for managing collaborative tasks between parties
+ * @notice A contract for managing collaborative tasks with payment-for-delivery
  * @dev Step 7: Task Management contract owned by multisig
  * 
- * LEARNING POINT: This contract enables structured task management for collaboration.
- * Tasks can be created, assigned, tracked, and marked as complete. The multisig
- * controls the contract, ensuring both parties agree on task management.
+ * LEARNING POINT: This contract enables structured task management for collaboration
+ * with a payment system. Tasks go through review before payment is released.
  * 
  * Key concepts:
- * - Tasks: Structured work items with descriptions, assignments, and status
- * - State machine: Tasks move through states (Created → Assigned → InProgress → Completed)
- * - Assignment: Tasks can be assigned to specific addresses
- * - Completion: Tasks can be marked complete with verification
+ * - Tasks: Structured work items with descriptions, assignments, and payment
+ * - State machine: Created → Assigned → InProgress → UnderReview → Accepted/NeedsRevision
+ * - Review system: Completed tasks are reviewed by the assigner
+ * - Payment: Automatic payment upon acceptance via Treasury contract
  */
 contract TaskManagement is Ownable {
     /**
@@ -24,11 +23,13 @@ contract TaskManagement is Ownable {
      * @dev Represents the lifecycle of a task
      */
     enum TaskStatus {
-        Created,      // Task created but not yet assigned
-        Assigned,     // Task assigned to someone
-        InProgress,   // Task is being worked on
-        Completed,    // Task is completed
-        Cancelled     // Task was cancelled
+        Created,        // Task created but not yet assigned
+        Assigned,       // Task assigned to someone
+        InProgress,     // Task is being worked on
+        UnderReview,    // Task completed, submitted for review
+        Accepted,       // Task accepted and payment released
+        NeedsRevision,  // Task sent back for revision
+        Cancelled       // Task was cancelled
     }
 
     /**
@@ -37,17 +38,24 @@ contract TaskManagement is Ownable {
      */
     struct Task {
         uint256 id;                    // Unique task ID
-        address creator;                // Who created the task
-        address assignee;               // Who the task is assigned to (address(0) if unassigned)
+        address creator;               // Who created the task
+        address assignee;              // Who the task is assigned to (address(0) if unassigned)
+        address assigner;              // Who assigned the task (the reviewer)
         string title;                  // Task title
         string description;            // Detailed description
+        uint256 paymentAmount;         // Payment amount in wei (0 if no payment)
         TaskStatus status;             // Current status
+        string reviewComment;         // Comment from reviewer (if sent back for revision)
         uint256 createdAt;             // When task was created
         uint256 assignedAt;            // When task was assigned (0 if not assigned)
-        uint256 completedAt;           // When task was completed (0 if not completed)
+        uint256 completedAt;           // When task was completed/submitted (0 if not completed)
+        uint256 acceptedAt;             // When task was accepted (0 if not accepted)
         bool exists;                   // Whether this task exists
     }
 
+    // Treasury contract address for payments
+    address public treasury;
+    
     // Task tracking
     uint256 public taskCount;          // Total number of tasks
     mapping(uint256 => Task) public tasks; // task ID => Task
@@ -60,6 +68,9 @@ contract TaskManagement is Ownable {
     
     // Mapping: address => array of task IDs (all tasks they're involved in)
     mapping(address => uint256[]) public tasksByParticipant;
+    
+    // Mapping: address => array of task IDs they assigned (for review)
+    mapping(address => uint256[]) public tasksByAssigner;
 
     // Events
     event TaskCreated(
@@ -87,34 +98,60 @@ contract TaskManagement is Ownable {
         uint256 completedAt
     );
     
+    event TaskSubmittedForReview(
+        uint256 indexed taskId,
+        address indexed submittedBy
+    );
+    
+    event TaskAccepted(
+        uint256 indexed taskId,
+        address indexed acceptedBy,
+        uint256 paymentAmount,
+        uint256 acceptedAt
+    );
+    
+    event TaskRevisionRequested(
+        uint256 indexed taskId,
+        address indexed requestedBy,
+        string comment
+    );
+    
     event TaskCancelled(
         uint256 indexed taskId,
         address indexed cancelledBy
     );
+    
+    event TreasuryUpdated(address oldTreasury, address newTreasury);
 
     /**
-     * @notice Constructor sets the initial owner
+     * @notice Constructor sets the initial owner and treasury
      * @param initialOwner The address that will be the initial owner (multisig)
+     * @param _treasury The address of the Treasury contract for payments
      * 
      * LEARNING POINT: The multisig controls task management, ensuring both parties
-     * agree on task assignments and status changes.
+     * agree on task assignments and status changes. The Treasury contract handles payments.
      */
-    constructor(address initialOwner) Ownable(initialOwner) {}
+    constructor(address initialOwner, address _treasury) Ownable(initialOwner) {
+        require(_treasury != address(0), "TaskManagement: treasury cannot be zero address");
+        treasury = _treasury;
+    }
 
     /**
      * @notice Create a new task
      * @dev Anyone can create a task
      * @param title Short title for the task
      * @param description Detailed description of the task
+     * @param paymentAmount Payment amount in wei (can be 0)
      * @return taskId The ID of the created task
      * 
      * LEARNING POINT: Creating a task doesn't assign it. Tasks start in "Created" status
-     * and must be explicitly assigned to someone.
+     * and must be explicitly assigned to someone. Payment amount is set at creation.
      */
-    function createTask(string memory title, string memory description)
-        external
-        returns (uint256 taskId)
-    {
+    function createTask(
+        string memory title,
+        string memory description,
+        uint256 paymentAmount
+    ) external returns (uint256 taskId) {
         require(bytes(title).length > 0, "TaskManagement: title cannot be empty");
         require(bytes(description).length > 0, "TaskManagement: description cannot be empty");
         
@@ -125,12 +162,16 @@ contract TaskManagement is Ownable {
             id: taskId,
             creator: msg.sender,
             assignee: address(0),
+            assigner: address(0),
             title: title,
             description: description,
+            paymentAmount: paymentAmount,
             status: TaskStatus.Created,
+            reviewComment: "",
             createdAt: block.timestamp,
             assignedAt: 0,
             completedAt: 0,
+            acceptedAt: 0,
             exists: true
         });
         
@@ -146,31 +187,44 @@ contract TaskManagement is Ownable {
      * @dev Only owner (multisig) can assign tasks
      * @param taskId The ID of the task to assign
      * @param assignee The address to assign the task to
+     * @param paymentAmount Payment amount in wei (can override original amount)
      * 
      * LEARNING POINT: Assignment requires multisig approval, ensuring both parties
-     * agree on who should work on what. This prevents unilateral task assignment.
+     * agree on who should work on what. The assigner (msg.sender) becomes the reviewer.
+     * Payment amount can be set or updated during assignment.
      */
-    function assignTask(uint256 taskId, address assignee) external onlyOwner {
+    function assignTask(
+        uint256 taskId,
+        address assignee,
+        uint256 paymentAmount
+    ) external onlyOwner {
         Task storage task = tasks[taskId];
         
         require(task.exists, "TaskManagement: task does not exist");
         require(assignee != address(0), "TaskManagement: assignee cannot be zero address");
         require(
-            task.status == TaskStatus.Created || task.status == TaskStatus.Assigned,
+            task.status == TaskStatus.Created || 
+            task.status == TaskStatus.Assigned || 
+            task.status == TaskStatus.NeedsRevision,
             "TaskManagement: task cannot be assigned in current status"
         );
         
         // Update task
         task.assignee = assignee;
+        task.assigner = msg.sender; // The assigner becomes the reviewer
+        task.paymentAmount = paymentAmount; // Update payment amount
         task.status = TaskStatus.Assigned;
         task.assignedAt = block.timestamp;
+        task.reviewComment = ""; // Clear any previous review comments
         
-        // Track tasks by assignee
+        // Track tasks by assignee and assigner
         tasksByAssignee[assignee].push(taskId);
         tasksByParticipant[assignee].push(taskId);
+        tasksByAssigner[msg.sender].push(taskId);
+        tasksByParticipant[msg.sender].push(taskId);
         
         emit TaskAssigned(taskId, assignee, msg.sender);
-        emit TaskStatusUpdated(taskId, TaskStatus.Created, TaskStatus.Assigned, msg.sender);
+        emit TaskStatusUpdated(taskId, task.status, TaskStatus.Assigned, msg.sender);
     }
 
     /**
@@ -180,6 +234,7 @@ contract TaskManagement is Ownable {
      * 
      * LEARNING POINT: The assignee can update their own task status to show progress.
      * This allows for self-management while still requiring assignment approval.
+     * Tasks that need revision can also be restarted.
      */
     function startTask(uint256 taskId) external {
         Task storage task = tasks[taskId];
@@ -187,8 +242,8 @@ contract TaskManagement is Ownable {
         require(task.exists, "TaskManagement: task does not exist");
         require(task.assignee == msg.sender, "TaskManagement: only assignee can start task");
         require(
-            task.status == TaskStatus.Assigned,
-            "TaskManagement: task must be assigned to start"
+            task.status == TaskStatus.Assigned || task.status == TaskStatus.NeedsRevision,
+            "TaskManagement: task must be assigned or need revision to start"
         );
         
         TaskStatus oldStatus = task.status;
@@ -198,12 +253,13 @@ contract TaskManagement is Ownable {
     }
 
     /**
-     * @notice Mark a task as completed
+     * @notice Mark a task as completed and submit for review
      * @dev Only the assignee can complete their task
      * @param taskId The ID of the task to complete
      * 
-     * LEARNING POINT: The assignee marks their own work as complete. In a more
-     * sophisticated system, completion might require verification or approval.
+     * LEARNING POINT: When an assignee completes a task, it goes to "UnderReview" status.
+     * The assigner (who assigned the task) must then review and either accept (with payment)
+     * or request revision with comments.
      */
     function completeTask(uint256 taskId) external {
         Task storage task = tasks[taskId];
@@ -211,18 +267,90 @@ contract TaskManagement is Ownable {
         require(task.exists, "TaskManagement: task does not exist");
         require(task.assignee == msg.sender, "TaskManagement: only assignee can complete task");
         require(
-            task.status == TaskStatus.InProgress || task.status == TaskStatus.Assigned,
-            "TaskManagement: task must be in progress or assigned to complete"
+            task.status == TaskStatus.InProgress || 
+            task.status == TaskStatus.Assigned || 
+            task.status == TaskStatus.NeedsRevision,
+            "TaskManagement: task must be in progress, assigned, or needs revision to complete"
         );
+        require(task.assigner != address(0), "TaskManagement: task must be assigned before completion");
         
         TaskStatus oldStatus = task.status;
-        task.status = TaskStatus.Completed;
+        task.status = TaskStatus.UnderReview;
         task.completedAt = block.timestamp;
+        task.reviewComment = ""; // Clear any previous review comments
         
-        emit TaskStatusUpdated(taskId, oldStatus, TaskStatus.Completed, msg.sender);
+        emit TaskStatusUpdated(taskId, oldStatus, TaskStatus.UnderReview, msg.sender);
         emit TaskCompleted(taskId, msg.sender, block.timestamp);
+        emit TaskSubmittedForReview(taskId, msg.sender);
     }
 
+    /**
+     * @notice Accept a completed task and release payment
+     * @dev Only the assigner (who assigned the task) can accept it
+     * @param taskId The ID of the task to accept
+     * 
+     * LEARNING POINT: When a task is accepted, payment is automatically released
+     * from the Treasury contract to the assignee. This ensures payment-for-delivery.
+     * TaskManagement must be authorized in Treasury to execute withdrawals.
+     * The multisig controls authorization, ensuring both parties approve TaskManagement
+     * as an authorized withdrawer before automatic payments can work.
+     */
+    function acceptTask(uint256 taskId) external {
+        Task storage task = tasks[taskId];
+        
+        require(task.exists, "TaskManagement: task does not exist");
+        require(task.assigner == msg.sender, "TaskManagement: only assigner can accept task");
+        require(task.status == TaskStatus.UnderReview, "TaskManagement: task must be under review");
+        require(task.paymentAmount > 0, "TaskManagement: task has no payment amount");
+        require(task.assignee != address(0), "TaskManagement: task must have an assignee");
+        
+        // Update task status first
+        TaskStatus oldStatus = task.status;
+        task.status = TaskStatus.Accepted;
+        task.acceptedAt = block.timestamp;
+        
+        // Execute payment via Treasury
+        // TaskManagement must be authorized in Treasury to call withdraw()
+        (bool success, ) = treasury.call(
+            abi.encodeWithSignature(
+                "withdraw(address,uint256)",
+                task.assignee,
+                task.paymentAmount
+            )
+        );
+        
+        require(success, "TaskManagement: payment execution failed. Ensure TaskManagement is authorized in Treasury.");
+        
+        emit TaskStatusUpdated(taskId, oldStatus, TaskStatus.Accepted, msg.sender);
+        emit TaskAccepted(taskId, msg.sender, task.paymentAmount, block.timestamp);
+    }
+    
+    /**
+     * @notice Request revision for a completed task
+     * @dev Only the assigner (who assigned the task) can request revision
+     * @param taskId The ID of the task to request revision for
+     * @param comment Comment explaining what needs to be adjusted or completed
+     * 
+     * LEARNING POINT: If the work doesn't meet requirements, the assigner can send it back
+     * with comments. The task goes back to "NeedsRevision" status, allowing the assignee
+     * to make adjustments and resubmit.
+     */
+    function requestRevision(uint256 taskId, string memory comment) external {
+        Task storage task = tasks[taskId];
+        
+        require(task.exists, "TaskManagement: task does not exist");
+        require(task.assigner == msg.sender, "TaskManagement: only assigner can request revision");
+        require(task.status == TaskStatus.UnderReview, "TaskManagement: task must be under review");
+        require(bytes(comment).length > 0, "TaskManagement: comment cannot be empty");
+        
+        TaskStatus oldStatus = task.status;
+        task.status = TaskStatus.NeedsRevision;
+        task.reviewComment = comment;
+        
+        emit TaskStatusUpdated(taskId, oldStatus, TaskStatus.NeedsRevision, msg.sender);
+        emit TaskRevisionRequested(taskId, msg.sender, comment);
+    }
+    
     /**
      * @notice Cancel a task
      * @dev Only owner (multisig) can cancel tasks
@@ -236,8 +364,8 @@ contract TaskManagement is Ownable {
         
         require(task.exists, "TaskManagement: task does not exist");
         require(
-            task.status != TaskStatus.Completed && task.status != TaskStatus.Cancelled,
-            "TaskManagement: cannot cancel completed or already cancelled task"
+            task.status != TaskStatus.Accepted && task.status != TaskStatus.Cancelled,
+            "TaskManagement: cannot cancel accepted or already cancelled task"
         );
         
         TaskStatus oldStatus = task.status;
@@ -245,6 +373,20 @@ contract TaskManagement is Ownable {
         
         emit TaskStatusUpdated(taskId, oldStatus, TaskStatus.Cancelled, msg.sender);
         emit TaskCancelled(taskId, msg.sender);
+    }
+    
+    /**
+     * @notice Update treasury address (only owner)
+     * @dev Allows updating the treasury contract address
+     * @param newTreasury The new treasury contract address
+     */
+    function setTreasury(address newTreasury) external onlyOwner {
+        require(newTreasury != address(0), "TaskManagement: treasury cannot be zero address");
+        
+        address oldTreasury = treasury;
+        treasury = newTreasury;
+        
+        emit TreasuryUpdated(oldTreasury, newTreasury);
     }
 
     /**
@@ -282,6 +424,15 @@ contract TaskManagement is Ownable {
      */
     function getTasksByParticipant(address participant) external view returns (uint256[] memory) {
         return tasksByParticipant[participant];
+    }
+    
+    /**
+     * @notice Get all task IDs assigned by an address (for review)
+     * @param assigner The address to query
+     * @return Array of task IDs
+     */
+    function getTasksByAssigner(address assigner) external view returns (uint256[] memory) {
+        return tasksByAssigner[assigner];
     }
 
     /**

@@ -45,6 +45,12 @@ struct Withdrawal {
 }
 ```
 
+### authorizedWithdrawers
+
+```solidity
+mapping(address => bool) authorizedWithdrawers
+```
+
 ### totalDeposits
 
 ```solidity
@@ -99,6 +105,12 @@ event WithdrawalExecuted(address recipient, uint256 amount, uint256 timestamp)
 event EmergencyWithdrawal(address recipient, uint256 amount, uint256 timestamp)
 ```
 
+### AuthorizedWithdrawerUpdated
+
+```solidity
+event AuthorizedWithdrawerUpdated(address withdrawer, bool authorized)
+```
+
 ### constructor
 
 ```solidity
@@ -148,14 +160,14 @@ function withdraw(address recipient, uint256 amount) external
 
 Withdraw ETH from treasury
 
-_Only the owner (multisig) can call this function_
+_Only the owner (multisig) or authorized withdrawers can call this function_
 
 #### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | recipient | address | The address to send ETH to |
-| amount | uint256 | The amount of ETH to withdraw (in wei) LEARNING POINT: The `onlyOwner` modifier ensures only the multisig can withdraw. Since the multisig requires 2-of-2 approval, both parties must approve any withdrawal transaction. |
+| amount | uint256 | The amount of ETH to withdraw (in wei) LEARNING POINT: The `onlyOwner` modifier ensures only the multisig can withdraw. Since the multisig requires 2-of-2 approval, both parties must approve any withdrawal transaction. Authorized contracts (like TaskManagement) can also withdraw for specific use cases. |
 
 ### getBalance
 
@@ -292,4 +304,21 @@ Get the net balance (deposits - withdrawals)
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | [0] | uint256 | The net balance in wei LEARNING POINT: This calculates the difference between total deposits and total withdrawals. Should match getBalance() if no ETH was sent via other means. |
+
+### setAuthorizedWithdrawer
+
+```solidity
+function setAuthorizedWithdrawer(address withdrawer, bool authorized) external
+```
+
+Authorize or revoke authorization for a contract to withdraw
+
+_Only owner (multisig) can authorize withdrawers_
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| withdrawer | address | The address to authorize/revoke |
+| authorized | bool | Whether to authorize (true) or revoke (false) LEARNING POINT: This allows the multisig to authorize other contracts (like TaskManagement) to withdraw funds for specific purposes. This enables automatic payments while maintaining multisig control over authorization. |
 

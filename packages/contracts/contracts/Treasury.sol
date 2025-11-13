@@ -40,6 +40,9 @@ contract Treasury is Ownable {
         bool executed;       // Whether withdrawal was executed
     }
 
+    // Authorized contracts that can withdraw (e.g., TaskManagement)
+    mapping(address => bool) public authorizedWithdrawers;
+    
     // Total amount of ETH deposited (cumulative)
     uint256 public totalDeposits;
     
@@ -62,6 +65,7 @@ contract Treasury is Ownable {
     event DepositReceived(address indexed depositor, uint256 amount, uint256 timestamp);
     event WithdrawalExecuted(address indexed recipient, uint256 amount, uint256 timestamp);
     event EmergencyWithdrawal(address indexed recipient, uint256 amount, uint256 timestamp);
+    event AuthorizedWithdrawerUpdated(address indexed withdrawer, bool authorized);
 
     /**
      * @notice Constructor sets the initial owner
@@ -124,15 +128,20 @@ contract Treasury is Ownable {
 
     /**
      * @notice Withdraw ETH from treasury
-     * @dev Only the owner (multisig) can call this function
+     * @dev Only the owner (multisig) or authorized withdrawers can call this function
      * @param recipient The address to send ETH to
      * @param amount The amount of ETH to withdraw (in wei)
      * 
      * LEARNING POINT: The `onlyOwner` modifier ensures only the multisig
      * can withdraw. Since the multisig requires 2-of-2 approval, both parties
-     * must approve any withdrawal transaction.
+     * must approve any withdrawal transaction. Authorized contracts (like TaskManagement)
+     * can also withdraw for specific use cases.
      */
-    function withdraw(address recipient, uint256 amount) external onlyOwner {
+    function withdraw(address recipient, uint256 amount) external {
+        require(
+            msg.sender == owner() || authorizedWithdrawers[msg.sender],
+            "Treasury: caller is not authorized to withdraw"
+        );
         require(recipient != address(0), "Treasury: recipient cannot be zero address");
         require(amount > 0, "Treasury: withdrawal amount must be greater than 0");
         require(address(this).balance >= amount, "Treasury: insufficient balance");
@@ -233,6 +242,22 @@ contract Treasury is Ownable {
      */
     function getNetBalance() external view returns (uint256) {
         return totalDeposits - totalWithdrawals;
+    }
+    
+    /**
+     * @notice Authorize or revoke authorization for a contract to withdraw
+     * @dev Only owner (multisig) can authorize withdrawers
+     * @param withdrawer The address to authorize/revoke
+     * @param authorized Whether to authorize (true) or revoke (false)
+     * 
+     * LEARNING POINT: This allows the multisig to authorize other contracts
+     * (like TaskManagement) to withdraw funds for specific purposes. This enables
+     * automatic payments while maintaining multisig control over authorization.
+     */
+    function setAuthorizedWithdrawer(address withdrawer, bool authorized) external onlyOwner {
+        require(withdrawer != address(0), "Treasury: withdrawer cannot be zero address");
+        authorizedWithdrawers[withdrawer] = authorized;
+        emit AuthorizedWithdrawerUpdated(withdrawer, authorized);
     }
 }
 

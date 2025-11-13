@@ -30,9 +30,26 @@ const func: DeployFunction = async ({ deployments, getNamedAccounts, network }) 
     }
   }
   
+  // Get the Treasury address
+  let treasuryAddress: string
+  
+  try {
+    const treasuryDeployment = await deployments.get('Treasury')
+    treasuryAddress = treasuryDeployment.address
+    console.log('✅ Found Treasury deployment at:', treasuryAddress)
+  } catch (error) {
+    if (process.env.TREASURY_ADDRESS) {
+      treasuryAddress = process.env.TREASURY_ADDRESS
+      console.log('📝 Using TREASURY_ADDRESS from env:', treasuryAddress)
+    } else {
+      treasuryAddress = '0xf3586c20a469E5E5335f9263a25aD83Af480288F'
+      console.log('📝 Using known Treasury address:', treasuryAddress)
+    }
+  }
+  
   const deployment = await deploy('TaskManagement', {
     from: deployer,
-    args: [multisigAddress], // Initial owner (multisig)
+    args: [multisigAddress, treasuryAddress], // Initial owner (multisig) and Treasury address
     log: true,
     waitConfirmations: 1,
   })
@@ -41,11 +58,15 @@ const func: DeployFunction = async ({ deployments, getNamedAccounts, network }) 
     console.log('✅ TaskManagement deployed at:', deployment.address)
     console.log('📝 Transaction hash:', deployment.transactionHash)
     console.log('👤 Initial Owner (Multisig):', multisigAddress)
+    console.log('💰 Treasury Address:', treasuryAddress)
     console.log('\n💡 Next steps:')
-    console.log('   1. Create tasks using createTask()')
-    console.log('   2. Assign tasks via multisig using assignTask()')
-    console.log('   3. Assignees can start and complete their tasks')
-    console.log('   4. Track task status and progress')
+    console.log('   1. Authorize TaskManagement in Treasury:')
+    console.log(`      Treasury.setAuthorizedWithdrawer(${deployment.address}, true)`)
+    console.log('   2. Create tasks using createTask(title, description, paymentAmount)')
+    console.log('   3. Assign tasks via multisig using assignTask(taskId, assignee, paymentAmount)')
+    console.log('   4. Assignees can start and complete their tasks')
+    console.log('   5. Assigner reviews and accepts (payment) or requests revision')
+    console.log('   6. Track task status and progress')
     console.log('\n📊 View on Blockscout:')
     console.log(`   https://eth-sepolia.blockscout.com/address/${deployment.address}`)
   } else {
@@ -55,5 +76,6 @@ const func: DeployFunction = async ({ deployments, getNamedAccounts, network }) 
 
 export default func
 func.tags = ['TaskManagement', 'all']
-// Note: SimpleMultisig should be deployed first
+func.dependencies = ['Treasury'] // Deploy after Treasury
+// Note: SimpleMultisig and Treasury should be deployed first
 
