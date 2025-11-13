@@ -56,7 +56,7 @@ mapping(bytes32 => struct CollaborationRegistry.Acknowledgment) acknowledgments
 mapping(address => bytes32[]) acknowledgmentsByAddress
 ```
 
-### handshakes 
+### handshakes
 
 ```solidity
 mapping(bytes32 => struct CollaborationRegistry.MutualHandshake) handshakes

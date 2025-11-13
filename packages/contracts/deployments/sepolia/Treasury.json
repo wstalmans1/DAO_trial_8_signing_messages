@@ -1,0 +1,836 @@
+{
+  "address": "0xf3586c20a469E5E5335f9263a25aD83Af480288F",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "initialOwner",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "depositor",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "DepositReceived",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "EmergencyWithdrawal",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "WithdrawalExecuted",
+      "type": "event"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "fallback"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "deposits",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "depositor",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "depositsByAddress",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getDeposit",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "depositor",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Treasury.Deposit",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getDepositCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "depositor",
+          "type": "address"
+        }
+      ],
+      "name": "getDepositIndices",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getNetBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getWithdrawal",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "executed",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct Treasury.Withdrawal",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getWithdrawalCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        }
+      ],
+      "name": "getWithdrawalIndices",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalDeposits",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalWithdrawals",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdrawals",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "executed",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdrawalsByAddress",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ],
+  "transactionHash": "0x80b5839e1e98dc36e07218bcda398d30825546c3081c0519957bc333506d3174",
+  "receipt": {
+    "to": null,
+    "from": "0xD78C12137087D394c0FA49634CAa80D0a1985A8A",
+    "contractAddress": "0xf3586c20a469E5E5335f9263a25aD83Af480288F",
+    "transactionIndex": 28,
+    "gasUsed": "902592",
+    "logsBloom": "0x00000000000000008000000000000000000008000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000100000000000000000020000000000000000000800000000000000000000000000000000400000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000200000000000000000020000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x0a66d48795f945d2fc5cfd75f2d659fd2d73c8cb51467993d9e31e79ff96c9ca",
+    "transactionHash": "0x80b5839e1e98dc36e07218bcda398d30825546c3081c0519957bc333506d3174",
+    "logs": [
+      {
+        "transactionIndex": 28,
+        "blockNumber": 9621418,
+        "transactionHash": "0x80b5839e1e98dc36e07218bcda398d30825546c3081c0519957bc333506d3174",
+        "address": "0xf3586c20a469E5E5335f9263a25aD83Af480288F",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x000000000000000000000000c453cbaa518edba7955b97a8de49fa6926a2a2c7"
+        ],
+        "data": "0x",
+        "logIndex": 35,
+        "blockHash": "0x0a66d48795f945d2fc5cfd75f2d659fd2d73c8cb51467993d9e31e79ff96c9ca"
+      }
+    ],
+    "blockNumber": 9621418,
+    "cumulativeGasUsed": "8447223",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0xc453cBAA518EDBa7955b97a8DE49FA6926A2a2C7"
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "0ccbe7925ea808efdea54e8fb8347b2a",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.28+commit.7893614a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"initialOwner\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"depositor\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"DepositReceived\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"EmergencyWithdrawal\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"WithdrawalExecuted\",\"type\":\"event\"},{\"stateMutability\":\"payable\",\"type\":\"fallback\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"deposits\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"depositor\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"depositsByAddress\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"getDeposit\",\"outputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"depositor\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"internalType\":\"struct Treasury.Deposit\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getDepositCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"depositor\",\"type\":\"address\"}],\"name\":\"getDepositIndices\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getNetBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"getWithdrawal\",\"outputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"executed\",\"type\":\"bool\"}],\"internalType\":\"struct Treasury.Withdrawal\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getWithdrawalCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"}],\"name\":\"getWithdrawalIndices\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalDeposits\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalWithdrawals\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"withdrawals\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"executed\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"withdrawalsByAddress\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}],\"devdoc\":{\"details\":\"Step 5: Payment/Treasury contract owned by multisig  LEARNING POINT: This contract holds ETH for the collaboration. The multisig wallet (as owner) controls withdrawals, ensuring both parties must approve any fund movement. Anyone can deposit ETH.  Key concepts: - receive() function: Allows contract to receive ETH - onlyOwner modifier: Restricts withdrawals to owner (multisig) - Events: Track all deposits and withdrawals for transparency - Balance tracking: Monitor total deposits vs withdrawals\",\"errors\":{\"OwnableInvalidOwner(address)\":[{\"details\":\"The owner is not a valid owner account. (eg. `address(0)`)\"}],\"OwnableUnauthorizedAccount(address)\":[{\"details\":\"The caller account is not authorized to perform an operation.\"}]},\"kind\":\"dev\",\"methods\":{\"constructor\":{\"params\":{\"initialOwner\":\"The address that will be the initial owner (multisig)  LEARNING POINT: We pass the multisig address as initialOwner. This way, the multisig controls the treasury from the start. Alternatively, we could deploy with deployer as owner, then transfer to multisig.\"}},\"getBalance()\":{\"returns\":{\"_0\":\"The current balance in wei  LEARNING POINT: This is a view function (free to call). It returns the contract's current ETH balance.\"}},\"getDeposit(uint256)\":{\"params\":{\"index\":\"The deposit index\"},\"returns\":{\"_0\":\"The deposit data\"}},\"getDepositCount()\":{\"returns\":{\"_0\":\"The number of deposits made\"}},\"getDepositIndices(address)\":{\"params\":{\"depositor\":\"The address to query\"},\"returns\":{\"_0\":\"Array of deposit indices\"}},\"getNetBalance()\":{\"returns\":{\"_0\":\"The net balance in wei  LEARNING POINT: This calculates the difference between total deposits and total withdrawals. Should match getBalance() if no ETH was sent via other means.\"}},\"getWithdrawal(uint256)\":{\"params\":{\"index\":\"The withdrawal index\"},\"returns\":{\"_0\":\"The withdrawal data\"}},\"getWithdrawalCount()\":{\"returns\":{\"_0\":\"The number of withdrawals made\"}},\"getWithdrawalIndices(address)\":{\"params\":{\"recipient\":\"The address to query\"},\"returns\":{\"_0\":\"Array of withdrawal indices\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"},\"withdraw(address,uint256)\":{\"details\":\"Only the owner (multisig) can call this function\",\"params\":{\"amount\":\"The amount of ETH to withdraw (in wei)  LEARNING POINT: The `onlyOwner` modifier ensures only the multisig can withdraw. Since the multisig requires 2-of-2 approval, both parties must approve any withdrawal transaction.\",\"recipient\":\"The address to send ETH to\"}}},\"title\":\"Treasury\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"constructor\":{\"notice\":\"Constructor sets the initial owner\"},\"getBalance()\":{\"notice\":\"Get the current balance of the treasury\"},\"getDeposit(uint256)\":{\"notice\":\"Get a specific deposit by index\"},\"getDepositCount()\":{\"notice\":\"Get total number of deposits\"},\"getDepositIndices(address)\":{\"notice\":\"Get all deposit indices for an address\"},\"getNetBalance()\":{\"notice\":\"Get the net balance (deposits - withdrawals)\"},\"getWithdrawal(uint256)\":{\"notice\":\"Get a specific withdrawal by index\"},\"getWithdrawalCount()\":{\"notice\":\"Get total number of withdrawals\"},\"getWithdrawalIndices(address)\":{\"notice\":\"Get all withdrawal indices for an address\"},\"withdraw(address,uint256)\":{\"notice\":\"Withdraw ETH from treasury\"}},\"notice\":\"A treasury contract for managing collaboration funds\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Treasury.sol\":\"Treasury\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {Context} from \\\"../utils/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which provides a basic access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * The initial owner is set to the address provided by the deployer. This can\\n * later be changed with {transferOwnership}.\\n *\\n * This module is used through inheritance. It will make available the modifier\\n * `onlyOwner`, which can be applied to your functions to restrict their use to\\n * the owner.\\n */\\nabstract contract Ownable is Context {\\n    address private _owner;\\n\\n    /**\\n     * @dev The caller account is not authorized to perform an operation.\\n     */\\n    error OwnableUnauthorizedAccount(address account);\\n\\n    /**\\n     * @dev The owner is not a valid owner account. (eg. `address(0)`)\\n     */\\n    error OwnableInvalidOwner(address owner);\\n\\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n    /**\\n     * @dev Initializes the contract setting the address provided by the deployer as the initial owner.\\n     */\\n    constructor(address initialOwner) {\\n        if (initialOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(initialOwner);\\n    }\\n\\n    /**\\n     * @dev Throws if called by any account other than the owner.\\n     */\\n    modifier onlyOwner() {\\n        _checkOwner();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns the address of the current owner.\\n     */\\n    function owner() public view virtual returns (address) {\\n        return _owner;\\n    }\\n\\n    /**\\n     * @dev Throws if the sender is not the owner.\\n     */\\n    function _checkOwner() internal view virtual {\\n        if (owner() != _msgSender()) {\\n            revert OwnableUnauthorizedAccount(_msgSender());\\n        }\\n    }\\n\\n    /**\\n     * @dev Leaves the contract without owner. It will not be possible to call\\n     * `onlyOwner` functions. Can only be called by the current owner.\\n     *\\n     * NOTE: Renouncing ownership will leave the contract without an owner,\\n     * thereby disabling any functionality that is only available to the owner.\\n     */\\n    function renounceOwnership() public virtual onlyOwner {\\n        _transferOwnership(address(0));\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Can only be called by the current owner.\\n     */\\n    function transferOwnership(address newOwner) public virtual onlyOwner {\\n        if (newOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Internal function without access restriction.\\n     */\\n    function _transferOwnership(address newOwner) internal virtual {\\n        address oldOwner = _owner;\\n        _owner = newOwner;\\n        emit OwnershipTransferred(oldOwner, newOwner);\\n    }\\n}\\n\",\"keccak256\":\"0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Context.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\nabstract contract Context {\\n    function _msgSender() internal view virtual returns (address) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view virtual returns (bytes calldata) {\\n        return msg.data;\\n    }\\n\\n    function _contextSuffixLength() internal view virtual returns (uint256) {\\n        return 0;\\n    }\\n}\\n\",\"keccak256\":\"0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2\",\"license\":\"MIT\"},\"contracts/Treasury.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.28;\\n\\nimport {Ownable} from \\\"@openzeppelin/contracts/access/Ownable.sol\\\";\\n\\n/**\\n * @title Treasury\\n * @notice A treasury contract for managing collaboration funds\\n * @dev Step 5: Payment/Treasury contract owned by multisig\\n * \\n * LEARNING POINT: This contract holds ETH for the collaboration.\\n * The multisig wallet (as owner) controls withdrawals, ensuring both parties\\n * must approve any fund movement. Anyone can deposit ETH.\\n * \\n * Key concepts:\\n * - receive() function: Allows contract to receive ETH\\n * - onlyOwner modifier: Restricts withdrawals to owner (multisig)\\n * - Events: Track all deposits and withdrawals for transparency\\n * - Balance tracking: Monitor total deposits vs withdrawals\\n */\\ncontract Treasury is Ownable {\\n    /**\\n     * @notice Structure to track a deposit transaction\\n     * @dev Stores information about each deposit\\n     */\\n    struct Deposit {\\n        address depositor;    // Who deposited\\n        uint256 amount;       // Amount deposited (in wei)\\n        uint256 timestamp;    // When deposit was made\\n    }\\n\\n    /**\\n     * @notice Structure to track a withdrawal transaction\\n     * @dev Stores information about each withdrawal\\n     */\\n    struct Withdrawal {\\n        address recipient;   // Who received the funds\\n        uint256 amount;      // Amount withdrawn (in wei)\\n        uint256 timestamp;   // When withdrawal was made\\n        bool executed;       // Whether withdrawal was executed\\n    }\\n\\n    // Total amount of ETH deposited (cumulative)\\n    uint256 public totalDeposits;\\n    \\n    // Total amount of ETH withdrawn (cumulative)\\n    uint256 public totalWithdrawals;\\n    \\n    // Array of all deposits\\n    Deposit[] public deposits;\\n    \\n    // Array of all withdrawals\\n    Withdrawal[] public withdrawals;\\n    \\n    // Mapping: depositor address => array of deposit indices\\n    mapping(address => uint256[]) public depositsByAddress;\\n    \\n    // Mapping: recipient address => array of withdrawal indices\\n    mapping(address => uint256[]) public withdrawalsByAddress;\\n\\n    // Events\\n    event DepositReceived(address indexed depositor, uint256 amount, uint256 timestamp);\\n    event WithdrawalExecuted(address indexed recipient, uint256 amount, uint256 timestamp);\\n    event EmergencyWithdrawal(address indexed recipient, uint256 amount, uint256 timestamp);\\n\\n    /**\\n     * @notice Constructor sets the initial owner\\n     * @param initialOwner The address that will be the initial owner (multisig)\\n     * \\n     * LEARNING POINT: We pass the multisig address as initialOwner.\\n     * This way, the multisig controls the treasury from the start.\\n     * Alternatively, we could deploy with deployer as owner, then transfer to multisig.\\n     */\\n    constructor(address initialOwner) Ownable(initialOwner) {}\\n\\n    /**\\n     * @notice Receive ETH deposits\\n     * @dev This function is called when ETH is sent to the contract\\n     * \\n     * LEARNING POINT: The `receive()` function is a special Solidity function\\n     * that gets called when ETH is sent directly to the contract address.\\n     * It must be external and payable. Anyone can deposit ETH this way.\\n     */\\n    receive() external payable {\\n        require(msg.value > 0, \\\"Treasury: deposit amount must be greater than 0\\\");\\n        \\n        // Record the deposit\\n        deposits.push(Deposit({\\n            depositor: msg.sender,\\n            amount: msg.value,\\n            timestamp: block.timestamp\\n        }));\\n        \\n        // Track deposits by address\\n        depositsByAddress[msg.sender].push(deposits.length - 1);\\n        \\n        // Update total deposits\\n        totalDeposits += msg.value;\\n        \\n        emit DepositReceived(msg.sender, msg.value, block.timestamp);\\n    }\\n\\n    /**\\n     * @notice Fallback function for ETH deposits\\n     * @dev Called when ETH is sent but no function matches\\n     * \\n     * LEARNING POINT: Fallback functions handle calls that don't match\\n     * any function signature. We redirect to receive().\\n     */\\n    fallback() external payable {\\n        require(msg.value > 0, \\\"Treasury: deposit amount must be greater than 0\\\");\\n        \\n        deposits.push(Deposit({\\n            depositor: msg.sender,\\n            amount: msg.value,\\n            timestamp: block.timestamp\\n        }));\\n        \\n        depositsByAddress[msg.sender].push(deposits.length - 1);\\n        totalDeposits += msg.value;\\n        \\n        emit DepositReceived(msg.sender, msg.value, block.timestamp);\\n    }\\n\\n    /**\\n     * @notice Withdraw ETH from treasury\\n     * @dev Only the owner (multisig) can call this function\\n     * @param recipient The address to send ETH to\\n     * @param amount The amount of ETH to withdraw (in wei)\\n     * \\n     * LEARNING POINT: The `onlyOwner` modifier ensures only the multisig\\n     * can withdraw. Since the multisig requires 2-of-2 approval, both parties\\n     * must approve any withdrawal transaction.\\n     */\\n    function withdraw(address recipient, uint256 amount) external onlyOwner {\\n        require(recipient != address(0), \\\"Treasury: recipient cannot be zero address\\\");\\n        require(amount > 0, \\\"Treasury: withdrawal amount must be greater than 0\\\");\\n        require(address(this).balance >= amount, \\\"Treasury: insufficient balance\\\");\\n        \\n        // Record the withdrawal\\n        withdrawals.push(Withdrawal({\\n            recipient: recipient,\\n            amount: amount,\\n            timestamp: block.timestamp,\\n            executed: true\\n        }));\\n        \\n        // Track withdrawals by address\\n        withdrawalsByAddress[recipient].push(withdrawals.length - 1);\\n        \\n        // Update total withdrawals\\n        totalWithdrawals += amount;\\n        \\n        // Transfer ETH to recipient\\n        (bool success, ) = recipient.call{value: amount}(\\\"\\\");\\n        require(success, \\\"Treasury: withdrawal transfer failed\\\");\\n        \\n        emit WithdrawalExecuted(recipient, amount, block.timestamp);\\n    }\\n\\n    /**\\n     * @notice Get the current balance of the treasury\\n     * @return The current balance in wei\\n     * \\n     * LEARNING POINT: This is a view function (free to call).\\n     * It returns the contract's current ETH balance.\\n     */\\n    function getBalance() external view returns (uint256) {\\n        return address(this).balance;\\n    }\\n\\n    /**\\n     * @notice Get total number of deposits\\n     * @return The number of deposits made\\n     */\\n    function getDepositCount() external view returns (uint256) {\\n        return deposits.length;\\n    }\\n\\n    /**\\n     * @notice Get total number of withdrawals\\n     * @return The number of withdrawals made\\n     */\\n    function getWithdrawalCount() external view returns (uint256) {\\n        return withdrawals.length;\\n    }\\n\\n    /**\\n     * @notice Get all deposit indices for an address\\n     * @param depositor The address to query\\n     * @return Array of deposit indices\\n     */\\n    function getDepositIndices(address depositor) external view returns (uint256[] memory) {\\n        return depositsByAddress[depositor];\\n    }\\n\\n    /**\\n     * @notice Get all withdrawal indices for an address\\n     * @param recipient The address to query\\n     * @return Array of withdrawal indices\\n     */\\n    function getWithdrawalIndices(address recipient) external view returns (uint256[] memory) {\\n        return withdrawalsByAddress[recipient];\\n    }\\n\\n    /**\\n     * @notice Get a specific deposit by index\\n     * @param index The deposit index\\n     * @return The deposit data\\n     */\\n    function getDeposit(uint256 index) external view returns (Deposit memory) {\\n        require(index < deposits.length, \\\"Treasury: deposit index out of bounds\\\");\\n        return deposits[index];\\n    }\\n\\n    /**\\n     * @notice Get a specific withdrawal by index\\n     * @param index The withdrawal index\\n     * @return The withdrawal data\\n     */\\n    function getWithdrawal(uint256 index) external view returns (Withdrawal memory) {\\n        require(index < withdrawals.length, \\\"Treasury: withdrawal index out of bounds\\\");\\n        return withdrawals[index];\\n    }\\n\\n    /**\\n     * @notice Get the net balance (deposits - withdrawals)\\n     * @return The net balance in wei\\n     * \\n     * LEARNING POINT: This calculates the difference between\\n     * total deposits and total withdrawals. Should match getBalance()\\n     * if no ETH was sent via other means.\\n     */\\n    function getNetBalance() external view returns (uint256) {\\n        return totalDeposits - totalWithdrawals;\\n    }\\n}\\n\\n\",\"keccak256\":\"0x10528d2d6d6325eb7007227caa40f2f99de1dbca581feccf2ae23ea7c2206615\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50604051610fd8380380610fd883398101604081905261002f916100be565b806001600160a01b03811661005e57604051631e4fbdf760e01b81526000600482015260240160405180910390fd5b6100678161006e565b50506100ee565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b6000602082840312156100d057600080fd5b81516001600160a01b03811681146100e757600080fd5b9392505050565b610edb806100fd6000396000f3fe60806040526004361061010d5760003560e01c80637f258bfb116100955780639f9fb968116100645780639f9fb96814610488578063b02c43d0146104d3578063cf7ca12c14610518578063f2fde38b14610538578063f3fef3a31461055857610281565b80637f258bfb146103cd5780638a4fb16a146103ed5780638da5cb5b1461044b5780639363a1411461047357610281565b80635cc07076116100dc5780635cc07076146103295780636046462714610375578063715018a61461038b578063781952a8146103a25780637d882097146103b757610281565b80630c9115ca146102a157806312065fe0146102c95780631cc15d33146102dc5780633a10e2721461030957610281565b36610281576000341161013b5760405162461bcd60e51b815260040161013290610d3a565b60405180910390fd5b6040805160608101825233808252346020808401918252428486019081526003805460018082018355600083815297517fc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85b92840292830180546001600160a01b0319166001600160a01b0390921691909117905594517fc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85c82015591517fc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85d9092019190915592845260059052929091209054909161021791610d9f565b815460018181018455600093845260208420909101919091558054349290610240908490610db8565b90915550506040805134815242602082015233917f7aa1a8eb998c779420645fc14513bf058edb347d95c2fc2e6845bdc22f888631910160405180910390a2005b6000341161013b5760405162461bcd60e51b815260040161013290610d3a565b3480156102ad57600080fd5b506102b6610578565b6040519081526020015b60405180910390f35b3480156102d557600080fd5b50476102b6565b3480156102e857600080fd5b506102fc6102f7366004610de7565b61058f565b6040516102c09190610e09565b34801561031557600080fd5b506102b6610324366004610e4c565b6105fb565b34801561033557600080fd5b50610349610344366004610e76565b61062c565b604080516001600160a01b039095168552602085019390935291830152151560608201526080016102c0565b34801561038157600080fd5b506102b660025481565b34801561039757600080fd5b506103a0610673565b005b3480156103ae57600080fd5b506004546102b6565b3480156103c357600080fd5b506102b660015481565b3480156103d957600080fd5b506102b66103e8366004610e4c565b610687565b3480156103f957600080fd5b5061040d610408366004610e76565b6106a3565b6040516102c0919081516001600160a01b03168152602080830151908201526040808301519082015260609182015115159181019190915260800190565b34801561045757600080fd5b506000546040516001600160a01b0390911681526020016102c0565b34801561047f57600080fd5b506003546102b6565b34801561049457600080fd5b506104a86104a3366004610e76565b610791565b6040805182516001600160a01b031681526020808401519082015291810151908201526060016102c0565b3480156104df57600080fd5b506104f36104ee366004610e76565b610879565b604080516001600160a01b0390941684526020840192909252908201526060016102c0565b34801561052457600080fd5b506102fc610533366004610de7565b6108b6565b34801561054457600080fd5b506103a0610553366004610de7565b610920565b34801561056457600080fd5b506103a0610573366004610e4c565b61095e565b600060025460015461058a9190610d9f565b905090565b6001600160a01b0381166000908152600660209081526040918290208054835181840281018401909452808452606093928301828280156105ef57602002820191906000526020600020905b8154815260200190600101908083116105db575b50505050509050919050565b6006602052816000526040600020818154811061061757600080fd5b90600052602060002001600091509150505481565b6004818154811061063c57600080fd5b600091825260209091206004909102018054600182015460028301546003909301546001600160a01b039092169350919060ff1684565b61067b610cbd565b6106856000610cea565b565b6005602052816000526040600020818154811061061757600080fd5b60408051608081018252600080825260208201819052918101829052606081019190915260045482106107295760405162461bcd60e51b815260206004820152602860248201527f54726561737572793a207769746864726177616c20696e646578206f7574206f6044820152676620626f756e647360c01b6064820152608401610132565b6004828154811061073c5761073c610e8f565b600091825260209182902060408051608081018252600490930290910180546001600160a01b0316835260018101549383019390935260028301549082015260039091015460ff161515606082015292915050565b6107be604051806060016040528060006001600160a01b0316815260200160008152602001600081525090565b600354821061081d5760405162461bcd60e51b815260206004820152602560248201527f54726561737572793a206465706f73697420696e646578206f7574206f6620626044820152646f756e647360d81b6064820152608401610132565b6003828154811061083057610830610e8f565b600091825260209182902060408051606081018252600390930290910180546001600160a01b031683526001810154938301939093526002909201549181019190915292915050565b6003818154811061088957600080fd5b60009182526020909120600390910201805460018201546002909201546001600160a01b03909116925083565b6001600160a01b0381166000908152600560209081526040918290208054835181840281018401909452808452606093928301828280156105ef57602002820191906000526020600020908154815260200190600101908083116105db5750505050509050919050565b610928610cbd565b6001600160a01b03811661095257604051631e4fbdf760e01b815260006004820152602401610132565b61095b81610cea565b50565b610966610cbd565b6001600160a01b0382166109cf5760405162461bcd60e51b815260206004820152602a60248201527f54726561737572793a20726563697069656e742063616e6e6f74206265207a65604482015269726f206164647265737360b01b6064820152608401610132565b60008111610a3a5760405162461bcd60e51b815260206004820152603260248201527f54726561737572793a207769746864726177616c20616d6f756e74206d75737460448201527102062652067726561746572207468616e20360741b6064820152608401610132565b80471015610a8a5760405162461bcd60e51b815260206004820152601e60248201527f54726561737572793a20696e73756666696369656e742062616c616e636500006044820152606401610132565b604080516080810182526001600160a01b03848116808352602080840186815242858701908152600160608701818152600480548084018255600082815299517f8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19b91830291820180546001600160a01b03191691909a161790985593517f8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19c88015591517f8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19d87015590517f8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19e909501805460ff19169515159590951790945591845260069052929091209154610b9e9190610d9f565b8154600181018355600092835260208320015560028054839290610bc3908490610db8565b90915550506040516000906001600160a01b0384169083908381818185875af1925050503d8060008114610c13576040519150601f19603f3d011682016040523d82523d6000602084013e610c18565b606091505b5050905080610c755760405162461bcd60e51b8152602060048201526024808201527f54726561737572793a207769746864726177616c207472616e736665722066616044820152631a5b195960e21b6064820152608401610132565b604080518381524260208201526001600160a01b038516917f37ce46bc94895501203dc6abbf2b2e0d502e856e3cd90186faaba6dab7d316bb910160405180910390a2505050565b6000546001600160a01b031633146106855760405163118cdaa760e01b8152336004820152602401610132565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b6020808252602f908201527f54726561737572793a206465706f73697420616d6f756e74206d75737420626560408201526e02067726561746572207468616e203608c1b606082015260800190565b634e487b7160e01b600052601160045260246000fd5b81810381811115610db257610db2610d89565b92915050565b80820180821115610db257610db2610d89565b80356001600160a01b0381168114610de257600080fd5b919050565b600060208284031215610df957600080fd5b610e0282610dcb565b9392505050565b602080825282518282018190526000918401906040840190835b81811015610e41578351835260209384019390920191600101610e23565b509095945050505050565b60008060408385031215610e5f57600080fd5b610e6883610dcb565b946020939093013593505050565b600060208284031215610e8857600080fd5b5035919050565b634e487b7160e01b600052603260045260246000fdfea26469706673582212208bcabcc09837609ed30a05406b44ef5aac0a067246b66bac951d3adaeb54d74164736f6c634300081c0033",
+  "deployedBytecode": "0x60806040526004361061010d5760003560e01c80637f258bfb116100955780639f9fb968116100645780639f9fb96814610488578063b02c43d0146104d3578063cf7ca12c14610518578063f2fde38b14610538578063f3fef3a31461055857610281565b80637f258bfb146103cd5780638a4fb16a146103ed5780638da5cb5b1461044b5780639363a1411461047357610281565b80635cc07076116100dc5780635cc07076146103295780636046462714610375578063715018a61461038b578063781952a8146103a25780637d882097146103b757610281565b80630c9115ca146102a157806312065fe0146102c95780631cc15d33146102dc5780633a10e2721461030957610281565b36610281576000341161013b5760405162461bcd60e51b815260040161013290610d3a565b60405180910390fd5b6040805160608101825233808252346020808401918252428486019081526003805460018082018355600083815297517fc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85b92840292830180546001600160a01b0319166001600160a01b0390921691909117905594517fc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85c82015591517fc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85d9092019190915592845260059052929091209054909161021791610d9f565b815460018181018455600093845260208420909101919091558054349290610240908490610db8565b90915550506040805134815242602082015233917f7aa1a8eb998c779420645fc14513bf058edb347d95c2fc2e6845bdc22f888631910160405180910390a2005b6000341161013b5760405162461bcd60e51b815260040161013290610d3a565b3480156102ad57600080fd5b506102b6610578565b6040519081526020015b60405180910390f35b3480156102d557600080fd5b50476102b6565b3480156102e857600080fd5b506102fc6102f7366004610de7565b61058f565b6040516102c09190610e09565b34801561031557600080fd5b506102b6610324366004610e4c565b6105fb565b34801561033557600080fd5b50610349610344366004610e76565b61062c565b604080516001600160a01b039095168552602085019390935291830152151560608201526080016102c0565b34801561038157600080fd5b506102b660025481565b34801561039757600080fd5b506103a0610673565b005b3480156103ae57600080fd5b506004546102b6565b3480156103c357600080fd5b506102b660015481565b3480156103d957600080fd5b506102b66103e8366004610e4c565b610687565b3480156103f957600080fd5b5061040d610408366004610e76565b6106a3565b6040516102c0919081516001600160a01b03168152602080830151908201526040808301519082015260609182015115159181019190915260800190565b34801561045757600080fd5b506000546040516001600160a01b0390911681526020016102c0565b34801561047f57600080fd5b506003546102b6565b34801561049457600080fd5b506104a86104a3366004610e76565b610791565b6040805182516001600160a01b031681526020808401519082015291810151908201526060016102c0565b3480156104df57600080fd5b506104f36104ee366004610e76565b610879565b604080516001600160a01b0390941684526020840192909252908201526060016102c0565b34801561052457600080fd5b506102fc610533366004610de7565b6108b6565b34801561054457600080fd5b506103a0610553366004610de7565b610920565b34801561056457600080fd5b506103a0610573366004610e4c565b61095e565b600060025460015461058a9190610d9f565b905090565b6001600160a01b0381166000908152600660209081526040918290208054835181840281018401909452808452606093928301828280156105ef57602002820191906000526020600020905b8154815260200190600101908083116105db575b50505050509050919050565b6006602052816000526040600020818154811061061757600080fd5b90600052602060002001600091509150505481565b6004818154811061063c57600080fd5b600091825260209091206004909102018054600182015460028301546003909301546001600160a01b039092169350919060ff1684565b61067b610cbd565b6106856000610cea565b565b6005602052816000526040600020818154811061061757600080fd5b60408051608081018252600080825260208201819052918101829052606081019190915260045482106107295760405162461bcd60e51b815260206004820152602860248201527f54726561737572793a207769746864726177616c20696e646578206f7574206f6044820152676620626f756e647360c01b6064820152608401610132565b6004828154811061073c5761073c610e8f565b600091825260209182902060408051608081018252600490930290910180546001600160a01b0316835260018101549383019390935260028301549082015260039091015460ff161515606082015292915050565b6107be604051806060016040528060006001600160a01b0316815260200160008152602001600081525090565b600354821061081d5760405162461bcd60e51b815260206004820152602560248201527f54726561737572793a206465706f73697420696e646578206f7574206f6620626044820152646f756e647360d81b6064820152608401610132565b6003828154811061083057610830610e8f565b600091825260209182902060408051606081018252600390930290910180546001600160a01b031683526001810154938301939093526002909201549181019190915292915050565b6003818154811061088957600080fd5b60009182526020909120600390910201805460018201546002909201546001600160a01b03909116925083565b6001600160a01b0381166000908152600560209081526040918290208054835181840281018401909452808452606093928301828280156105ef57602002820191906000526020600020908154815260200190600101908083116105db5750505050509050919050565b610928610cbd565b6001600160a01b03811661095257604051631e4fbdf760e01b815260006004820152602401610132565b61095b81610cea565b50565b610966610cbd565b6001600160a01b0382166109cf5760405162461bcd60e51b815260206004820152602a60248201527f54726561737572793a20726563697069656e742063616e6e6f74206265207a65604482015269726f206164647265737360b01b6064820152608401610132565b60008111610a3a5760405162461bcd60e51b815260206004820152603260248201527f54726561737572793a207769746864726177616c20616d6f756e74206d75737460448201527102062652067726561746572207468616e20360741b6064820152608401610132565b80471015610a8a5760405162461bcd60e51b815260206004820152601e60248201527f54726561737572793a20696e73756666696369656e742062616c616e636500006044820152606401610132565b604080516080810182526001600160a01b03848116808352602080840186815242858701908152600160608701818152600480548084018255600082815299517f8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19b91830291820180546001600160a01b03191691909a161790985593517f8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19c88015591517f8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19d87015590517f8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19e909501805460ff19169515159590951790945591845260069052929091209154610b9e9190610d9f565b8154600181018355600092835260208320015560028054839290610bc3908490610db8565b90915550506040516000906001600160a01b0384169083908381818185875af1925050503d8060008114610c13576040519150601f19603f3d011682016040523d82523d6000602084013e610c18565b606091505b5050905080610c755760405162461bcd60e51b8152602060048201526024808201527f54726561737572793a207769746864726177616c207472616e736665722066616044820152631a5b195960e21b6064820152608401610132565b604080518381524260208201526001600160a01b038516917f37ce46bc94895501203dc6abbf2b2e0d502e856e3cd90186faaba6dab7d316bb910160405180910390a2505050565b6000546001600160a01b031633146106855760405163118cdaa760e01b8152336004820152602401610132565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b6020808252602f908201527f54726561737572793a206465706f73697420616d6f756e74206d75737420626560408201526e02067726561746572207468616e203608c1b606082015260800190565b634e487b7160e01b600052601160045260246000fd5b81810381811115610db257610db2610d89565b92915050565b80820180821115610db257610db2610d89565b80356001600160a01b0381168114610de257600080fd5b919050565b600060208284031215610df957600080fd5b610e0282610dcb565b9392505050565b602080825282518282018190526000918401906040840190835b81811015610e41578351835260209384019390920191600101610e23565b509095945050505050565b60008060408385031215610e5f57600080fd5b610e6883610dcb565b946020939093013593505050565b600060208284031215610e8857600080fd5b5035919050565b634e487b7160e01b600052603260045260246000fdfea26469706673582212208bcabcc09837609ed30a05406b44ef5aac0a067246b66bac951d3adaeb54d74164736f6c634300081c0033",
+  "devdoc": {
+    "details": "Step 5: Payment/Treasury contract owned by multisig  LEARNING POINT: This contract holds ETH for the collaboration. The multisig wallet (as owner) controls withdrawals, ensuring both parties must approve any fund movement. Anyone can deposit ETH.  Key concepts: - receive() function: Allows contract to receive ETH - onlyOwner modifier: Restricts withdrawals to owner (multisig) - Events: Track all deposits and withdrawals for transparency - Balance tracking: Monitor total deposits vs withdrawals",
+    "errors": {
+      "OwnableInvalidOwner(address)": [
+        {
+          "details": "The owner is not a valid owner account. (eg. `address(0)`)"
+        }
+      ],
+      "OwnableUnauthorizedAccount(address)": [
+        {
+          "details": "The caller account is not authorized to perform an operation."
+        }
+      ]
+    },
+    "kind": "dev",
+    "methods": {
+      "constructor": {
+        "params": {
+          "initialOwner": "The address that will be the initial owner (multisig)  LEARNING POINT: We pass the multisig address as initialOwner. This way, the multisig controls the treasury from the start. Alternatively, we could deploy with deployer as owner, then transfer to multisig."
+        }
+      },
+      "getBalance()": {
+        "returns": {
+          "_0": "The current balance in wei  LEARNING POINT: This is a view function (free to call). It returns the contract's current ETH balance."
+        }
+      },
+      "getDeposit(uint256)": {
+        "params": {
+          "index": "The deposit index"
+        },
+        "returns": {
+          "_0": "The deposit data"
+        }
+      },
+      "getDepositCount()": {
+        "returns": {
+          "_0": "The number of deposits made"
+        }
+      },
+      "getDepositIndices(address)": {
+        "params": {
+          "depositor": "The address to query"
+        },
+        "returns": {
+          "_0": "Array of deposit indices"
+        }
+      },
+      "getNetBalance()": {
+        "returns": {
+          "_0": "The net balance in wei  LEARNING POINT: This calculates the difference between total deposits and total withdrawals. Should match getBalance() if no ETH was sent via other means."
+        }
+      },
+      "getWithdrawal(uint256)": {
+        "params": {
+          "index": "The withdrawal index"
+        },
+        "returns": {
+          "_0": "The withdrawal data"
+        }
+      },
+      "getWithdrawalCount()": {
+        "returns": {
+          "_0": "The number of withdrawals made"
+        }
+      },
+      "getWithdrawalIndices(address)": {
+        "params": {
+          "recipient": "The address to query"
+        },
+        "returns": {
+          "_0": "Array of withdrawal indices"
+        }
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      },
+      "withdraw(address,uint256)": {
+        "details": "Only the owner (multisig) can call this function",
+        "params": {
+          "amount": "The amount of ETH to withdraw (in wei)  LEARNING POINT: The `onlyOwner` modifier ensures only the multisig can withdraw. Since the multisig requires 2-of-2 approval, both parties must approve any withdrawal transaction.",
+          "recipient": "The address to send ETH to"
+        }
+      }
+    },
+    "title": "Treasury",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "constructor": {
+        "notice": "Constructor sets the initial owner"
+      },
+      "getBalance()": {
+        "notice": "Get the current balance of the treasury"
+      },
+      "getDeposit(uint256)": {
+        "notice": "Get a specific deposit by index"
+      },
+      "getDepositCount()": {
+        "notice": "Get total number of deposits"
+      },
+      "getDepositIndices(address)": {
+        "notice": "Get all deposit indices for an address"
+      },
+      "getNetBalance()": {
+        "notice": "Get the net balance (deposits - withdrawals)"
+      },
+      "getWithdrawal(uint256)": {
+        "notice": "Get a specific withdrawal by index"
+      },
+      "getWithdrawalCount()": {
+        "notice": "Get total number of withdrawals"
+      },
+      "getWithdrawalIndices(address)": {
+        "notice": "Get all withdrawal indices for an address"
+      },
+      "withdraw(address,uint256)": {
+        "notice": "Withdraw ETH from treasury"
+      }
+    },
+    "notice": "A treasury contract for managing collaboration funds",
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 8,
+        "contract": "contracts/Treasury.sol:Treasury",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 204,
+        "contract": "contracts/Treasury.sol:Treasury",
+        "label": "totalDeposits",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 206,
+        "contract": "contracts/Treasury.sol:Treasury",
+        "label": "totalWithdrawals",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 210,
+        "contract": "contracts/Treasury.sol:Treasury",
+        "label": "deposits",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_array(t_struct(Deposit)192_storage)dyn_storage"
+      },
+      {
+        "astId": 214,
+        "contract": "contracts/Treasury.sol:Treasury",
+        "label": "withdrawals",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_array(t_struct(Withdrawal)202_storage)dyn_storage"
+      },
+      {
+        "astId": 219,
+        "contract": "contracts/Treasury.sol:Treasury",
+        "label": "depositsByAddress",
+        "offset": 0,
+        "slot": "5",
+        "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)"
+      },
+      {
+        "astId": 224,
+        "contract": "contracts/Treasury.sol:Treasury",
+        "label": "withdrawalsByAddress",
+        "offset": 0,
+        "slot": "6",
+        "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_struct(Deposit)192_storage)dyn_storage": {
+        "base": "t_struct(Deposit)192_storage",
+        "encoding": "dynamic_array",
+        "label": "struct Treasury.Deposit[]",
+        "numberOfBytes": "32"
+      },
+      "t_array(t_struct(Withdrawal)202_storage)dyn_storage": {
+        "base": "t_struct(Withdrawal)202_storage",
+        "encoding": "dynamic_array",
+        "label": "struct Treasury.Withdrawal[]",
+        "numberOfBytes": "32"
+      },
+      "t_array(t_uint256)dyn_storage": {
+        "base": "t_uint256",
+        "encoding": "dynamic_array",
+        "label": "uint256[]",
+        "numberOfBytes": "32"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_mapping(t_address,t_array(t_uint256)dyn_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256[])",
+        "numberOfBytes": "32",
+        "value": "t_array(t_uint256)dyn_storage"
+      },
+      "t_struct(Deposit)192_storage": {
+        "encoding": "inplace",
+        "label": "struct Treasury.Deposit",
+        "members": [
+          {
+            "astId": 187,
+            "contract": "contracts/Treasury.sol:Treasury",
+            "label": "depositor",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 189,
+            "contract": "contracts/Treasury.sol:Treasury",
+            "label": "amount",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 191,
+            "contract": "contracts/Treasury.sol:Treasury",
+            "label": "timestamp",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256"
+          }
+        ],
+        "numberOfBytes": "96"
+      },
+      "t_struct(Withdrawal)202_storage": {
+        "encoding": "inplace",
+        "label": "struct Treasury.Withdrawal",
+        "members": [
+          {
+            "astId": 195,
+            "contract": "contracts/Treasury.sol:Treasury",
+            "label": "recipient",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 197,
+            "contract": "contracts/Treasury.sol:Treasury",
+            "label": "amount",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 199,
+            "contract": "contracts/Treasury.sol:Treasury",
+            "label": "timestamp",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 201,
+            "contract": "contracts/Treasury.sol:Treasury",
+            "label": "executed",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_bool"
+          }
+        ],
+        "numberOfBytes": "128"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}

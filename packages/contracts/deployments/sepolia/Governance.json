@@ -1,0 +1,991 @@
+{
+  "address": "0x21D597603Baf70BEc69F0E4720c3FeeA6904A01b",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "initialOwner",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_votingPeriod",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_quorumThreshold",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "proposalId",
+          "type": "uint256"
+        }
+      ],
+      "name": "ProposalCancelled",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "proposalId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "proposer",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "ProposalCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "proposalId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "ProposalExecuted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "oldThreshold",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newThreshold",
+          "type": "uint256"
+        }
+      ],
+      "name": "QuorumThresholdUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "proposalId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "voter",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "support",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "forVotes",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "againstVotes",
+          "type": "uint256"
+        }
+      ],
+      "name": "VoteCast",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "oldPeriod",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newPeriod",
+          "type": "uint256"
+        }
+      ],
+      "name": "VotingPeriodUpdated",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "proposalId",
+          "type": "uint256"
+        }
+      ],
+      "name": "canExecute",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "canExecute",
+          "type": "bool"
+        },
+        {
+          "internalType": "string",
+          "name": "reason",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "proposalId",
+          "type": "uint256"
+        }
+      ],
+      "name": "cancelProposal",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "createProposal",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "proposalId",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "proposalId",
+          "type": "uint256"
+        }
+      ],
+      "name": "executeProposal",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "proposalId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getProposal",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "proposer",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "forVotes",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "againstVotes",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "startTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "endTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "executed",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "cancelled",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "proposalId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "voter",
+          "type": "address"
+        }
+      ],
+      "name": "getVote",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "hasVoted",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "voteChoice",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "proposalCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "proposals",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "proposer",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "forVotes",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "againstVotes",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "startTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "endTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "executed",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "cancelled",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "quorumThreshold",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "newQuorumThreshold",
+          "type": "uint256"
+        }
+      ],
+      "name": "setQuorumThreshold",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "newVotingPeriod",
+          "type": "uint256"
+        }
+      ],
+      "name": "setVotingPeriod",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "proposalId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "support",
+          "type": "bool"
+        }
+      ],
+      "name": "vote",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "votingPeriod",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0xe6f6054ce32e7b87132449f0b507ad57e8d5e6240bf58bbb139cc233d316fd4a",
+  "receipt": {
+    "to": null,
+    "from": "0xD78C12137087D394c0FA49634CAa80D0a1985A8A",
+    "contractAddress": "0x21D597603Baf70BEc69F0E4720c3FeeA6904A01b",
+    "transactionIndex": 44,
+    "gasUsed": "1499872",
+    "logsBloom": "0x00000000000000008000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000080000000000000000000000000000000020000000000000000000800000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000100000000000000000200000000000000000020000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xfde1a631a1bd8d3067318f240a703804f5820b0f587fba2c7ce94240615d16b1",
+    "transactionHash": "0xe6f6054ce32e7b87132449f0b507ad57e8d5e6240bf58bbb139cc233d316fd4a",
+    "logs": [
+      {
+        "transactionIndex": 44,
+        "blockNumber": 9621458,
+        "transactionHash": "0xe6f6054ce32e7b87132449f0b507ad57e8d5e6240bf58bbb139cc233d316fd4a",
+        "address": "0x21D597603Baf70BEc69F0E4720c3FeeA6904A01b",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x000000000000000000000000c453cbaa518edba7955b97a8de49fa6926a2a2c7"
+        ],
+        "data": "0x",
+        "logIndex": 144,
+        "blockHash": "0xfde1a631a1bd8d3067318f240a703804f5820b0f587fba2c7ce94240615d16b1"
+      }
+    ],
+    "blockNumber": 9621458,
+    "cumulativeGasUsed": "8490908",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0xc453cBAA518EDBa7955b97a8DE49FA6926A2a2C7",
+    604800,
+    2
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "1578b4ba1e84390013c3f32602b36c95",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.28+commit.7893614a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"initialOwner\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_votingPeriod\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_quorumThreshold\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"proposalId\",\"type\":\"uint256\"}],\"name\":\"ProposalCancelled\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"proposalId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"proposer\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"ProposalCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"proposalId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"ProposalExecuted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"oldThreshold\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"newThreshold\",\"type\":\"uint256\"}],\"name\":\"QuorumThresholdUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"proposalId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"voter\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"support\",\"type\":\"bool\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"forVotes\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"againstVotes\",\"type\":\"uint256\"}],\"name\":\"VoteCast\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"oldPeriod\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"newPeriod\",\"type\":\"uint256\"}],\"name\":\"VotingPeriodUpdated\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"proposalId\",\"type\":\"uint256\"}],\"name\":\"canExecute\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"canExecute\",\"type\":\"bool\"},{\"internalType\":\"string\",\"name\":\"reason\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"proposalId\",\"type\":\"uint256\"}],\"name\":\"cancelProposal\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"createProposal\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"proposalId\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"proposalId\",\"type\":\"uint256\"}],\"name\":\"executeProposal\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"proposalId\",\"type\":\"uint256\"}],\"name\":\"getProposal\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"proposer\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"forVotes\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"againstVotes\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"startTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"endTime\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"executed\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"cancelled\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"proposalId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"voter\",\"type\":\"address\"}],\"name\":\"getVote\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"hasVoted\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"voteChoice\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"proposalCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"proposals\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"proposer\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"forVotes\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"againstVotes\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"startTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"endTime\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"executed\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"cancelled\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"quorumThreshold\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"newQuorumThreshold\",\"type\":\"uint256\"}],\"name\":\"setQuorumThreshold\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"newVotingPeriod\",\"type\":\"uint256\"}],\"name\":\"setVotingPeriod\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"proposalId\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"support\",\"type\":\"bool\"}],\"name\":\"vote\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"votingPeriod\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Step 6: Voting/Governance contract owned by multisig  LEARNING POINT: This contract enables on-chain governance where proposals can be created, voted on, and executed. The multisig controls the contract, but proposals allow for structured decision-making.  Key concepts: - Proposals: Structured decisions that can be voted on - Voting: Each proposal can be voted for/against - Execution: Approved proposals can execute actions - Quorum: Minimum votes required for a proposal to pass\",\"errors\":{\"OwnableInvalidOwner(address)\":[{\"details\":\"The owner is not a valid owner account. (eg. `address(0)`)\"}],\"OwnableUnauthorizedAccount(address)\":[{\"details\":\"The caller account is not authorized to perform an operation.\"}]},\"kind\":\"dev\",\"methods\":{\"canExecute(uint256)\":{\"params\":{\"proposalId\":\"The ID of the proposal\"},\"returns\":{\"canExecute\":\"Whether the proposal can be executed\",\"reason\":\"Reason why it can't be executed (if applicable)\"}},\"cancelProposal(uint256)\":{\"details\":\"Owner can cancel proposals before execution\",\"params\":{\"proposalId\":\"The ID of the proposal to cancel  LEARNING POINT: The owner (multisig) can cancel proposals. This provides a safety mechanism if a proposal is problematic.\"}},\"constructor\":{\"params\":{\"_quorumThreshold\":\"Minimum number of votes required for a proposal to pass  LEARNING POINT: We set reasonable defaults for voting period and quorum. The voting period determines how long people have to vote. The quorum ensures enough participation for decisions to be valid.\",\"_votingPeriod\":\"Voting period in seconds (e.g., 7 days = 604800)\",\"initialOwner\":\"The address that will be the initial owner (multisig)\"}},\"createProposal(string,address,uint256,bytes)\":{\"details\":\"Anyone can create a proposal, but only owner can execute\",\"params\":{\"data\":\"Encoded function call data (empty if no execution)\",\"description\":\"Human-readable description of the proposal\",\"target\":\"Target contract address (address(0) if no execution needed)\",\"value\":\"ETH value to send (0 if no ETH transfer)\"},\"returns\":{\"proposalId\":\"The ID of the created proposal  LEARNING POINT: Creating a proposal doesn't execute anything. It just opens voting. After voting ends and quorum is met, the owner (multisig) can execute the proposal.\"}},\"executeProposal(uint256)\":{\"details\":\"Only owner (multisig) can execute, and only if proposal passed\",\"params\":{\"proposalId\":\"The ID of the proposal to execute  LEARNING POINT: Execution requires: 1. Voting period has ended 2. Quorum threshold is met (enough votes) 3. More for votes than against votes 4. Proposal hasn't been executed or cancelled  The multisig must approve this execution, ensuring both parties agree to execute the proposal.\"}},\"getProposal(uint256)\":{\"params\":{\"proposalId\":\"The ID of the proposal\"},\"returns\":{\"againstVotes\":\"Number of against votes\",\"cancelled\":\"Whether cancelled  LEARNING POINT: This view function allows anyone to check proposal status. Note: We can't return mappings directly, so we return individual values.\",\"description\":\"Proposal description\",\"endTime\":\"Voting end time\",\"executed\":\"Whether executed\",\"forVotes\":\"Number of for votes\",\"id\":\"Proposal ID\",\"proposer\":\"Address of proposer\",\"startTime\":\"Voting start time\",\"target\":\"Target contract address\",\"value\":\"ETH value\"}},\"getVote(uint256,address)\":{\"params\":{\"proposalId\":\"The ID of the proposal\",\"voter\":\"The address to check\"},\"returns\":{\"hasVoted\":\"Whether the address has voted\",\"voteChoice\":\"true if voted for, false if voted against (only valid if hasVoted is true)\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.\"},\"setQuorumThreshold(uint256)\":{\"params\":{\"newQuorumThreshold\":\"New quorum threshold\"}},\"setVotingPeriod(uint256)\":{\"params\":{\"newVotingPeriod\":\"New voting period in seconds\"}},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"},\"vote(uint256,bool)\":{\"details\":\"Anyone can vote, but can only vote once per proposal\",\"params\":{\"proposalId\":\"The ID of the proposal to vote on\",\"support\":\"true = vote for, false = vote against  LEARNING POINT: This implements simple binary voting (for/against). Each address can vote once. More sophisticated systems might use token-weighted voting or delegation.\"}}},\"title\":\"Governance\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"canExecute(uint256)\":{\"notice\":\"Check if a proposal can be executed\"},\"cancelProposal(uint256)\":{\"notice\":\"Cancel a proposal (only owner)\"},\"constructor\":{\"notice\":\"Constructor sets the initial owner and governance parameters\"},\"createProposal(string,address,uint256,bytes)\":{\"notice\":\"Create a new proposal\"},\"executeProposal(uint256)\":{\"notice\":\"Execute a proposal\"},\"getProposal(uint256)\":{\"notice\":\"Get proposal details\"},\"getVote(uint256,address)\":{\"notice\":\"Check if an address has voted on a proposal\"},\"setQuorumThreshold(uint256)\":{\"notice\":\"Update quorum threshold (only owner)\"},\"setVotingPeriod(uint256)\":{\"notice\":\"Update voting period (only owner)\"},\"vote(uint256,bool)\":{\"notice\":\"Vote on a proposal\"}},\"notice\":\"A simple governance contract for collaborative decision-making\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Governance.sol\":\"Governance\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {Context} from \\\"../utils/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which provides a basic access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * The initial owner is set to the address provided by the deployer. This can\\n * later be changed with {transferOwnership}.\\n *\\n * This module is used through inheritance. It will make available the modifier\\n * `onlyOwner`, which can be applied to your functions to restrict their use to\\n * the owner.\\n */\\nabstract contract Ownable is Context {\\n    address private _owner;\\n\\n    /**\\n     * @dev The caller account is not authorized to perform an operation.\\n     */\\n    error OwnableUnauthorizedAccount(address account);\\n\\n    /**\\n     * @dev The owner is not a valid owner account. (eg. `address(0)`)\\n     */\\n    error OwnableInvalidOwner(address owner);\\n\\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n    /**\\n     * @dev Initializes the contract setting the address provided by the deployer as the initial owner.\\n     */\\n    constructor(address initialOwner) {\\n        if (initialOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(initialOwner);\\n    }\\n\\n    /**\\n     * @dev Throws if called by any account other than the owner.\\n     */\\n    modifier onlyOwner() {\\n        _checkOwner();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns the address of the current owner.\\n     */\\n    function owner() public view virtual returns (address) {\\n        return _owner;\\n    }\\n\\n    /**\\n     * @dev Throws if the sender is not the owner.\\n     */\\n    function _checkOwner() internal view virtual {\\n        if (owner() != _msgSender()) {\\n            revert OwnableUnauthorizedAccount(_msgSender());\\n        }\\n    }\\n\\n    /**\\n     * @dev Leaves the contract without owner. It will not be possible to call\\n     * `onlyOwner` functions. Can only be called by the current owner.\\n     *\\n     * NOTE: Renouncing ownership will leave the contract without an owner,\\n     * thereby disabling any functionality that is only available to the owner.\\n     */\\n    function renounceOwnership() public virtual onlyOwner {\\n        _transferOwnership(address(0));\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Can only be called by the current owner.\\n     */\\n    function transferOwnership(address newOwner) public virtual onlyOwner {\\n        if (newOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Internal function without access restriction.\\n     */\\n    function _transferOwnership(address newOwner) internal virtual {\\n        address oldOwner = _owner;\\n        _owner = newOwner;\\n        emit OwnershipTransferred(oldOwner, newOwner);\\n    }\\n}\\n\",\"keccak256\":\"0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Context.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\nabstract contract Context {\\n    function _msgSender() internal view virtual returns (address) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view virtual returns (bytes calldata) {\\n        return msg.data;\\n    }\\n\\n    function _contextSuffixLength() internal view virtual returns (uint256) {\\n        return 0;\\n    }\\n}\\n\",\"keccak256\":\"0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2\",\"license\":\"MIT\"},\"contracts/Governance.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.28;\\n\\nimport {Ownable} from \\\"@openzeppelin/contracts/access/Ownable.sol\\\";\\n\\n/**\\n * @title Governance\\n * @notice A simple governance contract for collaborative decision-making\\n * @dev Step 6: Voting/Governance contract owned by multisig\\n * \\n * LEARNING POINT: This contract enables on-chain governance where proposals\\n * can be created, voted on, and executed. The multisig controls the contract,\\n * but proposals allow for structured decision-making.\\n * \\n * Key concepts:\\n * - Proposals: Structured decisions that can be voted on\\n * - Voting: Each proposal can be voted for/against\\n * - Execution: Approved proposals can execute actions\\n * - Quorum: Minimum votes required for a proposal to pass\\n */\\ncontract Governance is Ownable {\\n    /**\\n     * @notice Structure to represent a proposal\\n     * @dev Contains all information about a governance proposal\\n     */\\n    struct Proposal {\\n        uint256 id;                    // Unique proposal ID\\n        address proposer;              // Who created the proposal\\n        string description;            // Human-readable description\\n        address target;                // Target contract for execution (if any)\\n        bytes data;                   // Call data for execution (if any)\\n        uint256 value;                // ETH value to send (if any)\\n        uint256 forVotes;             // Number of votes in favor\\n        uint256 againstVotes;          // Number of votes against\\n        uint256 startTime;             // When voting starts\\n        uint256 endTime;              // When voting ends\\n        bool executed;                 // Whether proposal has been executed\\n        bool cancelled;                // Whether proposal was cancelled\\n        mapping(address => bool) hasVoted; // Track who has voted\\n        mapping(address => bool) voteChoice; // true = for, false = against\\n    }\\n\\n    // Proposal settings\\n    uint256 public votingPeriod;      // How long voting lasts (in seconds)\\n    uint256 public quorumThreshold;   // Minimum votes required (absolute number)\\n    \\n    // Proposal tracking\\n    uint256 public proposalCount;     // Total number of proposals\\n    mapping(uint256 => Proposal) public proposals; // proposal ID => Proposal\\n    \\n    // Events\\n    event ProposalCreated(\\n        uint256 indexed proposalId,\\n        address indexed proposer,\\n        string description,\\n        address target,\\n        uint256 value,\\n        bytes data\\n    );\\n    \\n    event VoteCast(\\n        uint256 indexed proposalId,\\n        address indexed voter,\\n        bool support,  // true = for, false = against\\n        uint256 forVotes,\\n        uint256 againstVotes\\n    );\\n    \\n    event ProposalExecuted(\\n        uint256 indexed proposalId,\\n        address indexed target,\\n        uint256 value\\n    );\\n    \\n    event ProposalCancelled(uint256 indexed proposalId);\\n    event VotingPeriodUpdated(uint256 oldPeriod, uint256 newPeriod);\\n    event QuorumThresholdUpdated(uint256 oldThreshold, uint256 newThreshold);\\n\\n    /**\\n     * @notice Constructor sets the initial owner and governance parameters\\n     * @param initialOwner The address that will be the initial owner (multisig)\\n     * @param _votingPeriod Voting period in seconds (e.g., 7 days = 604800)\\n     * @param _quorumThreshold Minimum number of votes required for a proposal to pass\\n     * \\n     * LEARNING POINT: We set reasonable defaults for voting period and quorum.\\n     * The voting period determines how long people have to vote.\\n     * The quorum ensures enough participation for decisions to be valid.\\n     */\\n    constructor(\\n        address initialOwner,\\n        uint256 _votingPeriod,\\n        uint256 _quorumThreshold\\n    ) Ownable(initialOwner) {\\n        require(_votingPeriod > 0, \\\"Governance: voting period must be greater than 0\\\");\\n        require(_quorumThreshold > 0, \\\"Governance: quorum threshold must be greater than 0\\\");\\n        \\n        votingPeriod = _votingPeriod;\\n        quorumThreshold = _quorumThreshold;\\n    }\\n\\n    /**\\n     * @notice Create a new proposal\\n     * @dev Anyone can create a proposal, but only owner can execute\\n     * @param description Human-readable description of the proposal\\n     * @param target Target contract address (address(0) if no execution needed)\\n     * @param value ETH value to send (0 if no ETH transfer)\\n     * @param data Encoded function call data (empty if no execution)\\n     * @return proposalId The ID of the created proposal\\n     * \\n     * LEARNING POINT: Creating a proposal doesn't execute anything.\\n     * It just opens voting. After voting ends and quorum is met,\\n     * the owner (multisig) can execute the proposal.\\n     */\\n    function createProposal(\\n        string memory description,\\n        address target,\\n        uint256 value,\\n        bytes memory data\\n    ) external returns (uint256 proposalId) {\\n        require(bytes(description).length > 0, \\\"Governance: description cannot be empty\\\");\\n        \\n        proposalId = proposalCount;\\n        proposalCount++;\\n        \\n        Proposal storage proposal = proposals[proposalId];\\n        proposal.id = proposalId;\\n        proposal.proposer = msg.sender;\\n        proposal.description = description;\\n        proposal.target = target;\\n        proposal.value = value;\\n        proposal.data = data;\\n        proposal.startTime = block.timestamp;\\n        proposal.endTime = block.timestamp + votingPeriod;\\n        proposal.executed = false;\\n        proposal.cancelled = false;\\n        \\n        emit ProposalCreated(proposalId, msg.sender, description, target, value, data);\\n    }\\n\\n    /**\\n     * @notice Vote on a proposal\\n     * @dev Anyone can vote, but can only vote once per proposal\\n     * @param proposalId The ID of the proposal to vote on\\n     * @param support true = vote for, false = vote against\\n     * \\n     * LEARNING POINT: This implements simple binary voting (for/against).\\n     * Each address can vote once. More sophisticated systems might use\\n     * token-weighted voting or delegation.\\n     */\\n    function vote(uint256 proposalId, bool support) external {\\n        Proposal storage proposal = proposals[proposalId];\\n        \\n        require(proposal.proposer != address(0), \\\"Governance: proposal does not exist\\\");\\n        require(!proposal.cancelled, \\\"Governance: proposal has been cancelled\\\");\\n        require(!proposal.executed, \\\"Governance: proposal has already been executed\\\");\\n        require(block.timestamp >= proposal.startTime, \\\"Governance: voting has not started\\\");\\n        require(block.timestamp <= proposal.endTime, \\\"Governance: voting has ended\\\");\\n        require(!proposal.hasVoted[msg.sender], \\\"Governance: already voted\\\");\\n        \\n        proposal.hasVoted[msg.sender] = true;\\n        proposal.voteChoice[msg.sender] = support;\\n        \\n        if (support) {\\n            proposal.forVotes++;\\n        } else {\\n            proposal.againstVotes++;\\n        }\\n        \\n        emit VoteCast(proposalId, msg.sender, support, proposal.forVotes, proposal.againstVotes);\\n    }\\n\\n    /**\\n     * @notice Execute a proposal\\n     * @dev Only owner (multisig) can execute, and only if proposal passed\\n     * @param proposalId The ID of the proposal to execute\\n     * \\n     * LEARNING POINT: Execution requires:\\n     * 1. Voting period has ended\\n     * 2. Quorum threshold is met (enough votes)\\n     * 3. More for votes than against votes\\n     * 4. Proposal hasn't been executed or cancelled\\n     * \\n     * The multisig must approve this execution, ensuring both parties\\n     * agree to execute the proposal.\\n     */\\n    function executeProposal(uint256 proposalId) external onlyOwner {\\n        Proposal storage proposal = proposals[proposalId];\\n        \\n        require(proposal.proposer != address(0), \\\"Governance: proposal does not exist\\\");\\n        require(!proposal.cancelled, \\\"Governance: proposal has been cancelled\\\");\\n        require(!proposal.executed, \\\"Governance: proposal has already been executed\\\");\\n        require(block.timestamp > proposal.endTime, \\\"Governance: voting period has not ended\\\");\\n        \\n        uint256 totalVotes = proposal.forVotes + proposal.againstVotes;\\n        require(totalVotes >= quorumThreshold, \\\"Governance: quorum not met\\\");\\n        require(proposal.forVotes > proposal.againstVotes, \\\"Governance: proposal did not pass\\\");\\n        \\n        proposal.executed = true;\\n        \\n        // Execute the proposal if it has a target\\n        if (proposal.target != address(0)) {\\n            (bool success, ) = proposal.target.call{value: proposal.value}(proposal.data);\\n            require(success, \\\"Governance: proposal execution failed\\\");\\n        }\\n        \\n        emit ProposalExecuted(proposalId, proposal.target, proposal.value);\\n    }\\n\\n    /**\\n     * @notice Cancel a proposal (only owner)\\n     * @dev Owner can cancel proposals before execution\\n     * @param proposalId The ID of the proposal to cancel\\n     * \\n     * LEARNING POINT: The owner (multisig) can cancel proposals.\\n     * This provides a safety mechanism if a proposal is problematic.\\n     */\\n    function cancelProposal(uint256 proposalId) external onlyOwner {\\n        Proposal storage proposal = proposals[proposalId];\\n        \\n        require(proposal.proposer != address(0), \\\"Governance: proposal does not exist\\\");\\n        require(!proposal.executed, \\\"Governance: proposal has already been executed\\\");\\n        require(!proposal.cancelled, \\\"Governance: proposal has already been cancelled\\\");\\n        \\n        proposal.cancelled = true;\\n        \\n        emit ProposalCancelled(proposalId);\\n    }\\n\\n    /**\\n     * @notice Update voting period (only owner)\\n     * @param newVotingPeriod New voting period in seconds\\n     */\\n    function setVotingPeriod(uint256 newVotingPeriod) external onlyOwner {\\n        require(newVotingPeriod > 0, \\\"Governance: voting period must be greater than 0\\\");\\n        \\n        uint256 oldPeriod = votingPeriod;\\n        votingPeriod = newVotingPeriod;\\n        \\n        emit VotingPeriodUpdated(oldPeriod, newVotingPeriod);\\n    }\\n\\n    /**\\n     * @notice Update quorum threshold (only owner)\\n     * @param newQuorumThreshold New quorum threshold\\n     */\\n    function setQuorumThreshold(uint256 newQuorumThreshold) external onlyOwner {\\n        require(newQuorumThreshold > 0, \\\"Governance: quorum threshold must be greater than 0\\\");\\n        \\n        uint256 oldThreshold = quorumThreshold;\\n        quorumThreshold = newQuorumThreshold;\\n        \\n        emit QuorumThresholdUpdated(oldThreshold, newQuorumThreshold);\\n    }\\n\\n    /**\\n     * @notice Get proposal details\\n     * @param proposalId The ID of the proposal\\n     * @return id Proposal ID\\n     * @return proposer Address of proposer\\n     * @return description Proposal description\\n     * @return target Target contract address\\n     * @return value ETH value\\n     * @return forVotes Number of for votes\\n     * @return againstVotes Number of against votes\\n     * @return startTime Voting start time\\n     * @return endTime Voting end time\\n     * @return executed Whether executed\\n     * @return cancelled Whether cancelled\\n     * \\n     * LEARNING POINT: This view function allows anyone to check proposal status.\\n     * Note: We can't return mappings directly, so we return individual values.\\n     */\\n    function getProposal(uint256 proposalId)\\n        external\\n        view\\n        returns (\\n            uint256 id,\\n            address proposer,\\n            string memory description,\\n            address target,\\n            uint256 value,\\n            uint256 forVotes,\\n            uint256 againstVotes,\\n            uint256 startTime,\\n            uint256 endTime,\\n            bool executed,\\n            bool cancelled\\n        )\\n    {\\n        Proposal storage proposal = proposals[proposalId];\\n        require(proposal.proposer != address(0), \\\"Governance: proposal does not exist\\\");\\n        \\n        return (\\n            proposal.id,\\n            proposal.proposer,\\n            proposal.description,\\n            proposal.target,\\n            proposal.value,\\n            proposal.forVotes,\\n            proposal.againstVotes,\\n            proposal.startTime,\\n            proposal.endTime,\\n            proposal.executed,\\n            proposal.cancelled\\n        );\\n    }\\n\\n    /**\\n     * @notice Check if an address has voted on a proposal\\n     * @param proposalId The ID of the proposal\\n     * @param voter The address to check\\n     * @return hasVoted Whether the address has voted\\n     * @return voteChoice true if voted for, false if voted against (only valid if hasVoted is true)\\n     */\\n    function getVote(uint256 proposalId, address voter)\\n        external\\n        view\\n        returns (bool hasVoted, bool voteChoice)\\n    {\\n        Proposal storage proposal = proposals[proposalId];\\n        require(proposal.proposer != address(0), \\\"Governance: proposal does not exist\\\");\\n        \\n        hasVoted = proposal.hasVoted[voter];\\n        if (hasVoted) {\\n            voteChoice = proposal.voteChoice[voter];\\n        }\\n    }\\n\\n    /**\\n     * @notice Check if a proposal can be executed\\n     * @param proposalId The ID of the proposal\\n     * @return canExecute Whether the proposal can be executed\\n     * @return reason Reason why it can't be executed (if applicable)\\n     */\\n    function canExecute(uint256 proposalId)\\n        external\\n        view\\n        returns (bool canExecute, string memory reason)\\n    {\\n        Proposal storage proposal = proposals[proposalId];\\n        \\n        if (proposal.proposer == address(0)) {\\n            return (false, \\\"Proposal does not exist\\\");\\n        }\\n        \\n        if (proposal.cancelled) {\\n            return (false, \\\"Proposal has been cancelled\\\");\\n        }\\n        \\n        if (proposal.executed) {\\n            return (false, \\\"Proposal has already been executed\\\");\\n        }\\n        \\n        if (block.timestamp <= proposal.endTime) {\\n            return (false, \\\"Voting period has not ended\\\");\\n        }\\n        \\n        uint256 totalVotes = proposal.forVotes + proposal.againstVotes;\\n        if (totalVotes < quorumThreshold) {\\n            return (false, \\\"Quorum not met\\\");\\n        }\\n        \\n        if (proposal.forVotes <= proposal.againstVotes) {\\n            return (false, \\\"Proposal did not pass\\\");\\n        }\\n        \\n        return (true, \\\"\\\");\\n    }\\n}\\n\\n\",\"keccak256\":\"0x0a052fcd700e331f09b4a676c817a21126eb1b79b5d5c50c46be3a2247463634\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50604051611ac1380380611ac183398101604081905261002f916101a7565b826001600160a01b03811661005f57604051631e4fbdf760e01b8152600060048201526024015b60405180910390fd5b61006881610157565b50600082116100d25760405162461bcd60e51b815260206004820152603060248201527f476f7665726e616e63653a20766f74696e6720706572696f64206d757374206260448201526f0652067726561746572207468616e20360841b6064820152608401610056565b600081116101485760405162461bcd60e51b815260206004820152603360248201527f476f7665726e616e63653a2071756f72756d207468726573686f6c64206d757360448201527f742062652067726561746572207468616e2030000000000000000000000000006064820152608401610056565b600191909155600255506101ea565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b6000806000606084860312156101bc57600080fd5b83516001600160a01b03811681146101d357600080fd5b602085015160409095015190969495509392505050565b6118c8806101f96000396000f3fe608060405234801561001057600080fd5b50600436106101005760003560e01c8063bc3f931f11610097578063da35c66411610066578063da35c6641461023f578063e0a8f6f514610248578063ea0217cf1461025b578063f2fde38b1461026e57600080fd5b8063bc3f931f146101b7578063c7f758a8146101e1578063c9d27afe1461020b578063cc63604a1461021e57600080fd5b80634524c7e1116100d35780634524c7e114610178578063715018a61461018b5780637b7a91dd146101935780638da5cb5b1461019c57600080fd5b8063013cf08b1461010557806302a251a3146101395780630d61b519146101505780630f00d73e14610165575b600080fd5b6101186101133660046111de565b610281565b6040516101309c9b9a9998979695949392919061123d565b60405180910390f35b61014260015481565b604051908152602001610130565b61016361015e3660046111de565b61040c565b005b610142610173366004611381565b610711565b6101636101863660046111de565b610863565b61016361091d565b61014260025481565b6000546040516001600160a01b039091168152602001610130565b6101ca6101c536600461142c565b610931565b604080519215158352901515602083015201610130565b6101f46101ef3660046111de565b6109bb565b6040516101309b9a99989796959493929190611458565b6101636102193660046114d3565b610b0e565b61023161022c3660046111de565b610d67565b604051610130929190611508565b61014260035481565b6101636102563660046111de565b610f5d565b6101636102693660046111de565b611074565b61016361027c36600461152b565b611123565b60046020526000908152604090208054600182015460028301805492936001600160a01b03909216926102b39061154d565b80601f01602080910402602001604051908101604052809291908181526020018280546102df9061154d565b801561032c5780601f106103015761010080835404028352916020019161032c565b820191906000526020600020905b81548152906001019060200180831161030f57829003601f168201915b505050600384015460048501805494956001600160a01b039092169491935091506103569061154d565b80601f01602080910402602001604051908101604052809291908181526020018280546103829061154d565b80156103cf5780601f106103a4576101008083540402835291602001916103cf565b820191906000526020600020905b8154815290600101906020018083116103b257829003601f168201915b50505060058401546006850154600786015460088701546009880154600a9098015496979396929550909350919060ff808216916101009004168c565b610414611161565b600081815260046020526040902060018101546001600160a01b03166104555760405162461bcd60e51b815260040161044c90611587565b60405180910390fd5b600a810154610100900460ff161561047f5760405162461bcd60e51b815260040161044c906115ca565b600a81015460ff16156104a45760405162461bcd60e51b815260040161044c90611611565b806009015442116105075760405162461bcd60e51b815260206004820152602760248201527f476f7665726e616e63653a20766f74696e6720706572696f6420686173206e6f6044820152661d08195b99195960ca1b606482015260840161044c565b60008160070154826006015461051d9190611675565b90506002548110156105715760405162461bcd60e51b815260206004820152601a60248201527f476f7665726e616e63653a2071756f72756d206e6f74206d6574000000000000604482015260640161044c565b81600701548260060154116105d25760405162461bcd60e51b815260206004820152602160248201527f476f7665726e616e63653a2070726f706f73616c20646964206e6f74207061736044820152607360f81b606482015260840161044c565b600a8201805460ff1916600117905560038201546001600160a01b0316156106c057600382015460058301546040516000926001600160a01b0316919061061d90600487019061168e565b60006040518083038185875af1925050503d806000811461065a576040519150601f19603f3d011682016040523d82523d6000602084013e61065f565b606091505b50509050806106be5760405162461bcd60e51b815260206004820152602560248201527f476f7665726e616e63653a2070726f706f73616c20657865637574696f6e2066604482015264185a5b195960da1b606482015260840161044c565b505b600382015460058301546040519081526001600160a01b039091169084907f3b7c90df35b419337cff0919fe91849006607bb66c4373623f06f9d48c1ebb98906020015b60405180910390a3505050565b6000808551116107735760405162461bcd60e51b815260206004820152602760248201527f476f7665726e616e63653a206465736372697074696f6e2063616e6e6f7420626044820152666520656d70747960c81b606482015260840161044c565b5060038054908190600061078683611703565b909155505060008181526004602052604090208181556001810180546001600160a01b03191633179055600281016107be878261176b565b506003810180546001600160a01b0319166001600160a01b03871617905560058101849055600481016107f1848261176b565b50426008820181905560015461080691611675565b6009820155600a8101805461ffff19169055604051339083907f67859905a6448da514ebeded83f9238e89ec20c2312f404def4fad29ac15949d90610852908a908a908a908a9061182a565b60405180910390a350949350505050565b61086b611161565b600081116108d75760405162461bcd60e51b815260206004820152603360248201527f476f7665726e616e63653a2071756f72756d207468726573686f6c64206d75736044820152720742062652067726561746572207468616e203606c1b606482015260840161044c565b600280549082905560408051828152602081018490527fc33728fb6bc64ec1c5596c946e1406ccdfb7369404098c1d6a5f4a7a29c97b6391015b60405180910390a15050565b610925611161565b61092f600061118e565b565b600082815260046020526040812060018101548291906001600160a01b031661096c5760405162461bcd60e51b815260040161044c90611587565b6001600160a01b0384166000908152600b8201602052604090205460ff16925082156109b3576001600160a01b0384166000908152600c8201602052604090205460ff1691505b509250929050565b600081815260046020526040812060018101548291606091839182918291829182918291829182916001600160a01b0316610a085760405162461bcd60e51b815260040161044c90611587565b80546001820154600383015460058401546006850154600786015460088701546009880154600a89015460028a0180546001600160a01b03998a1699919890911696959493929160ff8082169261010090920416908990610a689061154d565b80601f0160208091040260200160405190810160405280929190818152602001828054610a949061154d565b8015610ae15780601f10610ab657610100808354040283529160200191610ae1565b820191906000526020600020905b815481529060010190602001808311610ac457829003601f168201915b505050505098509b509b509b509b509b509b509b509b509b509b509b505091939597999b90929496989a50565b600082815260046020526040902060018101546001600160a01b0316610b465760405162461bcd60e51b815260040161044c90611587565b600a810154610100900460ff1615610b705760405162461bcd60e51b815260040161044c906115ca565b600a81015460ff1615610b955760405162461bcd60e51b815260040161044c90611611565b8060080154421015610bf45760405162461bcd60e51b815260206004820152602260248201527f476f7665726e616e63653a20766f74696e6720686173206e6f74207374617274604482015261195960f21b606482015260840161044c565b8060090154421115610c485760405162461bcd60e51b815260206004820152601c60248201527f476f7665726e616e63653a20766f74696e672068617320656e64656400000000604482015260640161044c565b336000908152600b8201602052604090205460ff1615610caa5760405162461bcd60e51b815260206004820152601960248201527f476f7665726e616e63653a20616c726561647920766f74656400000000000000604482015260640161044c565b336000908152600b820160209081526040808320805460ff19908116600117909155600c850190925290912080548415801591909316179055610d0357600681018054906000610cf983611703565b9190505550610d1b565b600781018054906000610d1583611703565b91905055505b600681015460078201546040805185151581526020810193909352820152339084907f77a255f45c79d26605c257d8dfc37f9a619f53963ddbed1e95aa0aab1c801cee90606001610704565b60008181526004602052604081206001810154606091906001600160a01b0316610dcd5760006040518060400160405280601781526020017f50726f706f73616c20646f6573206e6f742065786973740000000000000000008152509250925050915091565b600a810154610100900460ff1615610e215760006040518060400160405280601b81526020017f50726f706f73616c20686173206265656e2063616e63656c6c656400000000008152509250925050915091565b600a81015460ff1615610e53576000604051806060016040528060228152602001611871602291399250925050915091565b80600901544211610ea05760006040518060400160405280601b81526020017f566f74696e6720706572696f6420686173206e6f7420656e64656400000000008152509250925050915091565b600081600701548260060154610eb69190611675565b9050600254811015610ef65760006040518060400160405280600e81526020016d145d5bdc9d5b481b9bdd081b595d60921b815250935093505050915091565b8160070154826006015411610f405760006040518060400160405280601581526020017450726f706f73616c20646964206e6f74207061737360581b815250935093505050915091565b600160405180602001604052806000815250935093505050915091565b610f65611161565b600081815260046020526040902060018101546001600160a01b0316610f9d5760405162461bcd60e51b815260040161044c90611587565b600a81015460ff1615610fc25760405162461bcd60e51b815260040161044c90611611565b600a810154610100900460ff16156110345760405162461bcd60e51b815260206004820152602f60248201527f476f7665726e616e63653a2070726f706f73616c2068617320616c726561647960448201526e081899595b8818d85b98d95b1b1959608a1b606482015260840161044c565b600a8101805461ff00191661010017905560405182907f416e669c63d9a3a5e36ee7cc7e2104b8db28ccd286aa18966e98fa230c73b08c90600090a25050565b61107c611161565b600081116110e55760405162461bcd60e51b815260206004820152603060248201527f476f7665726e616e63653a20766f74696e6720706572696f64206d757374206260448201526f0652067726561746572207468616e20360841b606482015260840161044c565b600180549082905560408051828152602081018490527fffc708f072ca56e3d45ef0cb288b96cb9378f5f63e1646868bfbc9c38f4263a19101610911565b61112b611161565b6001600160a01b03811661115557604051631e4fbdf760e01b81526000600482015260240161044c565b61115e8161118e565b50565b6000546001600160a01b0316331461092f5760405163118cdaa760e01b815233600482015260240161044c565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b6000602082840312156111f057600080fd5b5035919050565b6000815180845260005b8181101561121d57602081850181015186830182015201611201565b506000602082860101526020601f19601f83011685010191505092915050565b8c81526001600160a01b038c166020820152610180604082018190526000906112689083018d6111f7565b6001600160a01b038c1660608401528281036080840152611289818c6111f7565b9150508860a08301528760c08301528660e083015285610100830152846101208301528315156101408301526112c461016083018415159052565b9d9c50505050505050505050505050565b634e487b7160e01b600052604160045260246000fd5b60008067ffffffffffffffff841115611306576113066112d5565b50604051601f19601f85018116603f0116810181811067ffffffffffffffff82111715611335576113356112d5565b60405283815290508082840185101561134d57600080fd5b83836020830137600060208583010152509392505050565b80356001600160a01b038116811461137c57600080fd5b919050565b6000806000806080858703121561139757600080fd5b843567ffffffffffffffff8111156113ae57600080fd5b8501601f810187136113bf57600080fd5b6113ce878235602084016112eb565b9450506113dd60208601611365565b925060408501359150606085013567ffffffffffffffff81111561140057600080fd5b8501601f8101871361141157600080fd5b611420878235602084016112eb565b91505092959194509250565b6000806040838503121561143f57600080fd5b8235915061144f60208401611365565b90509250929050565b8b81526001600160a01b038b166020820152610160604082018190526000906114839083018c6111f7565b6001600160a01b039a909a16606083015250608081019790975260a087019590955260c086019390935260e085019190915261010084015215156101208301521515610140909101529392505050565b600080604083850312156114e657600080fd5b82359150602083013580151581146114fd57600080fd5b809150509250929050565b821515815260406020820152600061152360408301846111f7565b949350505050565b60006020828403121561153d57600080fd5b61154682611365565b9392505050565b600181811c9082168061156157607f821691505b60208210810361158157634e487b7160e01b600052602260045260246000fd5b50919050565b60208082526023908201527f476f7665726e616e63653a2070726f706f73616c20646f6573206e6f742065786040820152621a5cdd60ea1b606082015260800190565b60208082526027908201527f476f7665726e616e63653a2070726f706f73616c20686173206265656e2063616040820152661b98d95b1b195960ca1b606082015260800190565b6020808252602e908201527f476f7665726e616e63653a2070726f706f73616c2068617320616c726561647960408201526d081899595b88195e1958dd5d195960921b606082015260800190565b634e487b7160e01b600052601160045260246000fd5b808201808211156116885761168861165f565b92915050565b600080835461169c8161154d565b6001821680156116b357600181146116c8576116f8565b60ff19831686528115158202860193506116f8565b86600052602060002060005b838110156116f0578154888201526001909101906020016116d4565b505081860193505b509195945050505050565b6000600182016117155761171561165f565b5060010190565b601f82111561176657806000526020600020601f840160051c810160208510156117435750805b601f840160051c820191505b81811015611763576000815560010161174f565b50505b505050565b815167ffffffffffffffff811115611785576117856112d5565b61179981611793845461154d565b8461171c565b6020601f8211600181146117cd57600083156117b55750848201515b600019600385901b1c1916600184901b178455611763565b600084815260208120601f198516915b828110156117fd57878501518255602094850194600190920191016117dd565b508482101561181b5786840151600019600387901b60f8161c191681555b50505050600190811b01905550565b60808152600061183d60808301876111f7565b6001600160a01b038616602084015260408301859052828103606084015261186581856111f7565b97965050505050505056fe50726f706f73616c2068617320616c7265616479206265656e206578656375746564a26469706673582212208b6d5b1dc243bb827c5c4a361f7517821a65d344c35373a32263118c405d9ab864736f6c634300081c0033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106101005760003560e01c8063bc3f931f11610097578063da35c66411610066578063da35c6641461023f578063e0a8f6f514610248578063ea0217cf1461025b578063f2fde38b1461026e57600080fd5b8063bc3f931f146101b7578063c7f758a8146101e1578063c9d27afe1461020b578063cc63604a1461021e57600080fd5b80634524c7e1116100d35780634524c7e114610178578063715018a61461018b5780637b7a91dd146101935780638da5cb5b1461019c57600080fd5b8063013cf08b1461010557806302a251a3146101395780630d61b519146101505780630f00d73e14610165575b600080fd5b6101186101133660046111de565b610281565b6040516101309c9b9a9998979695949392919061123d565b60405180910390f35b61014260015481565b604051908152602001610130565b61016361015e3660046111de565b61040c565b005b610142610173366004611381565b610711565b6101636101863660046111de565b610863565b61016361091d565b61014260025481565b6000546040516001600160a01b039091168152602001610130565b6101ca6101c536600461142c565b610931565b604080519215158352901515602083015201610130565b6101f46101ef3660046111de565b6109bb565b6040516101309b9a99989796959493929190611458565b6101636102193660046114d3565b610b0e565b61023161022c3660046111de565b610d67565b604051610130929190611508565b61014260035481565b6101636102563660046111de565b610f5d565b6101636102693660046111de565b611074565b61016361027c36600461152b565b611123565b60046020526000908152604090208054600182015460028301805492936001600160a01b03909216926102b39061154d565b80601f01602080910402602001604051908101604052809291908181526020018280546102df9061154d565b801561032c5780601f106103015761010080835404028352916020019161032c565b820191906000526020600020905b81548152906001019060200180831161030f57829003601f168201915b505050600384015460048501805494956001600160a01b039092169491935091506103569061154d565b80601f01602080910402602001604051908101604052809291908181526020018280546103829061154d565b80156103cf5780601f106103a4576101008083540402835291602001916103cf565b820191906000526020600020905b8154815290600101906020018083116103b257829003601f168201915b50505060058401546006850154600786015460088701546009880154600a9098015496979396929550909350919060ff808216916101009004168c565b610414611161565b600081815260046020526040902060018101546001600160a01b03166104555760405162461bcd60e51b815260040161044c90611587565b60405180910390fd5b600a810154610100900460ff161561047f5760405162461bcd60e51b815260040161044c906115ca565b600a81015460ff16156104a45760405162461bcd60e51b815260040161044c90611611565b806009015442116105075760405162461bcd60e51b815260206004820152602760248201527f476f7665726e616e63653a20766f74696e6720706572696f6420686173206e6f6044820152661d08195b99195960ca1b606482015260840161044c565b60008160070154826006015461051d9190611675565b90506002548110156105715760405162461bcd60e51b815260206004820152601a60248201527f476f7665726e616e63653a2071756f72756d206e6f74206d6574000000000000604482015260640161044c565b81600701548260060154116105d25760405162461bcd60e51b815260206004820152602160248201527f476f7665726e616e63653a2070726f706f73616c20646964206e6f74207061736044820152607360f81b606482015260840161044c565b600a8201805460ff1916600117905560038201546001600160a01b0316156106c057600382015460058301546040516000926001600160a01b0316919061061d90600487019061168e565b60006040518083038185875af1925050503d806000811461065a576040519150601f19603f3d011682016040523d82523d6000602084013e61065f565b606091505b50509050806106be5760405162461bcd60e51b815260206004820152602560248201527f476f7665726e616e63653a2070726f706f73616c20657865637574696f6e2066604482015264185a5b195960da1b606482015260840161044c565b505b600382015460058301546040519081526001600160a01b039091169084907f3b7c90df35b419337cff0919fe91849006607bb66c4373623f06f9d48c1ebb98906020015b60405180910390a3505050565b6000808551116107735760405162461bcd60e51b815260206004820152602760248201527f476f7665726e616e63653a206465736372697074696f6e2063616e6e6f7420626044820152666520656d70747960c81b606482015260840161044c565b5060038054908190600061078683611703565b909155505060008181526004602052604090208181556001810180546001600160a01b03191633179055600281016107be878261176b565b506003810180546001600160a01b0319166001600160a01b03871617905560058101849055600481016107f1848261176b565b50426008820181905560015461080691611675565b6009820155600a8101805461ffff19169055604051339083907f67859905a6448da514ebeded83f9238e89ec20c2312f404def4fad29ac15949d90610852908a908a908a908a9061182a565b60405180910390a350949350505050565b61086b611161565b600081116108d75760405162461bcd60e51b815260206004820152603360248201527f476f7665726e616e63653a2071756f72756d207468726573686f6c64206d75736044820152720742062652067726561746572207468616e203606c1b606482015260840161044c565b600280549082905560408051828152602081018490527fc33728fb6bc64ec1c5596c946e1406ccdfb7369404098c1d6a5f4a7a29c97b6391015b60405180910390a15050565b610925611161565b61092f600061118e565b565b600082815260046020526040812060018101548291906001600160a01b031661096c5760405162461bcd60e51b815260040161044c90611587565b6001600160a01b0384166000908152600b8201602052604090205460ff16925082156109b3576001600160a01b0384166000908152600c8201602052604090205460ff1691505b509250929050565b600081815260046020526040812060018101548291606091839182918291829182918291829182916001600160a01b0316610a085760405162461bcd60e51b815260040161044c90611587565b80546001820154600383015460058401546006850154600786015460088701546009880154600a89015460028a0180546001600160a01b03998a1699919890911696959493929160ff8082169261010090920416908990610a689061154d565b80601f0160208091040260200160405190810160405280929190818152602001828054610a949061154d565b8015610ae15780601f10610ab657610100808354040283529160200191610ae1565b820191906000526020600020905b815481529060010190602001808311610ac457829003601f168201915b505050505098509b509b509b509b509b509b509b509b509b509b509b505091939597999b90929496989a50565b600082815260046020526040902060018101546001600160a01b0316610b465760405162461bcd60e51b815260040161044c90611587565b600a810154610100900460ff1615610b705760405162461bcd60e51b815260040161044c906115ca565b600a81015460ff1615610b955760405162461bcd60e51b815260040161044c90611611565b8060080154421015610bf45760405162461bcd60e51b815260206004820152602260248201527f476f7665726e616e63653a20766f74696e6720686173206e6f74207374617274604482015261195960f21b606482015260840161044c565b8060090154421115610c485760405162461bcd60e51b815260206004820152601c60248201527f476f7665726e616e63653a20766f74696e672068617320656e64656400000000604482015260640161044c565b336000908152600b8201602052604090205460ff1615610caa5760405162461bcd60e51b815260206004820152601960248201527f476f7665726e616e63653a20616c726561647920766f74656400000000000000604482015260640161044c565b336000908152600b820160209081526040808320805460ff19908116600117909155600c850190925290912080548415801591909316179055610d0357600681018054906000610cf983611703565b9190505550610d1b565b600781018054906000610d1583611703565b91905055505b600681015460078201546040805185151581526020810193909352820152339084907f77a255f45c79d26605c257d8dfc37f9a619f53963ddbed1e95aa0aab1c801cee90606001610704565b60008181526004602052604081206001810154606091906001600160a01b0316610dcd5760006040518060400160405280601781526020017f50726f706f73616c20646f6573206e6f742065786973740000000000000000008152509250925050915091565b600a810154610100900460ff1615610e215760006040518060400160405280601b81526020017f50726f706f73616c20686173206265656e2063616e63656c6c656400000000008152509250925050915091565b600a81015460ff1615610e53576000604051806060016040528060228152602001611871602291399250925050915091565b80600901544211610ea05760006040518060400160405280601b81526020017f566f74696e6720706572696f6420686173206e6f7420656e64656400000000008152509250925050915091565b600081600701548260060154610eb69190611675565b9050600254811015610ef65760006040518060400160405280600e81526020016d145d5bdc9d5b481b9bdd081b595d60921b815250935093505050915091565b8160070154826006015411610f405760006040518060400160405280601581526020017450726f706f73616c20646964206e6f74207061737360581b815250935093505050915091565b600160405180602001604052806000815250935093505050915091565b610f65611161565b600081815260046020526040902060018101546001600160a01b0316610f9d5760405162461bcd60e51b815260040161044c90611587565b600a81015460ff1615610fc25760405162461bcd60e51b815260040161044c90611611565b600a810154610100900460ff16156110345760405162461bcd60e51b815260206004820152602f60248201527f476f7665726e616e63653a2070726f706f73616c2068617320616c726561647960448201526e081899595b8818d85b98d95b1b1959608a1b606482015260840161044c565b600a8101805461ff00191661010017905560405182907f416e669c63d9a3a5e36ee7cc7e2104b8db28ccd286aa18966e98fa230c73b08c90600090a25050565b61107c611161565b600081116110e55760405162461bcd60e51b815260206004820152603060248201527f476f7665726e616e63653a20766f74696e6720706572696f64206d757374206260448201526f0652067726561746572207468616e20360841b606482015260840161044c565b600180549082905560408051828152602081018490527fffc708f072ca56e3d45ef0cb288b96cb9378f5f63e1646868bfbc9c38f4263a19101610911565b61112b611161565b6001600160a01b03811661115557604051631e4fbdf760e01b81526000600482015260240161044c565b61115e8161118e565b50565b6000546001600160a01b0316331461092f5760405163118cdaa760e01b815233600482015260240161044c565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b6000602082840312156111f057600080fd5b5035919050565b6000815180845260005b8181101561121d57602081850181015186830182015201611201565b506000602082860101526020601f19601f83011685010191505092915050565b8c81526001600160a01b038c166020820152610180604082018190526000906112689083018d6111f7565b6001600160a01b038c1660608401528281036080840152611289818c6111f7565b9150508860a08301528760c08301528660e083015285610100830152846101208301528315156101408301526112c461016083018415159052565b9d9c50505050505050505050505050565b634e487b7160e01b600052604160045260246000fd5b60008067ffffffffffffffff841115611306576113066112d5565b50604051601f19601f85018116603f0116810181811067ffffffffffffffff82111715611335576113356112d5565b60405283815290508082840185101561134d57600080fd5b83836020830137600060208583010152509392505050565b80356001600160a01b038116811461137c57600080fd5b919050565b6000806000806080858703121561139757600080fd5b843567ffffffffffffffff8111156113ae57600080fd5b8501601f810187136113bf57600080fd5b6113ce878235602084016112eb565b9450506113dd60208601611365565b925060408501359150606085013567ffffffffffffffff81111561140057600080fd5b8501601f8101871361141157600080fd5b611420878235602084016112eb565b91505092959194509250565b6000806040838503121561143f57600080fd5b8235915061144f60208401611365565b90509250929050565b8b81526001600160a01b038b166020820152610160604082018190526000906114839083018c6111f7565b6001600160a01b039a909a16606083015250608081019790975260a087019590955260c086019390935260e085019190915261010084015215156101208301521515610140909101529392505050565b600080604083850312156114e657600080fd5b82359150602083013580151581146114fd57600080fd5b809150509250929050565b821515815260406020820152600061152360408301846111f7565b949350505050565b60006020828403121561153d57600080fd5b61154682611365565b9392505050565b600181811c9082168061156157607f821691505b60208210810361158157634e487b7160e01b600052602260045260246000fd5b50919050565b60208082526023908201527f476f7665726e616e63653a2070726f706f73616c20646f6573206e6f742065786040820152621a5cdd60ea1b606082015260800190565b60208082526027908201527f476f7665726e616e63653a2070726f706f73616c20686173206265656e2063616040820152661b98d95b1b195960ca1b606082015260800190565b6020808252602e908201527f476f7665726e616e63653a2070726f706f73616c2068617320616c726561647960408201526d081899595b88195e1958dd5d195960921b606082015260800190565b634e487b7160e01b600052601160045260246000fd5b808201808211156116885761168861165f565b92915050565b600080835461169c8161154d565b6001821680156116b357600181146116c8576116f8565b60ff19831686528115158202860193506116f8565b86600052602060002060005b838110156116f0578154888201526001909101906020016116d4565b505081860193505b509195945050505050565b6000600182016117155761171561165f565b5060010190565b601f82111561176657806000526020600020601f840160051c810160208510156117435750805b601f840160051c820191505b81811015611763576000815560010161174f565b50505b505050565b815167ffffffffffffffff811115611785576117856112d5565b61179981611793845461154d565b8461171c565b6020601f8211600181146117cd57600083156117b55750848201515b600019600385901b1c1916600184901b178455611763565b600084815260208120601f198516915b828110156117fd57878501518255602094850194600190920191016117dd565b508482101561181b5786840151600019600387901b60f8161c191681555b50505050600190811b01905550565b60808152600061183d60808301876111f7565b6001600160a01b038616602084015260408301859052828103606084015261186581856111f7565b97965050505050505056fe50726f706f73616c2068617320616c7265616479206265656e206578656375746564a26469706673582212208b6d5b1dc243bb827c5c4a361f7517821a65d344c35373a32263118c405d9ab864736f6c634300081c0033",
+  "devdoc": {
+    "details": "Step 6: Voting/Governance contract owned by multisig  LEARNING POINT: This contract enables on-chain governance where proposals can be created, voted on, and executed. The multisig controls the contract, but proposals allow for structured decision-making.  Key concepts: - Proposals: Structured decisions that can be voted on - Voting: Each proposal can be voted for/against - Execution: Approved proposals can execute actions - Quorum: Minimum votes required for a proposal to pass",
+    "errors": {
+      "OwnableInvalidOwner(address)": [
+        {
+          "details": "The owner is not a valid owner account. (eg. `address(0)`)"
+        }
+      ],
+      "OwnableUnauthorizedAccount(address)": [
+        {
+          "details": "The caller account is not authorized to perform an operation."
+        }
+      ]
+    },
+    "kind": "dev",
+    "methods": {
+      "canExecute(uint256)": {
+        "params": {
+          "proposalId": "The ID of the proposal"
+        },
+        "returns": {
+          "canExecute": "Whether the proposal can be executed",
+          "reason": "Reason why it can't be executed (if applicable)"
+        }
+      },
+      "cancelProposal(uint256)": {
+        "details": "Owner can cancel proposals before execution",
+        "params": {
+          "proposalId": "The ID of the proposal to cancel  LEARNING POINT: The owner (multisig) can cancel proposals. This provides a safety mechanism if a proposal is problematic."
+        }
+      },
+      "constructor": {
+        "params": {
+          "_quorumThreshold": "Minimum number of votes required for a proposal to pass  LEARNING POINT: We set reasonable defaults for voting period and quorum. The voting period determines how long people have to vote. The quorum ensures enough participation for decisions to be valid.",
+          "_votingPeriod": "Voting period in seconds (e.g., 7 days = 604800)",
+          "initialOwner": "The address that will be the initial owner (multisig)"
+        }
+      },
+      "createProposal(string,address,uint256,bytes)": {
+        "details": "Anyone can create a proposal, but only owner can execute",
+        "params": {
+          "data": "Encoded function call data (empty if no execution)",
+          "description": "Human-readable description of the proposal",
+          "target": "Target contract address (address(0) if no execution needed)",
+          "value": "ETH value to send (0 if no ETH transfer)"
+        },
+        "returns": {
+          "proposalId": "The ID of the created proposal  LEARNING POINT: Creating a proposal doesn't execute anything. It just opens voting. After voting ends and quorum is met, the owner (multisig) can execute the proposal."
+        }
+      },
+      "executeProposal(uint256)": {
+        "details": "Only owner (multisig) can execute, and only if proposal passed",
+        "params": {
+          "proposalId": "The ID of the proposal to execute  LEARNING POINT: Execution requires: 1. Voting period has ended 2. Quorum threshold is met (enough votes) 3. More for votes than against votes 4. Proposal hasn't been executed or cancelled  The multisig must approve this execution, ensuring both parties agree to execute the proposal."
+        }
+      },
+      "getProposal(uint256)": {
+        "params": {
+          "proposalId": "The ID of the proposal"
+        },
+        "returns": {
+          "againstVotes": "Number of against votes",
+          "cancelled": "Whether cancelled  LEARNING POINT: This view function allows anyone to check proposal status. Note: We can't return mappings directly, so we return individual values.",
+          "description": "Proposal description",
+          "endTime": "Voting end time",
+          "executed": "Whether executed",
+          "forVotes": "Number of for votes",
+          "id": "Proposal ID",
+          "proposer": "Address of proposer",
+          "startTime": "Voting start time",
+          "target": "Target contract address",
+          "value": "ETH value"
+        }
+      },
+      "getVote(uint256,address)": {
+        "params": {
+          "proposalId": "The ID of the proposal",
+          "voter": "The address to check"
+        },
+        "returns": {
+          "hasVoted": "Whether the address has voted",
+          "voteChoice": "true if voted for, false if voted against (only valid if hasVoted is true)"
+        }
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+      },
+      "setQuorumThreshold(uint256)": {
+        "params": {
+          "newQuorumThreshold": "New quorum threshold"
+        }
+      },
+      "setVotingPeriod(uint256)": {
+        "params": {
+          "newVotingPeriod": "New voting period in seconds"
+        }
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      },
+      "vote(uint256,bool)": {
+        "details": "Anyone can vote, but can only vote once per proposal",
+        "params": {
+          "proposalId": "The ID of the proposal to vote on",
+          "support": "true = vote for, false = vote against  LEARNING POINT: This implements simple binary voting (for/against). Each address can vote once. More sophisticated systems might use token-weighted voting or delegation."
+        }
+      }
+    },
+    "title": "Governance",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "canExecute(uint256)": {
+        "notice": "Check if a proposal can be executed"
+      },
+      "cancelProposal(uint256)": {
+        "notice": "Cancel a proposal (only owner)"
+      },
+      "constructor": {
+        "notice": "Constructor sets the initial owner and governance parameters"
+      },
+      "createProposal(string,address,uint256,bytes)": {
+        "notice": "Create a new proposal"
+      },
+      "executeProposal(uint256)": {
+        "notice": "Execute a proposal"
+      },
+      "getProposal(uint256)": {
+        "notice": "Get proposal details"
+      },
+      "getVote(uint256,address)": {
+        "notice": "Check if an address has voted on a proposal"
+      },
+      "setQuorumThreshold(uint256)": {
+        "notice": "Update quorum threshold (only owner)"
+      },
+      "setVotingPeriod(uint256)": {
+        "notice": "Update voting period (only owner)"
+      },
+      "vote(uint256,bool)": {
+        "notice": "Vote on a proposal"
+      }
+    },
+    "notice": "A simple governance contract for collaborative decision-making",
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 8,
+        "contract": "contracts/Governance.sol:Governance",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 220,
+        "contract": "contracts/Governance.sol:Governance",
+        "label": "votingPeriod",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 222,
+        "contract": "contracts/Governance.sol:Governance",
+        "label": "quorumThreshold",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 224,
+        "contract": "contracts/Governance.sol:Governance",
+        "label": "proposalCount",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 229,
+        "contract": "contracts/Governance.sol:Governance",
+        "label": "proposals",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_mapping(t_uint256,t_struct(Proposal)218_storage)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_bytes_storage": {
+        "encoding": "bytes",
+        "label": "bytes",
+        "numberOfBytes": "32"
+      },
+      "t_mapping(t_address,t_bool)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => bool)",
+        "numberOfBytes": "32",
+        "value": "t_bool"
+      },
+      "t_mapping(t_uint256,t_struct(Proposal)218_storage)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => struct Governance.Proposal)",
+        "numberOfBytes": "32",
+        "value": "t_struct(Proposal)218_storage"
+      },
+      "t_string_storage": {
+        "encoding": "bytes",
+        "label": "string",
+        "numberOfBytes": "32"
+      },
+      "t_struct(Proposal)218_storage": {
+        "encoding": "inplace",
+        "label": "struct Governance.Proposal",
+        "members": [
+          {
+            "astId": 187,
+            "contract": "contracts/Governance.sol:Governance",
+            "label": "id",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 189,
+            "contract": "contracts/Governance.sol:Governance",
+            "label": "proposer",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address"
+          },
+          {
+            "astId": 191,
+            "contract": "contracts/Governance.sol:Governance",
+            "label": "description",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 193,
+            "contract": "contracts/Governance.sol:Governance",
+            "label": "target",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address"
+          },
+          {
+            "astId": 195,
+            "contract": "contracts/Governance.sol:Governance",
+            "label": "data",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_bytes_storage"
+          },
+          {
+            "astId": 197,
+            "contract": "contracts/Governance.sol:Governance",
+            "label": "value",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 199,
+            "contract": "contracts/Governance.sol:Governance",
+            "label": "forVotes",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 201,
+            "contract": "contracts/Governance.sol:Governance",
+            "label": "againstVotes",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 203,
+            "contract": "contracts/Governance.sol:Governance",
+            "label": "startTime",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 205,
+            "contract": "contracts/Governance.sol:Governance",
+            "label": "endTime",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 207,
+            "contract": "contracts/Governance.sol:Governance",
+            "label": "executed",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_bool"
+          },
+          {
+            "astId": 209,
+            "contract": "contracts/Governance.sol:Governance",
+            "label": "cancelled",
+            "offset": 1,
+            "slot": "10",
+            "type": "t_bool"
+          },
+          {
+            "astId": 213,
+            "contract": "contracts/Governance.sol:Governance",
+            "label": "hasVoted",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_mapping(t_address,t_bool)"
+          },
+          {
+            "astId": 217,
+            "contract": "contracts/Governance.sol:Governance",
+            "label": "voteChoice",
+            "offset": 0,
+            "slot": "12",
+            "type": "t_mapping(t_address,t_bool)"
+          }
+        ],
+        "numberOfBytes": "416"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}

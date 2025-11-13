@@ -1,0 +1,988 @@
+{
+  "address": "0x99BBf1c980eC0CdF386D6e72bf75d56f0c2488f8",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "initialOwner",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "assignee",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "assignedBy",
+          "type": "address"
+        }
+      ],
+      "name": "TaskAssigned",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "cancelledBy",
+          "type": "address"
+        }
+      ],
+      "name": "TaskCancelled",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "completedBy",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "completedAt",
+          "type": "uint256"
+        }
+      ],
+      "name": "TaskCompleted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "title",
+          "type": "string"
+        }
+      ],
+      "name": "TaskCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "enum TaskManagement.TaskStatus",
+          "name": "oldStatus",
+          "type": "uint8"
+        },
+        {
+          "indexed": false,
+          "internalType": "enum TaskManagement.TaskStatus",
+          "name": "newStatus",
+          "type": "uint8"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "updatedBy",
+          "type": "address"
+        }
+      ],
+      "name": "TaskStatusUpdated",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "assignee",
+          "type": "address"
+        }
+      ],
+      "name": "assignTask",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
+        }
+      ],
+      "name": "cancelTask",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
+        }
+      ],
+      "name": "completeTask",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        }
+      ],
+      "name": "createTask",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getTask",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "assignee",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "internalType": "enum TaskManagement.TaskStatus",
+              "name": "status",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint256",
+              "name": "createdAt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "assignedAt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "completedAt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "exists",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct TaskManagement.Task",
+          "name": "task",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getTaskCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "enum TaskManagement.TaskStatus",
+          "name": "status",
+          "type": "uint8"
+        }
+      ],
+      "name": "getTaskCountByStatus",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "count",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "assignee",
+          "type": "address"
+        }
+      ],
+      "name": "getTasksByAssignee",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        }
+      ],
+      "name": "getTasksByCreator",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "participant",
+          "type": "address"
+        }
+      ],
+      "name": "getTasksByParticipant",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "taskId",
+          "type": "uint256"
+        }
+      ],
+      "name": "startTask",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "taskCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "tasks",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "assignee",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "internalType": "enum TaskManagement.TaskStatus",
+          "name": "status",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "createdAt",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "assignedAt",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "completedAt",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "exists",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "tasksByAssignee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "tasksByCreator",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "tasksByParticipant",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0xa353178ddfecc55187d01ac32cc03dca1ad7df889c76af573c20fa701e95874e",
+  "receipt": {
+    "to": null,
+    "from": "0xD78C12137087D394c0FA49634CAa80D0a1985A8A",
+    "contractAddress": "0x99BBf1c980eC0CdF386D6e72bf75d56f0c2488f8",
+    "transactionIndex": 27,
+    "gasUsed": "1456506",
+    "logsBloom": "0x00000000000000008000000000000000000000000000000000800000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000801010000000000000000000000000000000000020000000000000000000800000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000200000000000000000020000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x4b00d889cc74d2050cab678b46af45fbefe58639cfc58d18a689be2cc8b5addc",
+    "transactionHash": "0xa353178ddfecc55187d01ac32cc03dca1ad7df889c76af573c20fa701e95874e",
+    "logs": [
+      {
+        "transactionIndex": 27,
+        "blockNumber": 9621546,
+        "transactionHash": "0xa353178ddfecc55187d01ac32cc03dca1ad7df889c76af573c20fa701e95874e",
+        "address": "0x99BBf1c980eC0CdF386D6e72bf75d56f0c2488f8",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x000000000000000000000000c453cbaa518edba7955b97a8de49fa6926a2a2c7"
+        ],
+        "data": "0x",
+        "logIndex": 69,
+        "blockHash": "0x4b00d889cc74d2050cab678b46af45fbefe58639cfc58d18a689be2cc8b5addc"
+      }
+    ],
+    "blockNumber": 9621546,
+    "cumulativeGasUsed": "12049426",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0xc453cBAA518EDBa7955b97a8DE49FA6926A2a2C7"
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "4c96eba93bfbb8ee907263235e341c50",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.28+commit.7893614a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"initialOwner\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"taskId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"assignee\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"assignedBy\",\"type\":\"address\"}],\"name\":\"TaskAssigned\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"taskId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"cancelledBy\",\"type\":\"address\"}],\"name\":\"TaskCancelled\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"taskId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"completedBy\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"completedAt\",\"type\":\"uint256\"}],\"name\":\"TaskCompleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"taskId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"title\",\"type\":\"string\"}],\"name\":\"TaskCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"taskId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"enum TaskManagement.TaskStatus\",\"name\":\"oldStatus\",\"type\":\"uint8\"},{\"indexed\":false,\"internalType\":\"enum TaskManagement.TaskStatus\",\"name\":\"newStatus\",\"type\":\"uint8\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"updatedBy\",\"type\":\"address\"}],\"name\":\"TaskStatusUpdated\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"taskId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"assignee\",\"type\":\"address\"}],\"name\":\"assignTask\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"taskId\",\"type\":\"uint256\"}],\"name\":\"cancelTask\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"taskId\",\"type\":\"uint256\"}],\"name\":\"completeTask\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"title\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"}],\"name\":\"createTask\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"taskId\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"taskId\",\"type\":\"uint256\"}],\"name\":\"getTask\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"assignee\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"title\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"internalType\":\"enum TaskManagement.TaskStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"createdAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"assignedAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"completedAt\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"exists\",\"type\":\"bool\"}],\"internalType\":\"struct TaskManagement.Task\",\"name\":\"task\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTaskCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"enum TaskManagement.TaskStatus\",\"name\":\"status\",\"type\":\"uint8\"}],\"name\":\"getTaskCountByStatus\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"count\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"assignee\",\"type\":\"address\"}],\"name\":\"getTasksByAssignee\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"}],\"name\":\"getTasksByCreator\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"participant\",\"type\":\"address\"}],\"name\":\"getTasksByParticipant\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"taskId\",\"type\":\"uint256\"}],\"name\":\"startTask\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"taskCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"tasks\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"assignee\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"title\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"internalType\":\"enum TaskManagement.TaskStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"createdAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"assignedAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"completedAt\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"exists\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"tasksByAssignee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"tasksByCreator\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"tasksByParticipant\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Step 7: Task Management contract owned by multisig  LEARNING POINT: This contract enables structured task management for collaboration. Tasks can be created, assigned, tracked, and marked as complete. The multisig controls the contract, ensuring both parties agree on task management.  Key concepts: - Tasks: Structured work items with descriptions, assignments, and status - State machine: Tasks move through states (Created \\u2192 Assigned \\u2192 InProgress \\u2192 Completed) - Assignment: Tasks can be assigned to specific addresses - Completion: Tasks can be marked complete with verification\",\"errors\":{\"OwnableInvalidOwner(address)\":[{\"details\":\"The owner is not a valid owner account. (eg. `address(0)`)\"}],\"OwnableUnauthorizedAccount(address)\":[{\"details\":\"The caller account is not authorized to perform an operation.\"}]},\"kind\":\"dev\",\"methods\":{\"assignTask(uint256,address)\":{\"details\":\"Only owner (multisig) can assign tasks\",\"params\":{\"assignee\":\"The address to assign the task to  LEARNING POINT: Assignment requires multisig approval, ensuring both parties agree on who should work on what. This prevents unilateral task assignment.\",\"taskId\":\"The ID of the task to assign\"}},\"cancelTask(uint256)\":{\"details\":\"Only owner (multisig) can cancel tasks\",\"params\":{\"taskId\":\"The ID of the task to cancel  LEARNING POINT: Cancellation requires multisig approval, ensuring both parties agree to cancel a task. This prevents unilateral cancellation.\"}},\"completeTask(uint256)\":{\"details\":\"Only the assignee can complete their task\",\"params\":{\"taskId\":\"The ID of the task to complete  LEARNING POINT: The assignee marks their own work as complete. In a more sophisticated system, completion might require verification or approval.\"}},\"constructor\":{\"params\":{\"initialOwner\":\"The address that will be the initial owner (multisig)  LEARNING POINT: The multisig controls task management, ensuring both parties agree on task assignments and status changes.\"}},\"createTask(string,string)\":{\"details\":\"Anyone can create a task\",\"params\":{\"description\":\"Detailed description of the task\",\"title\":\"Short title for the task\"},\"returns\":{\"taskId\":\"The ID of the created task  LEARNING POINT: Creating a task doesn't assign it. Tasks start in \\\"Created\\\" status and must be explicitly assigned to someone.\"}},\"getTask(uint256)\":{\"params\":{\"taskId\":\"The ID of the task\"},\"returns\":{\"task\":\"The task data\"}},\"getTaskCount()\":{\"returns\":{\"_0\":\"The total number of tasks\"}},\"getTaskCountByStatus(uint8)\":{\"details\":\"This is a helper function that would need to be implemented with off-chain indexing For now, we provide the building blocks and clients can filter\",\"params\":{\"status\":\"The status to filter by\"},\"returns\":{\"count\":\"Number of tasks with this status  LEARNING POINT: On-chain filtering can be expensive. In production, you might use events and off-chain indexing (like The Graph) for efficient querying.\"}},\"getTasksByAssignee(address)\":{\"params\":{\"assignee\":\"The address to query\"},\"returns\":{\"_0\":\"Array of task IDs\"}},\"getTasksByCreator(address)\":{\"params\":{\"creator\":\"The address to query\"},\"returns\":{\"_0\":\"Array of task IDs\"}},\"getTasksByParticipant(address)\":{\"params\":{\"participant\":\"The address to query\"},\"returns\":{\"_0\":\"Array of task IDs\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.\"},\"startTask(uint256)\":{\"details\":\"Only the assignee can mark their task as in progress\",\"params\":{\"taskId\":\"The ID of the task  LEARNING POINT: The assignee can update their own task status to show progress. This allows for self-management while still requiring assignment approval.\"}},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"}},\"title\":\"TaskManagement\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"assignTask(uint256,address)\":{\"notice\":\"Assign a task to someone\"},\"cancelTask(uint256)\":{\"notice\":\"Cancel a task\"},\"completeTask(uint256)\":{\"notice\":\"Mark a task as completed\"},\"constructor\":{\"notice\":\"Constructor sets the initial owner\"},\"createTask(string,string)\":{\"notice\":\"Create a new task\"},\"getTask(uint256)\":{\"notice\":\"Get task details\"},\"getTaskCount()\":{\"notice\":\"Get task count\"},\"getTaskCountByStatus(uint8)\":{\"notice\":\"Get tasks by status\"},\"getTasksByAssignee(address)\":{\"notice\":\"Get all task IDs assigned to an address\"},\"getTasksByCreator(address)\":{\"notice\":\"Get all task IDs created by an address\"},\"getTasksByParticipant(address)\":{\"notice\":\"Get all task IDs an address is involved in (created or assigned)\"},\"startTask(uint256)\":{\"notice\":\"Update task status to InProgress\"}},\"notice\":\"A contract for managing collaborative tasks between parties\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/TaskManagement.sol\":\"TaskManagement\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {Context} from \\\"../utils/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which provides a basic access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * The initial owner is set to the address provided by the deployer. This can\\n * later be changed with {transferOwnership}.\\n *\\n * This module is used through inheritance. It will make available the modifier\\n * `onlyOwner`, which can be applied to your functions to restrict their use to\\n * the owner.\\n */\\nabstract contract Ownable is Context {\\n    address private _owner;\\n\\n    /**\\n     * @dev The caller account is not authorized to perform an operation.\\n     */\\n    error OwnableUnauthorizedAccount(address account);\\n\\n    /**\\n     * @dev The owner is not a valid owner account. (eg. `address(0)`)\\n     */\\n    error OwnableInvalidOwner(address owner);\\n\\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n    /**\\n     * @dev Initializes the contract setting the address provided by the deployer as the initial owner.\\n     */\\n    constructor(address initialOwner) {\\n        if (initialOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(initialOwner);\\n    }\\n\\n    /**\\n     * @dev Throws if called by any account other than the owner.\\n     */\\n    modifier onlyOwner() {\\n        _checkOwner();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns the address of the current owner.\\n     */\\n    function owner() public view virtual returns (address) {\\n        return _owner;\\n    }\\n\\n    /**\\n     * @dev Throws if the sender is not the owner.\\n     */\\n    function _checkOwner() internal view virtual {\\n        if (owner() != _msgSender()) {\\n            revert OwnableUnauthorizedAccount(_msgSender());\\n        }\\n    }\\n\\n    /**\\n     * @dev Leaves the contract without owner. It will not be possible to call\\n     * `onlyOwner` functions. Can only be called by the current owner.\\n     *\\n     * NOTE: Renouncing ownership will leave the contract without an owner,\\n     * thereby disabling any functionality that is only available to the owner.\\n     */\\n    function renounceOwnership() public virtual onlyOwner {\\n        _transferOwnership(address(0));\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Can only be called by the current owner.\\n     */\\n    function transferOwnership(address newOwner) public virtual onlyOwner {\\n        if (newOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Internal function without access restriction.\\n     */\\n    function _transferOwnership(address newOwner) internal virtual {\\n        address oldOwner = _owner;\\n        _owner = newOwner;\\n        emit OwnershipTransferred(oldOwner, newOwner);\\n    }\\n}\\n\",\"keccak256\":\"0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Context.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\nabstract contract Context {\\n    function _msgSender() internal view virtual returns (address) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view virtual returns (bytes calldata) {\\n        return msg.data;\\n    }\\n\\n    function _contextSuffixLength() internal view virtual returns (uint256) {\\n        return 0;\\n    }\\n}\\n\",\"keccak256\":\"0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2\",\"license\":\"MIT\"},\"contracts/TaskManagement.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.28;\\n\\nimport {Ownable} from \\\"@openzeppelin/contracts/access/Ownable.sol\\\";\\n\\n/**\\n * @title TaskManagement\\n * @notice A contract for managing collaborative tasks between parties\\n * @dev Step 7: Task Management contract owned by multisig\\n * \\n * LEARNING POINT: This contract enables structured task management for collaboration.\\n * Tasks can be created, assigned, tracked, and marked as complete. The multisig\\n * controls the contract, ensuring both parties agree on task management.\\n * \\n * Key concepts:\\n * - Tasks: Structured work items with descriptions, assignments, and status\\n * - State machine: Tasks move through states (Created \\u2192 Assigned \\u2192 InProgress \\u2192 Completed)\\n * - Assignment: Tasks can be assigned to specific addresses\\n * - Completion: Tasks can be marked complete with verification\\n */\\ncontract TaskManagement is Ownable {\\n    /**\\n     * @notice Enumeration of task statuses\\n     * @dev Represents the lifecycle of a task\\n     */\\n    enum TaskStatus {\\n        Created,      // Task created but not yet assigned\\n        Assigned,     // Task assigned to someone\\n        InProgress,   // Task is being worked on\\n        Completed,    // Task is completed\\n        Cancelled     // Task was cancelled\\n    }\\n\\n    /**\\n     * @notice Structure to represent a task\\n     * @dev Contains all information about a task\\n     */\\n    struct Task {\\n        uint256 id;                    // Unique task ID\\n        address creator;                // Who created the task\\n        address assignee;               // Who the task is assigned to (address(0) if unassigned)\\n        string title;                  // Task title\\n        string description;            // Detailed description\\n        TaskStatus status;             // Current status\\n        uint256 createdAt;             // When task was created\\n        uint256 assignedAt;            // When task was assigned (0 if not assigned)\\n        uint256 completedAt;           // When task was completed (0 if not completed)\\n        bool exists;                   // Whether this task exists\\n    }\\n\\n    // Task tracking\\n    uint256 public taskCount;          // Total number of tasks\\n    mapping(uint256 => Task) public tasks; // task ID => Task\\n    \\n    // Mapping: address => array of task IDs they created\\n    mapping(address => uint256[]) public tasksByCreator;\\n    \\n    // Mapping: address => array of task IDs assigned to them\\n    mapping(address => uint256[]) public tasksByAssignee;\\n    \\n    // Mapping: address => array of task IDs (all tasks they're involved in)\\n    mapping(address => uint256[]) public tasksByParticipant;\\n\\n    // Events\\n    event TaskCreated(\\n        uint256 indexed taskId,\\n        address indexed creator,\\n        string title\\n    );\\n    \\n    event TaskAssigned(\\n        uint256 indexed taskId,\\n        address indexed assignee,\\n        address indexed assignedBy\\n    );\\n    \\n    event TaskStatusUpdated(\\n        uint256 indexed taskId,\\n        TaskStatus oldStatus,\\n        TaskStatus newStatus,\\n        address indexed updatedBy\\n    );\\n    \\n    event TaskCompleted(\\n        uint256 indexed taskId,\\n        address indexed completedBy,\\n        uint256 completedAt\\n    );\\n    \\n    event TaskCancelled(\\n        uint256 indexed taskId,\\n        address indexed cancelledBy\\n    );\\n\\n    /**\\n     * @notice Constructor sets the initial owner\\n     * @param initialOwner The address that will be the initial owner (multisig)\\n     * \\n     * LEARNING POINT: The multisig controls task management, ensuring both parties\\n     * agree on task assignments and status changes.\\n     */\\n    constructor(address initialOwner) Ownable(initialOwner) {}\\n\\n    /**\\n     * @notice Create a new task\\n     * @dev Anyone can create a task\\n     * @param title Short title for the task\\n     * @param description Detailed description of the task\\n     * @return taskId The ID of the created task\\n     * \\n     * LEARNING POINT: Creating a task doesn't assign it. Tasks start in \\\"Created\\\" status\\n     * and must be explicitly assigned to someone.\\n     */\\n    function createTask(string memory title, string memory description)\\n        external\\n        returns (uint256 taskId)\\n    {\\n        require(bytes(title).length > 0, \\\"TaskManagement: title cannot be empty\\\");\\n        require(bytes(description).length > 0, \\\"TaskManagement: description cannot be empty\\\");\\n        \\n        taskId = taskCount;\\n        taskCount++;\\n        \\n        tasks[taskId] = Task({\\n            id: taskId,\\n            creator: msg.sender,\\n            assignee: address(0),\\n            title: title,\\n            description: description,\\n            status: TaskStatus.Created,\\n            createdAt: block.timestamp,\\n            assignedAt: 0,\\n            completedAt: 0,\\n            exists: true\\n        });\\n        \\n        // Track tasks by creator\\n        tasksByCreator[msg.sender].push(taskId);\\n        tasksByParticipant[msg.sender].push(taskId);\\n        \\n        emit TaskCreated(taskId, msg.sender, title);\\n    }\\n\\n    /**\\n     * @notice Assign a task to someone\\n     * @dev Only owner (multisig) can assign tasks\\n     * @param taskId The ID of the task to assign\\n     * @param assignee The address to assign the task to\\n     * \\n     * LEARNING POINT: Assignment requires multisig approval, ensuring both parties\\n     * agree on who should work on what. This prevents unilateral task assignment.\\n     */\\n    function assignTask(uint256 taskId, address assignee) external onlyOwner {\\n        Task storage task = tasks[taskId];\\n        \\n        require(task.exists, \\\"TaskManagement: task does not exist\\\");\\n        require(assignee != address(0), \\\"TaskManagement: assignee cannot be zero address\\\");\\n        require(\\n            task.status == TaskStatus.Created || task.status == TaskStatus.Assigned,\\n            \\\"TaskManagement: task cannot be assigned in current status\\\"\\n        );\\n        \\n        // Update task\\n        task.assignee = assignee;\\n        task.status = TaskStatus.Assigned;\\n        task.assignedAt = block.timestamp;\\n        \\n        // Track tasks by assignee\\n        tasksByAssignee[assignee].push(taskId);\\n        tasksByParticipant[assignee].push(taskId);\\n        \\n        emit TaskAssigned(taskId, assignee, msg.sender);\\n        emit TaskStatusUpdated(taskId, TaskStatus.Created, TaskStatus.Assigned, msg.sender);\\n    }\\n\\n    /**\\n     * @notice Update task status to InProgress\\n     * @dev Only the assignee can mark their task as in progress\\n     * @param taskId The ID of the task\\n     * \\n     * LEARNING POINT: The assignee can update their own task status to show progress.\\n     * This allows for self-management while still requiring assignment approval.\\n     */\\n    function startTask(uint256 taskId) external {\\n        Task storage task = tasks[taskId];\\n        \\n        require(task.exists, \\\"TaskManagement: task does not exist\\\");\\n        require(task.assignee == msg.sender, \\\"TaskManagement: only assignee can start task\\\");\\n        require(\\n            task.status == TaskStatus.Assigned,\\n            \\\"TaskManagement: task must be assigned to start\\\"\\n        );\\n        \\n        TaskStatus oldStatus = task.status;\\n        task.status = TaskStatus.InProgress;\\n        \\n        emit TaskStatusUpdated(taskId, oldStatus, TaskStatus.InProgress, msg.sender);\\n    }\\n\\n    /**\\n     * @notice Mark a task as completed\\n     * @dev Only the assignee can complete their task\\n     * @param taskId The ID of the task to complete\\n     * \\n     * LEARNING POINT: The assignee marks their own work as complete. In a more\\n     * sophisticated system, completion might require verification or approval.\\n     */\\n    function completeTask(uint256 taskId) external {\\n        Task storage task = tasks[taskId];\\n        \\n        require(task.exists, \\\"TaskManagement: task does not exist\\\");\\n        require(task.assignee == msg.sender, \\\"TaskManagement: only assignee can complete task\\\");\\n        require(\\n            task.status == TaskStatus.InProgress || task.status == TaskStatus.Assigned,\\n            \\\"TaskManagement: task must be in progress or assigned to complete\\\"\\n        );\\n        \\n        TaskStatus oldStatus = task.status;\\n        task.status = TaskStatus.Completed;\\n        task.completedAt = block.timestamp;\\n        \\n        emit TaskStatusUpdated(taskId, oldStatus, TaskStatus.Completed, msg.sender);\\n        emit TaskCompleted(taskId, msg.sender, block.timestamp);\\n    }\\n\\n    /**\\n     * @notice Cancel a task\\n     * @dev Only owner (multisig) can cancel tasks\\n     * @param taskId The ID of the task to cancel\\n     * \\n     * LEARNING POINT: Cancellation requires multisig approval, ensuring both parties\\n     * agree to cancel a task. This prevents unilateral cancellation.\\n     */\\n    function cancelTask(uint256 taskId) external onlyOwner {\\n        Task storage task = tasks[taskId];\\n        \\n        require(task.exists, \\\"TaskManagement: task does not exist\\\");\\n        require(\\n            task.status != TaskStatus.Completed && task.status != TaskStatus.Cancelled,\\n            \\\"TaskManagement: cannot cancel completed or already cancelled task\\\"\\n        );\\n        \\n        TaskStatus oldStatus = task.status;\\n        task.status = TaskStatus.Cancelled;\\n        \\n        emit TaskStatusUpdated(taskId, oldStatus, TaskStatus.Cancelled, msg.sender);\\n        emit TaskCancelled(taskId, msg.sender);\\n    }\\n\\n    /**\\n     * @notice Get task details\\n     * @param taskId The ID of the task\\n     * @return task The task data\\n     */\\n    function getTask(uint256 taskId) external view returns (Task memory task) {\\n        require(tasks[taskId].exists, \\\"TaskManagement: task does not exist\\\");\\n        return tasks[taskId];\\n    }\\n\\n    /**\\n     * @notice Get all task IDs created by an address\\n     * @param creator The address to query\\n     * @return Array of task IDs\\n     */\\n    function getTasksByCreator(address creator) external view returns (uint256[] memory) {\\n        return tasksByCreator[creator];\\n    }\\n\\n    /**\\n     * @notice Get all task IDs assigned to an address\\n     * @param assignee The address to query\\n     * @return Array of task IDs\\n     */\\n    function getTasksByAssignee(address assignee) external view returns (uint256[] memory) {\\n        return tasksByAssignee[assignee];\\n    }\\n\\n    /**\\n     * @notice Get all task IDs an address is involved in (created or assigned)\\n     * @param participant The address to query\\n     * @return Array of task IDs\\n     */\\n    function getTasksByParticipant(address participant) external view returns (uint256[] memory) {\\n        return tasksByParticipant[participant];\\n    }\\n\\n    /**\\n     * @notice Get task count\\n     * @return The total number of tasks\\n     */\\n    function getTaskCount() external view returns (uint256) {\\n        return taskCount;\\n    }\\n\\n    /**\\n     * @notice Get tasks by status\\n     * @dev This is a helper function that would need to be implemented with off-chain indexing\\n     * For now, we provide the building blocks and clients can filter\\n     * @param status The status to filter by\\n     * @return count Number of tasks with this status\\n     * \\n     * LEARNING POINT: On-chain filtering can be expensive. In production, you might\\n     * use events and off-chain indexing (like The Graph) for efficient querying.\\n     */\\n    function getTaskCountByStatus(TaskStatus status) external view returns (uint256 count) {\\n        for (uint256 i = 0; i < taskCount; i++) {\\n            if (tasks[i].status == status) {\\n                count++;\\n            }\\n        }\\n    }\\n}\\n\\n\",\"keccak256\":\"0x6735e3cea92f9146014eaf0a4e356ec3ad2d43c612083e1b18d6fbf7462057aa\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506040516119dc3803806119dc83398101604081905261002f916100be565b806001600160a01b03811661005e57604051631e4fbdf760e01b81526000600482015260240160405180910390fd5b6100678161006e565b50506100ee565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b6000602082840312156100d057600080fd5b81516001600160a01b03811681146100e757600080fd5b9392505050565b6118df806100fd6000396000f3fe608060405234801561001057600080fd5b50600436106101215760003560e01c80638d977672116100ad578063c71f896b11610071578063c71f896b14610261578063cf9d28df14610274578063de940f6c14610287578063e1e295581461029a578063f2fde38b146102ad57600080fd5b80638d977672146101f95780638da5cb5b146102225780638db6c0021461023d578063b6cb58a514610250578063c17a340e1461025957600080fd5b80635293ee81116100f45780635293ee81146101a357806354236ccb146101b85780635f944326146101cb578063715018a6146101de5780637eec20a8146101e657600080fd5b80631d65e77e146101265780632121c5791461014f578063292a45851461016f57806331a4013114610190575b600080fd5b6101396101343660046112c9565b6102c0565b6040516101469190611360565b60405180910390f35b61016261015d366004611445565b610527565b6040516101469190611467565b61018261017d36600461154f565b610593565b604051908152602001610146565b61016261019e366004611445565b610814565b6101b66101b13660046115b8565b61087e565b005b6101826101c63660046115e4565b610ab0565b6101b66101d93660046112c9565b610ae1565b6101b6610c3d565b6101b66101f43660046112c9565b610c51565b61020c6102073660046112c9565b610dbd565b6040516101469a9998979695949392919061160e565b6000546040516001600160a01b039091168152602001610146565b61016261024b366004611445565b610f30565b61018260015481565b600154610182565b61018261026f3660046115e4565b610f9a565b6101826102823660046115e4565b610fb6565b61018261029536600461168e565b610fd2565b6101b66102a83660046112c9565b611039565b6101b66102bb366004611445565b61120e565b6103176040805161014081018252600080825260208201819052918101829052606080820181905260808201529060a082019081526020016000815260200160008152602001600081526020016000151581525090565b60008281526002602052604090206009015460ff166103515760405162461bcd60e51b8152600401610348906116af565b60405180910390fd5b6000828152600260208181526040928390208351610140810185528154815260018201546001600160a01b039081169382019390935292810154909116928201929092526003820180549192916060840191906103ad906116f2565b80601f01602080910402602001604051908101604052809291908181526020018280546103d9906116f2565b80156104265780601f106103fb57610100808354040283529160200191610426565b820191906000526020600020905b81548152906001019060200180831161040957829003601f168201915b5050505050815260200160048201805461043f906116f2565b80601f016020809104026020016040519081016040528092919081815260200182805461046b906116f2565b80156104b85780601f1061048d576101008083540402835291602001916104b8565b820191906000526020600020905b81548152906001019060200180831161049b57829003601f168201915b5050509183525050600582015460209091019060ff1660048111156104df576104df611328565b60048111156104f0576104f0611328565b815260068201546020820152600782015460408201526008820154606082015260099091015460ff16151560809091015292915050565b6001600160a01b03811660009081526005602090815260409182902080548351818402810184019094528084526060939283018282801561058757602002820191906000526020600020905b815481526020019060010190808311610573575b50505050509050919050565b6000808351116105f35760405162461bcd60e51b815260206004820152602560248201527f5461736b4d616e6167656d656e743a207469746c652063616e6e6f7420626520604482015264656d70747960d81b6064820152608401610348565b60008251116106585760405162461bcd60e51b815260206004820152602b60248201527f5461736b4d616e6167656d656e743a206465736372697074696f6e2063616e6e60448201526a6f7420626520656d70747960a81b6064820152608401610348565b5060018054908190600061066b83611726565b909155505060408051610140810182528281523360208083019182526000838501818152606085018981526080860189905260a086018390524260c087015260e086018390526101008601839052600161012087018190528884526002948590529690922085518155935195840180546001600160a01b039788166001600160a01b03199182161790915590519284018054939096169216919091179093559151909190600382019061071e908261179c565b5060808201516004820190610733908261179c565b5060a082015160058201805460ff1916600183600481111561075757610757611328565b021790555060c0820151600682015560e082015160078201556101008201516008820155610120909101516009909101805460ff1916911515919091179055336000818152600360209081526040808320805460018181018355918552838520018690558484526005835281842080549182018155845291909220018390555182907f5b2493258cbc7169ad9389516998320ce25dc27637cea28ddd0d033af122bfa69061080690879061185b565b60405180910390a392915050565b6001600160a01b03811660009081526003602090815260409182902080548351818402810184019094528084526060939283018282801561058757602002820191906000526020600020908154815260200190600101908083116105735750505050509050919050565b61088661124c565b6000828152600260205260409020600981015460ff166108b85760405162461bcd60e51b8152600401610348906116af565b6001600160a01b0382166109265760405162461bcd60e51b815260206004820152602f60248201527f5461736b4d616e6167656d656e743a2061737369676e65652063616e6e6f742060448201526e6265207a65726f206164647265737360881b6064820152608401610348565b6000600582015460ff16600481111561094157610941611328565b148061096557506001600582015460ff16600481111561096357610963611328565b145b6109d75760405162461bcd60e51b815260206004820152603960248201527f5461736b4d616e6167656d656e743a207461736b2063616e6e6f74206265206160448201527f737369676e656420696e2063757272656e7420737461747573000000000000006064820152608401610348565b6002810180546001600160a01b0319166001600160a01b0384169081179091556005808301805460ff19166001908117909155426007850155600083815260046020908152604080832080548086018255908452828420018990558583529381528382208054938401815582528120909101869055905133929186917ffe58e4bb1e9a69b912e9ef1be9463a03d5d7aa99d2116726abd48e28acc4f91e9190a4336001600160a01b03168360008051602061188a83398151915260006001604051610aa392919061186e565b60405180910390a3505050565b60056020528160005260406000208181548110610acc57600080fd5b90600052602060002001600091509150505481565b6000818152600260205260409020600981015460ff16610b135760405162461bcd60e51b8152600401610348906116af565b60028101546001600160a01b03163314610b845760405162461bcd60e51b815260206004820152602c60248201527f5461736b4d616e6167656d656e743a206f6e6c792061737369676e656520636160448201526b6e207374617274207461736b60a01b6064820152608401610348565b6001600582015460ff166004811115610b9f57610b9f611328565b14610c035760405162461bcd60e51b815260206004820152602e60248201527f5461736b4d616e6167656d656e743a207461736b206d7573742062652061737360448201526d1a59db9959081d1bc81cdd185c9d60921b6064820152608401610348565b600581018054600260ff198216811790925560405160ff909116913391859160008051602061188a83398151915291610aa391869161186e565b610c4561124c565b610c4f6000611279565b565b610c5961124c565b6000818152600260205260409020600981015460ff16610c8b5760405162461bcd60e51b8152600401610348906116af565b6003600582015460ff166004811115610ca657610ca6611328565b14158015610ccd57506004600582015460ff166004811115610cca57610cca611328565b14155b610d495760405162461bcd60e51b815260206004820152604160248201527f5461736b4d616e6167656d656e743a2063616e6e6f742063616e63656c20636f60448201527f6d706c65746564206f7220616c72656164792063616e63656c6c6564207461736064820152606b60f81b608482015260a401610348565b600581018054600460ff198216811790925560405160ff909116913391859160008051602061188a83398151915291610d8391869161186e565b60405180910390a3604051339084907f76be7f7b12bf790225259ca3b7ffb98f222f79af3c4c074e88e0c97af6f1402590600090a3505050565b6002602081905260009182526040909120805460018201549282015460038301805492946001600160a01b0390811694921692610df9906116f2565b80601f0160208091040260200160405190810160405280929190818152602001828054610e25906116f2565b8015610e725780601f10610e4757610100808354040283529160200191610e72565b820191906000526020600020905b815481529060010190602001808311610e5557829003601f168201915b505050505090806004018054610e87906116f2565b80601f0160208091040260200160405190810160405280929190818152602001828054610eb3906116f2565b8015610f005780601f10610ed557610100808354040283529160200191610f00565b820191906000526020600020905b815481529060010190602001808311610ee357829003601f168201915b5050506005840154600685015460078601546008870154600990970154959660ff9384169692955090935091168a565b6001600160a01b03811660009081526004602090815260409182902080548351818402810184019094528084526060939283018282801561058757602002820191906000526020600020908154815260200190600101908083116105735750505050509050919050565b60046020528160005260406000208181548110610acc57600080fd5b60036020528160005260406000208181548110610acc57600080fd5b6000805b60015481101561103357826004811115610ff257610ff2611328565b60008281526002602052604090206005015460ff16600481111561101857611018611328565b0361102b578161102781611726565b9250505b600101610fd6565b50919050565b6000818152600260205260409020600981015460ff1661106b5760405162461bcd60e51b8152600401610348906116af565b60028101546001600160a01b031633146110df5760405162461bcd60e51b815260206004820152602f60248201527f5461736b4d616e6167656d656e743a206f6e6c792061737369676e656520636160448201526e6e20636f6d706c657465207461736b60881b6064820152608401610348565b6002600582015460ff1660048111156110fa576110fa611328565b148061111e57506001600582015460ff16600481111561111c5761111c611328565b145b611192576040805162461bcd60e51b81526020600482015260248101919091527f5461736b4d616e6167656d656e743a207461736b206d75737420626520696e2060448201527f70726f6772657373206f722061737369676e656420746f20636f6d706c6574656064820152608401610348565b600581018054600360ff198216811790925542600884015560405160ff909116913391859160008051602061188a833981519152916111d291869161186e565b60405180910390a3604051428152339084907f843af93d40addceac6932508439844b897d4df9e971db326d557e3cdaa9f3ebf90602001610aa3565b61121661124c565b6001600160a01b03811661124057604051631e4fbdf760e01b815260006004820152602401610348565b61124981611279565b50565b6000546001600160a01b03163314610c4f5760405163118cdaa760e01b8152336004820152602401610348565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b6000602082840312156112db57600080fd5b5035919050565b6000815180845260005b81811015611308576020818501810151868301820152016112ec565b506000602082860101526020601f19601f83011685010191505092915050565b634e487b7160e01b600052602160045260246000fd5b6005811061135c57634e487b7160e01b600052602160045260246000fd5b9052565b60208152815160208201526000602083015161138760408401826001600160a01b03169052565b5060408301516001600160a01b038116606084015250606083015161014060808401526113b86101608401826112e2565b90506080840151601f198483030160a08501526113d582826112e2565b91505060a08401516113ea60c085018261133e565b5060c084015160e084015260e084015161010084015261010084015161012084015261012084015161142161014085018215159052565b509392505050565b80356001600160a01b038116811461144057600080fd5b919050565b60006020828403121561145757600080fd5b61146082611429565b9392505050565b602080825282518282018190526000918401906040840190835b8181101561149f578351835260209384019390920191600101611481565b509095945050505050565b634e487b7160e01b600052604160045260246000fd5b600082601f8301126114d157600080fd5b813567ffffffffffffffff8111156114eb576114eb6114aa565b604051601f8201601f19908116603f0116810167ffffffffffffffff8111828210171561151a5761151a6114aa565b60405281815283820160200185101561153257600080fd5b816020850160208301376000918101602001919091529392505050565b6000806040838503121561156257600080fd5b823567ffffffffffffffff81111561157957600080fd5b611585858286016114c0565b925050602083013567ffffffffffffffff8111156115a257600080fd5b6115ae858286016114c0565b9150509250929050565b600080604083850312156115cb57600080fd5b823591506115db60208401611429565b90509250929050565b600080604083850312156115f757600080fd5b61160083611429565b946020939093013593505050565b8a81526001600160a01b038a8116602083015289166040820152610140606082018190526000906116419083018a6112e2565b8281036080840152611653818a6112e2565b91505061166360a083018861133e565b8560c08301528460e0830152836101008301528215156101208301529b9a5050505050505050505050565b6000602082840312156116a057600080fd5b81356005811061146057600080fd5b60208082526023908201527f5461736b4d616e6167656d656e743a207461736b20646f6573206e6f742065786040820152621a5cdd60ea1b606082015260800190565b600181811c9082168061170657607f821691505b60208210810361103357634e487b7160e01b600052602260045260246000fd5b60006001820161174657634e487b7160e01b600052601160045260246000fd5b5060010190565b601f82111561179757806000526020600020601f840160051c810160208510156117745750805b601f840160051c820191505b818110156117945760008155600101611780565b50505b505050565b815167ffffffffffffffff8111156117b6576117b66114aa565b6117ca816117c484546116f2565b8461174d565b6020601f8211600181146117fe57600083156117e65750848201515b600019600385901b1c1916600184901b178455611794565b600084815260208120601f198516915b8281101561182e578785015182556020948501946001909201910161180e565b508482101561184c5786840151600019600387901b60f8161c191681555b50505050600190811b01905550565b60208152600061146060208301846112e2565b6040810161187c828561133e565b611460602083018461133e56fe2e806169b3549084387d1360c555593bd49899a703ad01a7191ede7a8fea6603a26469706673582212201b133c1a57aea1226ca693ce8c0b29e802c0b8980b9281a24b4e11b24ce792f764736f6c634300081c0033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106101215760003560e01c80638d977672116100ad578063c71f896b11610071578063c71f896b14610261578063cf9d28df14610274578063de940f6c14610287578063e1e295581461029a578063f2fde38b146102ad57600080fd5b80638d977672146101f95780638da5cb5b146102225780638db6c0021461023d578063b6cb58a514610250578063c17a340e1461025957600080fd5b80635293ee81116100f45780635293ee81146101a357806354236ccb146101b85780635f944326146101cb578063715018a6146101de5780637eec20a8146101e657600080fd5b80631d65e77e146101265780632121c5791461014f578063292a45851461016f57806331a4013114610190575b600080fd5b6101396101343660046112c9565b6102c0565b6040516101469190611360565b60405180910390f35b61016261015d366004611445565b610527565b6040516101469190611467565b61018261017d36600461154f565b610593565b604051908152602001610146565b61016261019e366004611445565b610814565b6101b66101b13660046115b8565b61087e565b005b6101826101c63660046115e4565b610ab0565b6101b66101d93660046112c9565b610ae1565b6101b6610c3d565b6101b66101f43660046112c9565b610c51565b61020c6102073660046112c9565b610dbd565b6040516101469a9998979695949392919061160e565b6000546040516001600160a01b039091168152602001610146565b61016261024b366004611445565b610f30565b61018260015481565b600154610182565b61018261026f3660046115e4565b610f9a565b6101826102823660046115e4565b610fb6565b61018261029536600461168e565b610fd2565b6101b66102a83660046112c9565b611039565b6101b66102bb366004611445565b61120e565b6103176040805161014081018252600080825260208201819052918101829052606080820181905260808201529060a082019081526020016000815260200160008152602001600081526020016000151581525090565b60008281526002602052604090206009015460ff166103515760405162461bcd60e51b8152600401610348906116af565b60405180910390fd5b6000828152600260208181526040928390208351610140810185528154815260018201546001600160a01b039081169382019390935292810154909116928201929092526003820180549192916060840191906103ad906116f2565b80601f01602080910402602001604051908101604052809291908181526020018280546103d9906116f2565b80156104265780601f106103fb57610100808354040283529160200191610426565b820191906000526020600020905b81548152906001019060200180831161040957829003601f168201915b5050505050815260200160048201805461043f906116f2565b80601f016020809104026020016040519081016040528092919081815260200182805461046b906116f2565b80156104b85780601f1061048d576101008083540402835291602001916104b8565b820191906000526020600020905b81548152906001019060200180831161049b57829003601f168201915b5050509183525050600582015460209091019060ff1660048111156104df576104df611328565b60048111156104f0576104f0611328565b815260068201546020820152600782015460408201526008820154606082015260099091015460ff16151560809091015292915050565b6001600160a01b03811660009081526005602090815260409182902080548351818402810184019094528084526060939283018282801561058757602002820191906000526020600020905b815481526020019060010190808311610573575b50505050509050919050565b6000808351116105f35760405162461bcd60e51b815260206004820152602560248201527f5461736b4d616e6167656d656e743a207469746c652063616e6e6f7420626520604482015264656d70747960d81b6064820152608401610348565b60008251116106585760405162461bcd60e51b815260206004820152602b60248201527f5461736b4d616e6167656d656e743a206465736372697074696f6e2063616e6e60448201526a6f7420626520656d70747960a81b6064820152608401610348565b5060018054908190600061066b83611726565b909155505060408051610140810182528281523360208083019182526000838501818152606085018981526080860189905260a086018390524260c087015260e086018390526101008601839052600161012087018190528884526002948590529690922085518155935195840180546001600160a01b039788166001600160a01b03199182161790915590519284018054939096169216919091179093559151909190600382019061071e908261179c565b5060808201516004820190610733908261179c565b5060a082015160058201805460ff1916600183600481111561075757610757611328565b021790555060c0820151600682015560e082015160078201556101008201516008820155610120909101516009909101805460ff1916911515919091179055336000818152600360209081526040808320805460018181018355918552838520018690558484526005835281842080549182018155845291909220018390555182907f5b2493258cbc7169ad9389516998320ce25dc27637cea28ddd0d033af122bfa69061080690879061185b565b60405180910390a392915050565b6001600160a01b03811660009081526003602090815260409182902080548351818402810184019094528084526060939283018282801561058757602002820191906000526020600020908154815260200190600101908083116105735750505050509050919050565b61088661124c565b6000828152600260205260409020600981015460ff166108b85760405162461bcd60e51b8152600401610348906116af565b6001600160a01b0382166109265760405162461bcd60e51b815260206004820152602f60248201527f5461736b4d616e6167656d656e743a2061737369676e65652063616e6e6f742060448201526e6265207a65726f206164647265737360881b6064820152608401610348565b6000600582015460ff16600481111561094157610941611328565b148061096557506001600582015460ff16600481111561096357610963611328565b145b6109d75760405162461bcd60e51b815260206004820152603960248201527f5461736b4d616e6167656d656e743a207461736b2063616e6e6f74206265206160448201527f737369676e656420696e2063757272656e7420737461747573000000000000006064820152608401610348565b6002810180546001600160a01b0319166001600160a01b0384169081179091556005808301805460ff19166001908117909155426007850155600083815260046020908152604080832080548086018255908452828420018990558583529381528382208054938401815582528120909101869055905133929186917ffe58e4bb1e9a69b912e9ef1be9463a03d5d7aa99d2116726abd48e28acc4f91e9190a4336001600160a01b03168360008051602061188a83398151915260006001604051610aa392919061186e565b60405180910390a3505050565b60056020528160005260406000208181548110610acc57600080fd5b90600052602060002001600091509150505481565b6000818152600260205260409020600981015460ff16610b135760405162461bcd60e51b8152600401610348906116af565b60028101546001600160a01b03163314610b845760405162461bcd60e51b815260206004820152602c60248201527f5461736b4d616e6167656d656e743a206f6e6c792061737369676e656520636160448201526b6e207374617274207461736b60a01b6064820152608401610348565b6001600582015460ff166004811115610b9f57610b9f611328565b14610c035760405162461bcd60e51b815260206004820152602e60248201527f5461736b4d616e6167656d656e743a207461736b206d7573742062652061737360448201526d1a59db9959081d1bc81cdd185c9d60921b6064820152608401610348565b600581018054600260ff198216811790925560405160ff909116913391859160008051602061188a83398151915291610aa391869161186e565b610c4561124c565b610c4f6000611279565b565b610c5961124c565b6000818152600260205260409020600981015460ff16610c8b5760405162461bcd60e51b8152600401610348906116af565b6003600582015460ff166004811115610ca657610ca6611328565b14158015610ccd57506004600582015460ff166004811115610cca57610cca611328565b14155b610d495760405162461bcd60e51b815260206004820152604160248201527f5461736b4d616e6167656d656e743a2063616e6e6f742063616e63656c20636f60448201527f6d706c65746564206f7220616c72656164792063616e63656c6c6564207461736064820152606b60f81b608482015260a401610348565b600581018054600460ff198216811790925560405160ff909116913391859160008051602061188a83398151915291610d8391869161186e565b60405180910390a3604051339084907f76be7f7b12bf790225259ca3b7ffb98f222f79af3c4c074e88e0c97af6f1402590600090a3505050565b6002602081905260009182526040909120805460018201549282015460038301805492946001600160a01b0390811694921692610df9906116f2565b80601f0160208091040260200160405190810160405280929190818152602001828054610e25906116f2565b8015610e725780601f10610e4757610100808354040283529160200191610e72565b820191906000526020600020905b815481529060010190602001808311610e5557829003601f168201915b505050505090806004018054610e87906116f2565b80601f0160208091040260200160405190810160405280929190818152602001828054610eb3906116f2565b8015610f005780601f10610ed557610100808354040283529160200191610f00565b820191906000526020600020905b815481529060010190602001808311610ee357829003601f168201915b5050506005840154600685015460078601546008870154600990970154959660ff9384169692955090935091168a565b6001600160a01b03811660009081526004602090815260409182902080548351818402810184019094528084526060939283018282801561058757602002820191906000526020600020908154815260200190600101908083116105735750505050509050919050565b60046020528160005260406000208181548110610acc57600080fd5b60036020528160005260406000208181548110610acc57600080fd5b6000805b60015481101561103357826004811115610ff257610ff2611328565b60008281526002602052604090206005015460ff16600481111561101857611018611328565b0361102b578161102781611726565b9250505b600101610fd6565b50919050565b6000818152600260205260409020600981015460ff1661106b5760405162461bcd60e51b8152600401610348906116af565b60028101546001600160a01b031633146110df5760405162461bcd60e51b815260206004820152602f60248201527f5461736b4d616e6167656d656e743a206f6e6c792061737369676e656520636160448201526e6e20636f6d706c657465207461736b60881b6064820152608401610348565b6002600582015460ff1660048111156110fa576110fa611328565b148061111e57506001600582015460ff16600481111561111c5761111c611328565b145b611192576040805162461bcd60e51b81526020600482015260248101919091527f5461736b4d616e6167656d656e743a207461736b206d75737420626520696e2060448201527f70726f6772657373206f722061737369676e656420746f20636f6d706c6574656064820152608401610348565b600581018054600360ff198216811790925542600884015560405160ff909116913391859160008051602061188a833981519152916111d291869161186e565b60405180910390a3604051428152339084907f843af93d40addceac6932508439844b897d4df9e971db326d557e3cdaa9f3ebf90602001610aa3565b61121661124c565b6001600160a01b03811661124057604051631e4fbdf760e01b815260006004820152602401610348565b61124981611279565b50565b6000546001600160a01b03163314610c4f5760405163118cdaa760e01b8152336004820152602401610348565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b6000602082840312156112db57600080fd5b5035919050565b6000815180845260005b81811015611308576020818501810151868301820152016112ec565b506000602082860101526020601f19601f83011685010191505092915050565b634e487b7160e01b600052602160045260246000fd5b6005811061135c57634e487b7160e01b600052602160045260246000fd5b9052565b60208152815160208201526000602083015161138760408401826001600160a01b03169052565b5060408301516001600160a01b038116606084015250606083015161014060808401526113b86101608401826112e2565b90506080840151601f198483030160a08501526113d582826112e2565b91505060a08401516113ea60c085018261133e565b5060c084015160e084015260e084015161010084015261010084015161012084015261012084015161142161014085018215159052565b509392505050565b80356001600160a01b038116811461144057600080fd5b919050565b60006020828403121561145757600080fd5b61146082611429565b9392505050565b602080825282518282018190526000918401906040840190835b8181101561149f578351835260209384019390920191600101611481565b509095945050505050565b634e487b7160e01b600052604160045260246000fd5b600082601f8301126114d157600080fd5b813567ffffffffffffffff8111156114eb576114eb6114aa565b604051601f8201601f19908116603f0116810167ffffffffffffffff8111828210171561151a5761151a6114aa565b60405281815283820160200185101561153257600080fd5b816020850160208301376000918101602001919091529392505050565b6000806040838503121561156257600080fd5b823567ffffffffffffffff81111561157957600080fd5b611585858286016114c0565b925050602083013567ffffffffffffffff8111156115a257600080fd5b6115ae858286016114c0565b9150509250929050565b600080604083850312156115cb57600080fd5b823591506115db60208401611429565b90509250929050565b600080604083850312156115f757600080fd5b61160083611429565b946020939093013593505050565b8a81526001600160a01b038a8116602083015289166040820152610140606082018190526000906116419083018a6112e2565b8281036080840152611653818a6112e2565b91505061166360a083018861133e565b8560c08301528460e0830152836101008301528215156101208301529b9a5050505050505050505050565b6000602082840312156116a057600080fd5b81356005811061146057600080fd5b60208082526023908201527f5461736b4d616e6167656d656e743a207461736b20646f6573206e6f742065786040820152621a5cdd60ea1b606082015260800190565b600181811c9082168061170657607f821691505b60208210810361103357634e487b7160e01b600052602260045260246000fd5b60006001820161174657634e487b7160e01b600052601160045260246000fd5b5060010190565b601f82111561179757806000526020600020601f840160051c810160208510156117745750805b601f840160051c820191505b818110156117945760008155600101611780565b50505b505050565b815167ffffffffffffffff8111156117b6576117b66114aa565b6117ca816117c484546116f2565b8461174d565b6020601f8211600181146117fe57600083156117e65750848201515b600019600385901b1c1916600184901b178455611794565b600084815260208120601f198516915b8281101561182e578785015182556020948501946001909201910161180e565b508482101561184c5786840151600019600387901b60f8161c191681555b50505050600190811b01905550565b60208152600061146060208301846112e2565b6040810161187c828561133e565b611460602083018461133e56fe2e806169b3549084387d1360c555593bd49899a703ad01a7191ede7a8fea6603a26469706673582212201b133c1a57aea1226ca693ce8c0b29e802c0b8980b9281a24b4e11b24ce792f764736f6c634300081c0033",
+  "devdoc": {
+    "details": "Step 7: Task Management contract owned by multisig  LEARNING POINT: This contract enables structured task management for collaboration. Tasks can be created, assigned, tracked, and marked as complete. The multisig controls the contract, ensuring both parties agree on task management.  Key concepts: - Tasks: Structured work items with descriptions, assignments, and status - State machine: Tasks move through states (Created → Assigned → InProgress → Completed) - Assignment: Tasks can be assigned to specific addresses - Completion: Tasks can be marked complete with verification",
+    "errors": {
+      "OwnableInvalidOwner(address)": [
+        {
+          "details": "The owner is not a valid owner account. (eg. `address(0)`)"
+        }
+      ],
+      "OwnableUnauthorizedAccount(address)": [
+        {
+          "details": "The caller account is not authorized to perform an operation."
+        }
+      ]
+    },
+    "kind": "dev",
+    "methods": {
+      "assignTask(uint256,address)": {
+        "details": "Only owner (multisig) can assign tasks",
+        "params": {
+          "assignee": "The address to assign the task to  LEARNING POINT: Assignment requires multisig approval, ensuring both parties agree on who should work on what. This prevents unilateral task assignment.",
+          "taskId": "The ID of the task to assign"
+        }
+      },
+      "cancelTask(uint256)": {
+        "details": "Only owner (multisig) can cancel tasks",
+        "params": {
+          "taskId": "The ID of the task to cancel  LEARNING POINT: Cancellation requires multisig approval, ensuring both parties agree to cancel a task. This prevents unilateral cancellation."
+        }
+      },
+      "completeTask(uint256)": {
+        "details": "Only the assignee can complete their task",
+        "params": {
+          "taskId": "The ID of the task to complete  LEARNING POINT: The assignee marks their own work as complete. In a more sophisticated system, completion might require verification or approval."
+        }
+      },
+      "constructor": {
+        "params": {
+          "initialOwner": "The address that will be the initial owner (multisig)  LEARNING POINT: The multisig controls task management, ensuring both parties agree on task assignments and status changes."
+        }
+      },
+      "createTask(string,string)": {
+        "details": "Anyone can create a task",
+        "params": {
+          "description": "Detailed description of the task",
+          "title": "Short title for the task"
+        },
+        "returns": {
+          "taskId": "The ID of the created task  LEARNING POINT: Creating a task doesn't assign it. Tasks start in \"Created\" status and must be explicitly assigned to someone."
+        }
+      },
+      "getTask(uint256)": {
+        "params": {
+          "taskId": "The ID of the task"
+        },
+        "returns": {
+          "task": "The task data"
+        }
+      },
+      "getTaskCount()": {
+        "returns": {
+          "_0": "The total number of tasks"
+        }
+      },
+      "getTaskCountByStatus(uint8)": {
+        "details": "This is a helper function that would need to be implemented with off-chain indexing For now, we provide the building blocks and clients can filter",
+        "params": {
+          "status": "The status to filter by"
+        },
+        "returns": {
+          "count": "Number of tasks with this status  LEARNING POINT: On-chain filtering can be expensive. In production, you might use events and off-chain indexing (like The Graph) for efficient querying."
+        }
+      },
+      "getTasksByAssignee(address)": {
+        "params": {
+          "assignee": "The address to query"
+        },
+        "returns": {
+          "_0": "Array of task IDs"
+        }
+      },
+      "getTasksByCreator(address)": {
+        "params": {
+          "creator": "The address to query"
+        },
+        "returns": {
+          "_0": "Array of task IDs"
+        }
+      },
+      "getTasksByParticipant(address)": {
+        "params": {
+          "participant": "The address to query"
+        },
+        "returns": {
+          "_0": "Array of task IDs"
+        }
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+      },
+      "startTask(uint256)": {
+        "details": "Only the assignee can mark their task as in progress",
+        "params": {
+          "taskId": "The ID of the task  LEARNING POINT: The assignee can update their own task status to show progress. This allows for self-management while still requiring assignment approval."
+        }
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      }
+    },
+    "title": "TaskManagement",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "assignTask(uint256,address)": {
+        "notice": "Assign a task to someone"
+      },
+      "cancelTask(uint256)": {
+        "notice": "Cancel a task"
+      },
+      "completeTask(uint256)": {
+        "notice": "Mark a task as completed"
+      },
+      "constructor": {
+        "notice": "Constructor sets the initial owner"
+      },
+      "createTask(string,string)": {
+        "notice": "Create a new task"
+      },
+      "getTask(uint256)": {
+        "notice": "Get task details"
+      },
+      "getTaskCount()": {
+        "notice": "Get task count"
+      },
+      "getTaskCountByStatus(uint8)": {
+        "notice": "Get tasks by status"
+      },
+      "getTasksByAssignee(address)": {
+        "notice": "Get all task IDs assigned to an address"
+      },
+      "getTasksByCreator(address)": {
+        "notice": "Get all task IDs created by an address"
+      },
+      "getTasksByParticipant(address)": {
+        "notice": "Get all task IDs an address is involved in (created or assigned)"
+      },
+      "startTask(uint256)": {
+        "notice": "Update task status to InProgress"
+      }
+    },
+    "notice": "A contract for managing collaborative tasks between parties",
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 8,
+        "contract": "contracts/TaskManagement.sol:TaskManagement",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 216,
+        "contract": "contracts/TaskManagement.sol:TaskManagement",
+        "label": "taskCount",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 221,
+        "contract": "contracts/TaskManagement.sol:TaskManagement",
+        "label": "tasks",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_mapping(t_uint256,t_struct(Task)214_storage)"
+      },
+      {
+        "astId": 226,
+        "contract": "contracts/TaskManagement.sol:TaskManagement",
+        "label": "tasksByCreator",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)"
+      },
+      {
+        "astId": 231,
+        "contract": "contracts/TaskManagement.sol:TaskManagement",
+        "label": "tasksByAssignee",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)"
+      },
+      {
+        "astId": 236,
+        "contract": "contracts/TaskManagement.sol:TaskManagement",
+        "label": "tasksByParticipant",
+        "offset": 0,
+        "slot": "5",
+        "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_uint256)dyn_storage": {
+        "base": "t_uint256",
+        "encoding": "dynamic_array",
+        "label": "uint256[]",
+        "numberOfBytes": "32"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_enum(TaskStatus)191": {
+        "encoding": "inplace",
+        "label": "enum TaskManagement.TaskStatus",
+        "numberOfBytes": "1"
+      },
+      "t_mapping(t_address,t_array(t_uint256)dyn_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256[])",
+        "numberOfBytes": "32",
+        "value": "t_array(t_uint256)dyn_storage"
+      },
+      "t_mapping(t_uint256,t_struct(Task)214_storage)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => struct TaskManagement.Task)",
+        "numberOfBytes": "32",
+        "value": "t_struct(Task)214_storage"
+      },
+      "t_string_storage": {
+        "encoding": "bytes",
+        "label": "string",
+        "numberOfBytes": "32"
+      },
+      "t_struct(Task)214_storage": {
+        "encoding": "inplace",
+        "label": "struct TaskManagement.Task",
+        "members": [
+          {
+            "astId": 194,
+            "contract": "contracts/TaskManagement.sol:TaskManagement",
+            "label": "id",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 196,
+            "contract": "contracts/TaskManagement.sol:TaskManagement",
+            "label": "creator",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address"
+          },
+          {
+            "astId": 198,
+            "contract": "contracts/TaskManagement.sol:TaskManagement",
+            "label": "assignee",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address"
+          },
+          {
+            "astId": 200,
+            "contract": "contracts/TaskManagement.sol:TaskManagement",
+            "label": "title",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 202,
+            "contract": "contracts/TaskManagement.sol:TaskManagement",
+            "label": "description",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 205,
+            "contract": "contracts/TaskManagement.sol:TaskManagement",
+            "label": "status",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_enum(TaskStatus)191"
+          },
+          {
+            "astId": 207,
+            "contract": "contracts/TaskManagement.sol:TaskManagement",
+            "label": "createdAt",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 209,
+            "contract": "contracts/TaskManagement.sol:TaskManagement",
+            "label": "assignedAt",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 211,
+            "contract": "contracts/TaskManagement.sol:TaskManagement",
+            "label": "completedAt",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 213,
+            "contract": "contracts/TaskManagement.sol:TaskManagement",
+            "label": "exists",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_bool"
+          }
+        ],
+        "numberOfBytes": "320"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
