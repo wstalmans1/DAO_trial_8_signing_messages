@@ -274,7 +274,7 @@ Check if an address has voted on a proposal
 ### canExecute
 
 ```solidity
-function canExecute(uint256 proposalId) external view returns (bool canExecute, string reason)
+function canExecute(uint256 proposalId) external view returns (bool, string)
 ```
 
 Check if a proposal can be executed
@@ -289,6 +289,6 @@ Check if a proposal can be executed
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| canExecute | bool | Whether the proposal can be executed |
-| reason | string | Reason why it can't be executed (if applicable) |
+| [0] | bool | Whether the proposal can be executed |
+| [1] | string | reason Reason why it can't be executed (if applicable) |
 

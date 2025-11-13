@@ -329,13 +329,13 @@ contract Governance is Ownable {
     /**
      * @notice Check if a proposal can be executed
      * @param proposalId The ID of the proposal
-     * @return canExecute Whether the proposal can be executed
+     * @return Whether the proposal can be executed
      * @return reason Reason why it can't be executed (if applicable)
      */
     function canExecute(uint256 proposalId)
         external
         view
-        returns (bool canExecute, string memory reason)
+        returns (bool, string memory)
     {
         Proposal storage proposal = proposals[proposalId];
         
