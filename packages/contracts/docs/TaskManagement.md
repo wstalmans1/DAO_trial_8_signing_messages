@@ -225,7 +225,7 @@ _Only the assignee can mark their task as in progress_
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| taskId | uint256 | The ID of the task LEARNING POINT: The assignee can update their own task status to show progress. This allows for self-management while still requiring assignment approval. |
+| taskId | uint256 | The ID of the task LEARNING POINT: The assignee can update their own task status to show progress. This allows for self-management while still requiring assignment approval. Tasks that need revision can also be restarted. |
 
 ### completeTask
 
@@ -316,6 +316,8 @@ function getTask(uint256 taskId) external view returns (struct TaskManagement.Ta
 
 Get task details
 
+_Note: Use tasks(taskId) for direct access. This function includes existence check._
+
 #### Parameters
 
 | Name | Type | Description |
@@ -328,86 +330,6 @@ Get task details
 | ---- | ---- | ----------- |
 | task | struct TaskManagement.Task | The task data |
 
-### getTasksByCreator
-
-```solidity
-function getTasksByCreator(address creator) external view returns (uint256[])
-```
-
-Get all task IDs created by an address
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| creator | address | The address to query |
-
-#### Return Values
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256[] | Array of task IDs |
-
-### getTasksByAssignee
-
-```solidity
-function getTasksByAssignee(address assignee) external view returns (uint256[])
-```
-
-Get all task IDs assigned to an address
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| assignee | address | The address to query |
-
-#### Return Values
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256[] | Array of task IDs |
-
-### getTasksByParticipant
-
-```solidity
-function getTasksByParticipant(address participant) external view returns (uint256[])
-```
-
-Get all task IDs an address is involved in (created or assigned)
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| participant | address | The address to query |
-
-#### Return Values
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256[] | Array of task IDs |
-
-### getTasksByAssigner
-
-```solidity
-function getTasksByAssigner(address assigner) external view returns (uint256[])
-```
-
-Get all task IDs assigned by an address (for review)
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| assigner | address | The address to query |
-
-#### Return Values
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256[] | Array of task IDs |
-
 ### getTaskCount
 
 ```solidity
@@ -415,6 +337,8 @@ function getTaskCount() external view returns (uint256)
 ```
 
 Get task count
+
+_Note: Use taskCount() for direct access. This is kept for consistency._
 
 #### Return Values
 
@@ -443,5 +367,5 @@ For now, we provide the building blocks and clients can filter_
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| count | uint256 | Number of tasks with this status LEARNING POINT: On-chain filtering can be expensive. In production, you might use events and off-chain indexing (like The Graph) for efficient querying. |
+| count | uint256 | Number of tasks with this status LEARNING POINT: On-chain filtering can be expensive. In production, you might use events and off-chain indexing (like The Graph) for efficient querying. NOTE: The following mappings are declared as `public`, which means Solidity automatically generates getter functions that are available in Blockscout: - tasks(uint256) -> returns Task - tasksByCreator(address) -> returns uint256[] - tasksByAssignee(address) -> returns uint256[] - tasksByParticipant(address) -> returns uint256[] - tasksByAssigner(address) -> returns uint256[] We removed redundant wrapper functions (getTasksByCreator, getTasksByAssignee, etc.) to avoid duplication. Use the auto-generated getters directly. |
 

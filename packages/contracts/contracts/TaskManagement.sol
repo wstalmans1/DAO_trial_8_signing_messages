@@ -391,6 +391,7 @@ contract TaskManagement is Ownable {
 
     /**
      * @notice Get task details
+     * @dev Note: Use tasks(taskId) for direct access. This function includes existence check.
      * @param taskId The ID of the task
      * @return task The task data
      */
@@ -400,49 +401,14 @@ contract TaskManagement is Ownable {
     }
 
     /**
-     * @notice Get all task IDs created by an address
-     * @param creator The address to query
-     * @return Array of task IDs
-     */
-    function getTasksByCreator(address creator) external view returns (uint256[] memory) {
-        return tasksByCreator[creator];
-    }
-
-    /**
-     * @notice Get all task IDs assigned to an address
-     * @param assignee The address to query
-     * @return Array of task IDs
-     */
-    function getTasksByAssignee(address assignee) external view returns (uint256[] memory) {
-        return tasksByAssignee[assignee];
-    }
-
-    /**
-     * @notice Get all task IDs an address is involved in (created or assigned)
-     * @param participant The address to query
-     * @return Array of task IDs
-     */
-    function getTasksByParticipant(address participant) external view returns (uint256[] memory) {
-        return tasksByParticipant[participant];
-    }
-    
-    /**
-     * @notice Get all task IDs assigned by an address (for review)
-     * @param assigner The address to query
-     * @return Array of task IDs
-     */
-    function getTasksByAssigner(address assigner) external view returns (uint256[] memory) {
-        return tasksByAssigner[assigner];
-    }
-
-    /**
      * @notice Get task count
+     * @dev Note: Use taskCount() for direct access. This is kept for consistency.
      * @return The total number of tasks
      */
     function getTaskCount() external view returns (uint256) {
         return taskCount;
     }
-
+    
     /**
      * @notice Get tasks by status
      * @dev This is a helper function that would need to be implemented with off-chain indexing
@@ -452,6 +418,17 @@ contract TaskManagement is Ownable {
      * 
      * LEARNING POINT: On-chain filtering can be expensive. In production, you might
      * use events and off-chain indexing (like The Graph) for efficient querying.
+     * 
+     * NOTE: The following mappings are declared as `public`, which means Solidity
+     * automatically generates getter functions that are available in Blockscout:
+     * - tasks(uint256) -> returns Task
+     * - tasksByCreator(address) -> returns uint256[]
+     * - tasksByAssignee(address) -> returns uint256[]
+     * - tasksByParticipant(address) -> returns uint256[]
+     * - tasksByAssigner(address) -> returns uint256[]
+     * 
+     * We removed redundant wrapper functions (getTasksByCreator, getTasksByAssignee, etc.)
+     * to avoid duplication. Use the auto-generated getters directly.
      */
     function getTaskCountByStatus(TaskStatus status) external view returns (uint256 count) {
         for (uint256 i = 0; i < taskCount; i++) {
