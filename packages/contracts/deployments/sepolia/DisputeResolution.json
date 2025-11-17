@@ -1,0 +1,949 @@
+{
+  "address": "0x7F83aC1BeC256353c7f28321933579b97029adfd",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "initialOwner",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "disputeId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "cancelledBy",
+          "type": "address"
+        }
+      ],
+      "name": "DisputeCancelled",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "disputeId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "initiator",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "counterparty",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "enum DisputeResolution.DisputeType",
+          "name": "disputeType",
+          "type": "uint8"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "relatedId",
+          "type": "uint256"
+        }
+      ],
+      "name": "DisputeCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "disputeId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "resolver",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "resolution",
+          "type": "string"
+        }
+      ],
+      "name": "DisputeResolved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "disputeId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "submitter",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "evidence",
+          "type": "string"
+        }
+      ],
+      "name": "EvidenceSubmitted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "disputeId",
+          "type": "uint256"
+        }
+      ],
+      "name": "cancelDispute",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "counterparty",
+          "type": "address"
+        },
+        {
+          "internalType": "enum DisputeResolution.DisputeType",
+          "name": "disputeType",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "relatedId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "evidence",
+          "type": "string"
+        }
+      ],
+      "name": "createDispute",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "disputeId",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "disputeCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "disputes",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "initiator",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "counterparty",
+          "type": "address"
+        },
+        {
+          "internalType": "enum DisputeResolution.DisputeType",
+          "name": "disputeType",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "relatedId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "initiatorEvidence",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "counterpartyEvidence",
+          "type": "string"
+        },
+        {
+          "internalType": "enum DisputeResolution.DisputeStatus",
+          "name": "status",
+          "type": "uint8"
+        },
+        {
+          "internalType": "address",
+          "name": "resolver",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "resolution",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "createdAt",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "resolvedAt",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "exists",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "disputesByInitiator",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "disputesByParty",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "disputesByResolver",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "disputeId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getDispute",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "initiator",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "counterparty",
+              "type": "address"
+            },
+            {
+              "internalType": "enum DisputeResolution.DisputeType",
+              "name": "disputeType",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint256",
+              "name": "relatedId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "initiatorEvidence",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "counterpartyEvidence",
+              "type": "string"
+            },
+            {
+              "internalType": "enum DisputeResolution.DisputeStatus",
+              "name": "status",
+              "type": "uint8"
+            },
+            {
+              "internalType": "address",
+              "name": "resolver",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "resolution",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "createdAt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "resolvedAt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "exists",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct DisputeResolution.Dispute",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getDisputeCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "disputeId",
+          "type": "uint256"
+        }
+      ],
+      "name": "markUnderReview",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "disputeId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "resolution",
+          "type": "string"
+        }
+      ],
+      "name": "resolveDispute",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "disputeId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "evidence",
+          "type": "string"
+        }
+      ],
+      "name": "submitEvidence",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0xe481fbb35fff99bb95a11123f71d64ed5b345029db6a7472508aed1dc0ca9ffd",
+  "receipt": {
+    "to": null,
+    "from": "0xD78C12137087D394c0FA49634CAa80D0a1985A8A",
+    "contractAddress": "0x7F83aC1BeC256353c7f28321933579b97029adfd",
+    "transactionIndex": 38,
+    "gasUsed": "1627619",
+    "logsBloom": "0x00000000000000008000000000000000000000000000000000800000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000020040000000000000000800000000000000000000000000000000400000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000200000000000000000020000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xb117b0d27b4dc8ca2521d09dcd1111e372baa924a8105b0cb1901091c800367d",
+    "transactionHash": "0xe481fbb35fff99bb95a11123f71d64ed5b345029db6a7472508aed1dc0ca9ffd",
+    "logs": [
+      {
+        "transactionIndex": 38,
+        "blockNumber": 9648516,
+        "transactionHash": "0xe481fbb35fff99bb95a11123f71d64ed5b345029db6a7472508aed1dc0ca9ffd",
+        "address": "0x7F83aC1BeC256353c7f28321933579b97029adfd",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x000000000000000000000000c453cbaa518edba7955b97a8de49fa6926a2a2c7"
+        ],
+        "data": "0x",
+        "logIndex": 42,
+        "blockHash": "0xb117b0d27b4dc8ca2521d09dcd1111e372baa924a8105b0cb1901091c800367d"
+      }
+    ],
+    "blockNumber": 9648516,
+    "cumulativeGasUsed": "5782432",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0xc453cBAA518EDBa7955b97a8DE49FA6926A2a2C7"
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "8ef8993e61ccc8b816e09ee530d332db",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.28+commit.7893614a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"initialOwner\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"disputeId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"cancelledBy\",\"type\":\"address\"}],\"name\":\"DisputeCancelled\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"disputeId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"initiator\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"counterparty\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"enum DisputeResolution.DisputeType\",\"name\":\"disputeType\",\"type\":\"uint8\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"relatedId\",\"type\":\"uint256\"}],\"name\":\"DisputeCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"disputeId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"resolver\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"resolution\",\"type\":\"string\"}],\"name\":\"DisputeResolved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"disputeId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"submitter\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"evidence\",\"type\":\"string\"}],\"name\":\"EvidenceSubmitted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"disputeId\",\"type\":\"uint256\"}],\"name\":\"cancelDispute\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"counterparty\",\"type\":\"address\"},{\"internalType\":\"enum DisputeResolution.DisputeType\",\"name\":\"disputeType\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"relatedId\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"evidence\",\"type\":\"string\"}],\"name\":\"createDispute\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"disputeId\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"disputeCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"disputes\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"initiator\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"counterparty\",\"type\":\"address\"},{\"internalType\":\"enum DisputeResolution.DisputeType\",\"name\":\"disputeType\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"relatedId\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"initiatorEvidence\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"counterpartyEvidence\",\"type\":\"string\"},{\"internalType\":\"enum DisputeResolution.DisputeStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"address\",\"name\":\"resolver\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"resolution\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"createdAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"resolvedAt\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"exists\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"disputesByInitiator\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"disputesByParty\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"disputesByResolver\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"disputeId\",\"type\":\"uint256\"}],\"name\":\"getDispute\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"initiator\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"counterparty\",\"type\":\"address\"},{\"internalType\":\"enum DisputeResolution.DisputeType\",\"name\":\"disputeType\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"relatedId\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"initiatorEvidence\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"counterpartyEvidence\",\"type\":\"string\"},{\"internalType\":\"enum DisputeResolution.DisputeStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"address\",\"name\":\"resolver\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"resolution\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"createdAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"resolvedAt\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"exists\",\"type\":\"bool\"}],\"internalType\":\"struct DisputeResolution.Dispute\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getDisputeCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"disputeId\",\"type\":\"uint256\"}],\"name\":\"markUnderReview\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"disputeId\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"resolution\",\"type\":\"string\"}],\"name\":\"resolveDispute\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"disputeId\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"evidence\",\"type\":\"string\"}],\"name\":\"submitEvidence\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Step 8: Dispute Resolution contract owned by multisig  LEARNING POINT: This contract provides a structured way to handle disputes that may arise during collaboration. It allows parties to submit disputes, provide evidence, and have them resolved by the multisig (or governance).  Key concepts: - Disputes: Structured disagreements that need resolution - Evidence: IPFS CIDs or other proof submitted by parties - Resolution: Decision made by authorized resolver (multisig/governance) - Dispute types: Can be related to tasks, payments, or general collaboration\",\"errors\":{\"OwnableInvalidOwner(address)\":[{\"details\":\"The owner is not a valid owner account. (eg. `address(0)`)\"}],\"OwnableUnauthorizedAccount(address)\":[{\"details\":\"The caller account is not authorized to perform an operation.\"}]},\"kind\":\"dev\",\"methods\":{\"cancelDispute(uint256)\":{\"details\":\"Can be called by initiator or owner\",\"params\":{\"disputeId\":\"The ID of the dispute to cancel  LEARNING POINT: Allows parties to withdraw disputes if they reach an agreement outside the system, or the owner can cancel invalid disputes.\"}},\"constructor\":{\"params\":{\"initialOwner\":\"The address that will own this contract (multisig)\"}},\"createDispute(address,uint8,uint256,string,string)\":{\"details\":\"Anyone can create a dispute, but they must specify a counterparty\",\"params\":{\"counterparty\":\"The other party in the dispute\",\"description\":\"Description of the dispute\",\"disputeType\":\"The type of dispute\",\"evidence\":\"IPFS CID or initial evidence\",\"relatedId\":\"Related task ID or other identifier (0 if none)\"},\"returns\":{\"disputeId\":\"The ID of the newly created dispute  LEARNING POINT: Disputes can be created by anyone, allowing for transparent conflict resolution. The counterparty can then submit their own evidence. The multisig (or governance) acts as the resolver.\"}},\"getDispute(uint256)\":{\"params\":{\"disputeId\":\"The ID of the dispute\"},\"returns\":{\"_0\":\"The dispute struct\"}},\"getDisputeCount()\":{\"returns\":{\"_0\":\"The total dispute count\"}},\"markUnderReview(uint256)\":{\"details\":\"Only owner (multisig) can mark disputes as under review\",\"params\":{\"disputeId\":\"The ID of the dispute  LEARNING POINT: This allows the resolver to indicate they're actively reviewing the dispute, providing transparency in the resolution process.\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.\"},\"resolveDispute(uint256,string)\":{\"details\":\"Only owner (multisig) can resolve disputes\",\"params\":{\"disputeId\":\"The ID of the dispute to resolve\",\"resolution\":\"Description of the resolution/outcome  LEARNING POINT: The multisig acts as the resolver, ensuring both parties must agree on dispute resolution. In a more advanced system, this could be delegated to governance or a jury system.\"}},\"submitEvidence(uint256,string)\":{\"details\":\"Can be called by initiator or counterparty\",\"params\":{\"disputeId\":\"The ID of the dispute\",\"evidence\":\"IPFS CID or evidence to submit  LEARNING POINT: Both parties can submit evidence to support their case. Evidence is stored as strings (typically IPFS CIDs) allowing for off-chain document storage with on-chain references.\"}},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"}},\"title\":\"DisputeResolution\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"cancelDispute(uint256)\":{\"notice\":\"Cancel a dispute\"},\"constructor\":{\"notice\":\"Constructor sets the initial owner\"},\"createDispute(address,uint8,uint256,string,string)\":{\"notice\":\"Create a new dispute\"},\"getDispute(uint256)\":{\"notice\":\"Get a dispute by ID\"},\"getDisputeCount()\":{\"notice\":\"Get total number of disputes\"},\"markUnderReview(uint256)\":{\"notice\":\"Mark a dispute as under review\"},\"resolveDispute(uint256,string)\":{\"notice\":\"Resolve a dispute\"},\"submitEvidence(uint256,string)\":{\"notice\":\"Submit evidence for a dispute\"}},\"notice\":\"A contract for resolving disputes in collaborative work\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/DisputeResolution.sol\":\"DisputeResolution\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {Context} from \\\"../utils/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which provides a basic access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * The initial owner is set to the address provided by the deployer. This can\\n * later be changed with {transferOwnership}.\\n *\\n * This module is used through inheritance. It will make available the modifier\\n * `onlyOwner`, which can be applied to your functions to restrict their use to\\n * the owner.\\n */\\nabstract contract Ownable is Context {\\n    address private _owner;\\n\\n    /**\\n     * @dev The caller account is not authorized to perform an operation.\\n     */\\n    error OwnableUnauthorizedAccount(address account);\\n\\n    /**\\n     * @dev The owner is not a valid owner account. (eg. `address(0)`)\\n     */\\n    error OwnableInvalidOwner(address owner);\\n\\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n    /**\\n     * @dev Initializes the contract setting the address provided by the deployer as the initial owner.\\n     */\\n    constructor(address initialOwner) {\\n        if (initialOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(initialOwner);\\n    }\\n\\n    /**\\n     * @dev Throws if called by any account other than the owner.\\n     */\\n    modifier onlyOwner() {\\n        _checkOwner();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns the address of the current owner.\\n     */\\n    function owner() public view virtual returns (address) {\\n        return _owner;\\n    }\\n\\n    /**\\n     * @dev Throws if the sender is not the owner.\\n     */\\n    function _checkOwner() internal view virtual {\\n        if (owner() != _msgSender()) {\\n            revert OwnableUnauthorizedAccount(_msgSender());\\n        }\\n    }\\n\\n    /**\\n     * @dev Leaves the contract without owner. It will not be possible to call\\n     * `onlyOwner` functions. Can only be called by the current owner.\\n     *\\n     * NOTE: Renouncing ownership will leave the contract without an owner,\\n     * thereby disabling any functionality that is only available to the owner.\\n     */\\n    function renounceOwnership() public virtual onlyOwner {\\n        _transferOwnership(address(0));\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Can only be called by the current owner.\\n     */\\n    function transferOwnership(address newOwner) public virtual onlyOwner {\\n        if (newOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Internal function without access restriction.\\n     */\\n    function _transferOwnership(address newOwner) internal virtual {\\n        address oldOwner = _owner;\\n        _owner = newOwner;\\n        emit OwnershipTransferred(oldOwner, newOwner);\\n    }\\n}\\n\",\"keccak256\":\"0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Context.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\nabstract contract Context {\\n    function _msgSender() internal view virtual returns (address) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view virtual returns (bytes calldata) {\\n        return msg.data;\\n    }\\n\\n    function _contextSuffixLength() internal view virtual returns (uint256) {\\n        return 0;\\n    }\\n}\\n\",\"keccak256\":\"0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2\",\"license\":\"MIT\"},\"contracts/DisputeResolution.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.28;\\n\\nimport {Ownable} from \\\"@openzeppelin/contracts/access/Ownable.sol\\\";\\n\\n/**\\n * @title DisputeResolution\\n * @notice A contract for resolving disputes in collaborative work\\n * @dev Step 8: Dispute Resolution contract owned by multisig\\n * \\n * LEARNING POINT: This contract provides a structured way to handle disputes\\n * that may arise during collaboration. It allows parties to submit disputes,\\n * provide evidence, and have them resolved by the multisig (or governance).\\n * \\n * Key concepts:\\n * - Disputes: Structured disagreements that need resolution\\n * - Evidence: IPFS CIDs or other proof submitted by parties\\n * - Resolution: Decision made by authorized resolver (multisig/governance)\\n * - Dispute types: Can be related to tasks, payments, or general collaboration\\n */\\ncontract DisputeResolution is Ownable {\\n    /**\\n     * @notice Enumeration of dispute statuses\\n     * @dev Represents the lifecycle of a dispute\\n     */\\n    enum DisputeStatus {\\n        Created,        // Dispute created, awaiting evidence\\n        EvidenceSubmitted, // Evidence has been submitted\\n        UnderReview,    // Dispute is being reviewed by resolver\\n        Resolved,       // Dispute has been resolved\\n        Cancelled       // Dispute was cancelled\\n    }\\n\\n    /**\\n     * @notice Enumeration of dispute types\\n     * @dev Categorizes what the dispute is about\\n     */\\n    enum DisputeType {\\n        Task,           // Related to a task\\n        Payment,        // Related to payment\\n        General         // General collaboration dispute\\n    }\\n\\n    /**\\n     * @notice Structure to represent a dispute\\n     * @dev Contains all information about a dispute\\n     */\\n    struct Dispute {\\n        uint256 id;                    // Unique dispute ID\\n        address initiator;             // Who created the dispute\\n        address counterparty;         // The other party in the dispute\\n        DisputeType disputeType;      // Type of dispute\\n        uint256 relatedId;            // Related task ID or other identifier (0 if none)\\n        string description;           // Description of the dispute\\n        string initiatorEvidence;    // IPFS CID or evidence from initiator\\n        string counterpartyEvidence; // IPFS CID or evidence from counterparty\\n        DisputeStatus status;         // Current status\\n        address resolver;             // Who resolved the dispute (address(0) if unresolved)\\n        string resolution;           // Resolution description/outcome\\n        uint256 createdAt;            // When dispute was created\\n        uint256 resolvedAt;           // When dispute was resolved (0 if unresolved)\\n        bool exists;                  // Whether this dispute exists\\n    }\\n\\n    // Dispute tracking\\n    uint256 public disputeCount;     // Total number of disputes\\n    \\n    // Mapping: dispute ID => Dispute\\n    mapping(uint256 => Dispute) public disputes;\\n    \\n    // Mapping: address => array of dispute IDs they initiated\\n    mapping(address => uint256[]) public disputesByInitiator;\\n    \\n    // Mapping: address => array of dispute IDs they're involved in\\n    mapping(address => uint256[]) public disputesByParty;\\n    \\n    // Mapping: address => array of dispute IDs they resolved\\n    mapping(address => uint256[]) public disputesByResolver;\\n\\n    // Events\\n    event DisputeCreated(\\n        uint256 indexed disputeId,\\n        address indexed initiator,\\n        address indexed counterparty,\\n        DisputeType disputeType,\\n        uint256 relatedId\\n    );\\n    \\n    event EvidenceSubmitted(\\n        uint256 indexed disputeId,\\n        address indexed submitter,\\n        string evidence\\n    );\\n    \\n    event DisputeResolved(\\n        uint256 indexed disputeId,\\n        address indexed resolver,\\n        string resolution\\n    );\\n    \\n    event DisputeCancelled(\\n        uint256 indexed disputeId,\\n        address indexed cancelledBy\\n    );\\n\\n    /**\\n     * @notice Constructor sets the initial owner\\n     * @param initialOwner The address that will own this contract (multisig)\\n     */\\n    constructor(address initialOwner) Ownable(initialOwner) {}\\n\\n    /**\\n     * @notice Create a new dispute\\n     * @dev Anyone can create a dispute, but they must specify a counterparty\\n     * @param counterparty The other party in the dispute\\n     * @param disputeType The type of dispute\\n     * @param relatedId Related task ID or other identifier (0 if none)\\n     * @param description Description of the dispute\\n     * @param evidence IPFS CID or initial evidence\\n     * @return disputeId The ID of the newly created dispute\\n     * \\n     * LEARNING POINT: Disputes can be created by anyone, allowing for\\n     * transparent conflict resolution. The counterparty can then submit\\n     * their own evidence. The multisig (or governance) acts as the resolver.\\n     */\\n    function createDispute(\\n        address counterparty,\\n        DisputeType disputeType,\\n        uint256 relatedId,\\n        string memory description,\\n        string memory evidence\\n    ) external returns (uint256 disputeId) {\\n        require(counterparty != address(0), \\\"DisputeResolution: counterparty cannot be zero address\\\");\\n        require(counterparty != msg.sender, \\\"DisputeResolution: cannot dispute yourself\\\");\\n        require(bytes(description).length > 0, \\\"DisputeResolution: description cannot be empty\\\");\\n        \\n        disputeId = disputeCount;\\n        disputeCount++;\\n        \\n        disputes[disputeId] = Dispute({\\n            id: disputeId,\\n            initiator: msg.sender,\\n            counterparty: counterparty,\\n            disputeType: disputeType,\\n            relatedId: relatedId,\\n            description: description,\\n            initiatorEvidence: evidence,\\n            counterpartyEvidence: \\\"\\\",\\n            status: DisputeStatus.Created,\\n            resolver: address(0),\\n            resolution: \\\"\\\",\\n            createdAt: block.timestamp,\\n            resolvedAt: 0,\\n            exists: true\\n        });\\n        \\n        // Track disputes by parties\\n        disputesByInitiator[msg.sender].push(disputeId);\\n        disputesByParty[msg.sender].push(disputeId);\\n        disputesByParty[counterparty].push(disputeId);\\n        \\n        emit DisputeCreated(disputeId, msg.sender, counterparty, disputeType, relatedId);\\n        \\n        // If evidence was provided, emit event\\n        if (bytes(evidence).length > 0) {\\n            emit EvidenceSubmitted(disputeId, msg.sender, evidence);\\n            disputes[disputeId].status = DisputeStatus.EvidenceSubmitted;\\n        }\\n    }\\n\\n    /**\\n     * @notice Submit evidence for a dispute\\n     * @dev Can be called by initiator or counterparty\\n     * @param disputeId The ID of the dispute\\n     * @param evidence IPFS CID or evidence to submit\\n     * \\n     * LEARNING POINT: Both parties can submit evidence to support their case.\\n     * Evidence is stored as strings (typically IPFS CIDs) allowing for\\n     * off-chain document storage with on-chain references.\\n     */\\n    function submitEvidence(uint256 disputeId, string memory evidence) external {\\n        Dispute storage dispute = disputes[disputeId];\\n        \\n        require(dispute.exists, \\\"DisputeResolution: dispute does not exist\\\");\\n        require(\\n            msg.sender == dispute.initiator || msg.sender == dispute.counterparty,\\n            \\\"DisputeResolution: only parties can submit evidence\\\"\\n        );\\n        require(\\n            dispute.status == DisputeStatus.Created || \\n            dispute.status == DisputeStatus.EvidenceSubmitted,\\n            \\\"DisputeResolution: dispute is not accepting evidence\\\"\\n        );\\n        require(bytes(evidence).length > 0, \\\"DisputeResolution: evidence cannot be empty\\\");\\n        \\n        // Update evidence based on who is submitting\\n        if (msg.sender == dispute.initiator) {\\n            dispute.initiatorEvidence = evidence;\\n        } else {\\n            dispute.counterpartyEvidence = evidence;\\n        }\\n        \\n        dispute.status = DisputeStatus.EvidenceSubmitted;\\n        \\n        emit EvidenceSubmitted(disputeId, msg.sender, evidence);\\n    }\\n\\n    /**\\n     * @notice Resolve a dispute\\n     * @dev Only owner (multisig) can resolve disputes\\n     * @param disputeId The ID of the dispute to resolve\\n     * @param resolution Description of the resolution/outcome\\n     * \\n     * LEARNING POINT: The multisig acts as the resolver, ensuring both\\n     * parties must agree on dispute resolution. In a more advanced system,\\n     * this could be delegated to governance or a jury system.\\n     */\\n    function resolveDispute(uint256 disputeId, string memory resolution) external onlyOwner {\\n        Dispute storage dispute = disputes[disputeId];\\n        \\n        require(dispute.exists, \\\"DisputeResolution: dispute does not exist\\\");\\n        require(\\n            dispute.status == DisputeStatus.EvidenceSubmitted || \\n            dispute.status == DisputeStatus.UnderReview,\\n            \\\"DisputeResolution: dispute cannot be resolved in current status\\\"\\n        );\\n        require(bytes(resolution).length > 0, \\\"DisputeResolution: resolution cannot be empty\\\");\\n        \\n        dispute.status = DisputeStatus.Resolved;\\n        dispute.resolver = msg.sender;\\n        dispute.resolution = resolution;\\n        dispute.resolvedAt = block.timestamp;\\n        \\n        disputesByResolver[msg.sender].push(disputeId);\\n        \\n        emit DisputeResolved(disputeId, msg.sender, resolution);\\n    }\\n\\n    /**\\n     * @notice Mark a dispute as under review\\n     * @dev Only owner (multisig) can mark disputes as under review\\n     * @param disputeId The ID of the dispute\\n     * \\n     * LEARNING POINT: This allows the resolver to indicate they're actively\\n     * reviewing the dispute, providing transparency in the resolution process.\\n     */\\n    function markUnderReview(uint256 disputeId) external onlyOwner {\\n        Dispute storage dispute = disputes[disputeId];\\n        \\n        require(dispute.exists, \\\"DisputeResolution: dispute does not exist\\\");\\n        require(\\n            dispute.status == DisputeStatus.EvidenceSubmitted,\\n            \\\"DisputeResolution: dispute must have evidence submitted\\\"\\n        );\\n        \\n        dispute.status = DisputeStatus.UnderReview;\\n    }\\n\\n    /**\\n     * @notice Cancel a dispute\\n     * @dev Can be called by initiator or owner\\n     * @param disputeId The ID of the dispute to cancel\\n     * \\n     * LEARNING POINT: Allows parties to withdraw disputes if they reach\\n     * an agreement outside the system, or the owner can cancel invalid disputes.\\n     */\\n    function cancelDispute(uint256 disputeId) external {\\n        Dispute storage dispute = disputes[disputeId];\\n        \\n        require(dispute.exists, \\\"DisputeResolution: dispute does not exist\\\");\\n        require(\\n            msg.sender == dispute.initiator || msg.sender == owner(),\\n            \\\"DisputeResolution: only initiator or owner can cancel\\\"\\n        );\\n        require(\\n            dispute.status != DisputeStatus.Resolved,\\n            \\\"DisputeResolution: cannot cancel resolved dispute\\\"\\n        );\\n        \\n        dispute.status = DisputeStatus.Cancelled;\\n        \\n        emit DisputeCancelled(disputeId, msg.sender);\\n    }\\n\\n    /**\\n     * @notice Get a dispute by ID\\n     * @param disputeId The ID of the dispute\\n     * @return The dispute struct\\n     */\\n    function getDispute(uint256 disputeId) external view returns (Dispute memory) {\\n        require(disputes[disputeId].exists, \\\"DisputeResolution: dispute does not exist\\\");\\n        return disputes[disputeId];\\n    }\\n\\n    /**\\n     * @notice Get total number of disputes\\n     * @return The total dispute count\\n     */\\n    function getDisputeCount() external view returns (uint256) {\\n        return disputeCount;\\n    }\\n}\\n\\n\",\"keccak256\":\"0x63431d1b716b6df5dca68df3b85065b51028b5eed7fb4d6691d60827e3afb6f0\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50604051611cf4380380611cf483398101604081905261002f916100be565b806001600160a01b03811661005e57604051631e4fbdf760e01b81526000600482015260240160405180910390fd5b6100678161006e565b50506100ee565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b6000602082840312156100d057600080fd5b81516001600160a01b03811681146100e757600080fd5b9392505050565b611bf7806100fd6000396000f3fe608060405234801561001057600080fd5b50600436106100f55760003560e01c8063931ca8c011610097578063cf51b45d11610066578063cf51b45d146101de578063df02935c146101f1578063e3a96cbd14610204578063f2fde38b1461022457600080fd5b8063931ca8c01461019c578063a28889e1146101af578063a2aad43b146101b8578063a6a7f0eb146101cb57600080fd5b8063564a565d116100d3578063564a565d146101395780635d39b3e014610166578063715018a6146101795780638da5cb5b1461018157600080fd5b806310987b77146100fa578063290f8c9e146101115780633576147614610124575b600080fd5b6001545b6040519081526020015b60405180910390f35b6100fe61011f366004611563565b610237565b61013761013236600461158d565b610268565b005b61014c61014736600461158d565b61034a565b6040516101089e9d9c9b9a99989796959493929190611626565b6100fe610174366004611563565b6105fb565b610137610617565b6000546040516001600160a01b039091168152602001610108565b6100fe6101aa3660046117a3565b61062b565b6100fe60015481565b6100fe6101c6366004611563565b610ab7565b6101376101d936600461183d565b610ad3565b6101376101ec36600461183d565b610d29565b6101376101ff36600461158d565b610f02565b61021761021236600461158d565b611085565b6040516101089190611884565b6101376102323660046119b9565b611401565b6005602052816000526040600020818154811061025357600080fd5b90600052602060002001600091509150505481565b61027061143f565b6000818152600260205260409020600b81015460ff166102ab5760405162461bcd60e51b81526004016102a2906119db565b60405180910390fd5b6001600782015460ff1660048111156102c6576102c66115a6565b146103395760405162461bcd60e51b815260206004820152603760248201527f446973707574655265736f6c7574696f6e3a2064697370757465206d7573742060448201527f686176652065766964656e6365207375626d697474656400000000000000000060648201526084016102a2565b600701805460ff1916600217905550565b60026020819052600091825260409091208054600182015492820154600383015460048401805493956001600160a01b039081169590841694600160a01b90940460ff169390919061039b90611a24565b80601f01602080910402602001604051908101604052809291908181526020018280546103c790611a24565b80156104145780601f106103e957610100808354040283529160200191610414565b820191906000526020600020905b8154815290600101906020018083116103f757829003601f168201915b50505050509080600501805461042990611a24565b80601f016020809104026020016040519081016040528092919081815260200182805461045590611a24565b80156104a25780601f10610477576101008083540402835291602001916104a2565b820191906000526020600020905b81548152906001019060200180831161048557829003601f168201915b5050505050908060060180546104b790611a24565b80601f01602080910402602001604051908101604052809291908181526020018280546104e390611a24565b80156105305780601f1061050557610100808354040283529160200191610530565b820191906000526020600020905b81548152906001019060200180831161051357829003601f168201915b505050506007830154600884018054939460ff8316946101009093046001600160a01b031693509161056190611a24565b80601f016020809104026020016040519081016040528092919081815260200182805461058d90611a24565b80156105da5780601f106105af576101008083540402835291602001916105da565b820191906000526020600020905b8154815290600101906020018083116105bd57829003601f168201915b505050506009830154600a840154600b909401549293909290915060ff168e565b6003602052816000526040600020818154811061025357600080fd5b61061f61143f565b610629600061146c565b565b60006001600160a01b0386166106a25760405162461bcd60e51b815260206004820152603660248201527f446973707574655265736f6c7574696f6e3a20636f756e74657270617274792060448201527563616e6e6f74206265207a65726f206164647265737360501b60648201526084016102a2565b336001600160a01b0387160361070d5760405162461bcd60e51b815260206004820152602a60248201527f446973707574655265736f6c7574696f6e3a2063616e6e6f742064697370757460448201526932903cb7bab939b2b63360b11b60648201526084016102a2565b60008351116107755760405162461bcd60e51b815260206004820152602e60248201527f446973707574655265736f6c7574696f6e3a206465736372697074696f6e206360448201526d616e6e6f7420626520656d70747960901b60648201526084016102a2565b5060018054908190600061078883611a5e565b9190505550604051806101c00160405280828152602001336001600160a01b03168152602001876001600160a01b031681526020018660028111156107cf576107cf6115a6565b81526020018581526020018481526020018381526020016040518060200160405280600081525081526020016000600481111561080e5761080e6115a6565b815260006020808301829052604080518083018252838152818501524260608086019190915260808501849052600160a0909501859052868452600280845293829020865181559286015194830180546001600160a01b03199081166001600160a01b039788161790915591860151838501805493841691909616908117865590860151929492936001600160a81b03199092161790600160a01b9084908111156108bb576108bb6115a6565b02179055506080820151600382015560a082015160048201906108de9082611ad4565b5060c082015160058201906108f39082611ad4565b5060e082015160068201906109089082611ad4565b5061010082015160078201805460ff1916600183600481111561092d5761092d6115a6565b02179055506101208201516007820180546001600160a01b0390921661010002610100600160a81b031990921691909117905561014082015160088201906109759082611ad4565b506101608201516009820155610180820151600a8201556101a090910151600b909101805460ff1916911515919091179055336000818152600360209081526040808320805460018181018355918552838520018690558484526004835281842080548083018255908552838520018690556001600160a01b038b1680855282852080549283018155855292909320909201849055905190919083907f22673bb12e1b6d7bb42507f0610a0e6da7aba8bf64e25992cd5390073481bb0890610a40908a908a90611b93565b60405180910390a4815115610aae57336001600160a01b0316817fa49e7517d2b5714f7812f718444c5a2931d4fc670ed2d2aa2426ff2f42c5b44d84604051610a899190611bae565b60405180910390a36000818152600260205260409020600701805460ff191660011790555b95945050505050565b6004602052816000526040600020818154811061025357600080fd5b6000828152600260205260409020600b81015460ff16610b055760405162461bcd60e51b81526004016102a2906119db565b60018101546001600160a01b0316331480610b2c575060028101546001600160a01b031633145b610b945760405162461bcd60e51b815260206004820152603360248201527f446973707574655265736f6c7574696f6e3a206f6e6c7920706172746965732060448201527263616e207375626d69742065766964656e636560681b60648201526084016102a2565b6000600782015460ff166004811115610baf57610baf6115a6565b1480610bd357506001600782015460ff166004811115610bd157610bd16115a6565b145b610c3c5760405162461bcd60e51b815260206004820152603460248201527f446973707574655265736f6c7574696f6e3a2064697370757465206973206e6f6044820152737420616363657074696e672065766964656e636560601b60648201526084016102a2565b6000825111610ca15760405162461bcd60e51b815260206004820152602b60248201527f446973707574655265736f6c7574696f6e3a2065766964656e63652063616e6e60448201526a6f7420626520656d70747960a81b60648201526084016102a2565b60018101546001600160a01b03163303610cc95760058101610cc38382611ad4565b50610cd9565b60068101610cd78382611ad4565b505b60078101805460ff19166001179055604051339084907fa49e7517d2b5714f7812f718444c5a2931d4fc670ed2d2aa2426ff2f42c5b44d90610d1c908690611bae565b60405180910390a3505050565b610d3161143f565b6000828152600260205260409020600b81015460ff16610d635760405162461bcd60e51b81526004016102a2906119db565b6001600782015460ff166004811115610d7e57610d7e6115a6565b1480610da257506002600782015460ff166004811115610da057610da06115a6565b145b610e145760405162461bcd60e51b815260206004820152603f60248201527f446973707574655265736f6c7574696f6e3a20646973707574652063616e6e6f60448201527f74206265207265736f6c76656420696e2063757272656e74207374617475730060648201526084016102a2565b6000825111610e7b5760405162461bcd60e51b815260206004820152602d60248201527f446973707574655265736f6c7574696f6e3a207265736f6c7574696f6e20636160448201526c6e6e6f7420626520656d70747960981b60648201526084016102a2565b60078101805461010033026001600160a81b031990911617600317905560088101610ea68382611ad4565b5042600a820155336000818152600560209081526040808320805460018101825590845291909220018590555184907f7b71d2e00379bd165b2750d54298da2414376699827edca2bce2a096c491d2e990610d1c908690611bae565b6000818152600260205260409020600b81015460ff16610f345760405162461bcd60e51b81526004016102a2906119db565b60018101546001600160a01b0316331480610f5957506000546001600160a01b031633145b610fc35760405162461bcd60e51b815260206004820152603560248201527f446973707574655265736f6c7574696f6e3a206f6e6c7920696e69746961746f6044820152741c881bdc881bdddb995c8818d85b8818d85b98d95b605a1b60648201526084016102a2565b6003600782015460ff166004811115610fde57610fde6115a6565b036110455760405162461bcd60e51b815260206004820152603160248201527f446973707574655265736f6c7574696f6e3a2063616e6e6f742063616e63656c604482015270207265736f6c766564206469737075746560781b60648201526084016102a2565b60078101805460ff19166004179055604051339083907fa9c2f5372a198481024db5d759e3fe6f0b499f84953d1d226e54e66c2a02764790600090a35050565b61108d6114bc565b6000828152600260205260409020600b015460ff166110be5760405162461bcd60e51b81526004016102a2906119db565b60008281526002602081815260409283902083516101c0810185528154815260018201546001600160a01b03908116938201939093528184015492831694810194909452916060840191600160a01b900460ff1690811115611122576111226115a6565b6002811115611133576111336115a6565b81526020016003820154815260200160048201805461115190611a24565b80601f016020809104026020016040519081016040528092919081815260200182805461117d90611a24565b80156111ca5780601f1061119f576101008083540402835291602001916111ca565b820191906000526020600020905b8154815290600101906020018083116111ad57829003601f168201915b505050505081526020016005820180546111e390611a24565b80601f016020809104026020016040519081016040528092919081815260200182805461120f90611a24565b801561125c5780601f106112315761010080835404028352916020019161125c565b820191906000526020600020905b81548152906001019060200180831161123f57829003601f168201915b5050505050815260200160068201805461127590611a24565b80601f01602080910402602001604051908101604052809291908181526020018280546112a190611a24565b80156112ee5780601f106112c3576101008083540402835291602001916112ee565b820191906000526020600020905b8154815290600101906020018083116112d157829003601f168201915b5050509183525050600782015460209091019060ff166004811115611315576113156115a6565b6004811115611326576113266115a6565b8152600782015461010090046001600160a01b0316602082015260088201805460409092019161135590611a24565b80601f016020809104026020016040519081016040528092919081815260200182805461138190611a24565b80156113ce5780601f106113a3576101008083540402835291602001916113ce565b820191906000526020600020905b8154815290600101906020018083116113b157829003601f168201915b505050918352505060098201546020820152600a8201546040820152600b9091015460ff16151560609091015292915050565b61140961143f565b6001600160a01b03811661143357604051631e4fbdf760e01b8152600060048201526024016102a2565b61143c8161146c565b50565b6000546001600160a01b031633146106295760405163118cdaa760e01b81523360048201526024016102a2565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b604080516101c08101825260008082526020820181905291810182905290606082019081526020016000815260200160608152602001606081526020016060815260200160006004811115611513576115136115a6565b815260200160006001600160a01b031681526020016060815260200160008152602001600081526020016000151581525090565b80356001600160a01b038116811461155e57600080fd5b919050565b6000806040838503121561157657600080fd5b61157f83611547565b946020939093013593505050565b60006020828403121561159f57600080fd5b5035919050565b634e487b7160e01b600052602160045260246000fd5b600381106115cc576115cc6115a6565b9052565b6000815180845260005b818110156115f6576020818501810151868301820152016115da565b506000602082860101526020601f19601f83011685010191505092915050565b600581106115cc576115cc6115a6565b8e81526001600160a01b038e1660208201526001600160a01b038d166040820152611654606082018d6115bc565b8a60808201526101c060a082015260006116726101c083018c6115d0565b82810360c0840152611684818c6115d0565b905082810360e0840152611698818b6115d0565b90506116a861010084018a611616565b6001600160a01b0388166101208401528281036101408401526116cb81886115d0565b91505084610160830152836101808301526116eb6101a083018415159052565b9f9e505050505050505050505050505050565b634e487b7160e01b600052604160045260246000fd5b600082601f83011261172557600080fd5b813567ffffffffffffffff81111561173f5761173f6116fe565b604051601f8201601f19908116603f0116810167ffffffffffffffff8111828210171561176e5761176e6116fe565b60405281815283820160200185101561178657600080fd5b816020850160208301376000918101602001919091529392505050565b600080600080600060a086880312156117bb57600080fd5b6117c486611547565b94506020860135600381106117d857600080fd5b935060408601359250606086013567ffffffffffffffff8111156117fb57600080fd5b61180788828901611714565b925050608086013567ffffffffffffffff81111561182457600080fd5b61183088828901611714565b9150509295509295909350565b6000806040838503121561185057600080fd5b82359150602083013567ffffffffffffffff81111561186e57600080fd5b61187a85828601611714565b9150509250929050565b6020815281516020820152600060208301516118ab60408401826001600160a01b03169052565b5060408301516001600160a01b03811660608401525060608301516118d360808401826115bc565b50608083015160a083015260a08301516101c060c08401526118f96101e08401826115d0565b905060c0840151601f198483030160e085015261191682826115d0565b91505060e0840151601f198483030161010085015261193582826115d0565b91505061010084015161194c610120850182611616565b506101208401516001600160a01b03811661014085015250610140840151838203601f190161016085015261198182826115d0565b9150506101608401516101808401526101808401516101a08401526101a08401516119b16101c085018215159052565b509392505050565b6000602082840312156119cb57600080fd5b6119d482611547565b9392505050565b60208082526029908201527f446973707574655265736f6c7574696f6e3a206469737075746520646f6573206040820152681b9bdd08195e1a5cdd60ba1b606082015260800190565b600181811c90821680611a3857607f821691505b602082108103611a5857634e487b7160e01b600052602260045260246000fd5b50919050565b600060018201611a7e57634e487b7160e01b600052601160045260246000fd5b5060010190565b601f821115611acf57806000526020600020601f840160051c81016020851015611aac5750805b601f840160051c820191505b81811015611acc5760008155600101611ab8565b50505b505050565b815167ffffffffffffffff811115611aee57611aee6116fe565b611b0281611afc8454611a24565b84611a85565b6020601f821160018114611b365760008315611b1e5750848201515b600019600385901b1c1916600184901b178455611acc565b600084815260208120601f198516915b82811015611b665787850151825560209485019460019092019101611b46565b5084821015611b845786840151600019600387901b60f8161c191681555b50505050600190811b01905550565b60408101611ba182856115bc565b8260208301529392505050565b6020815260006119d460208301846115d056fea264697066735822122052e9d1f655d9dcae6d61003e40c4adbb964b1bebe544508fcfc15f933e3b001f64736f6c634300081c0033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100f55760003560e01c8063931ca8c011610097578063cf51b45d11610066578063cf51b45d146101de578063df02935c146101f1578063e3a96cbd14610204578063f2fde38b1461022457600080fd5b8063931ca8c01461019c578063a28889e1146101af578063a2aad43b146101b8578063a6a7f0eb146101cb57600080fd5b8063564a565d116100d3578063564a565d146101395780635d39b3e014610166578063715018a6146101795780638da5cb5b1461018157600080fd5b806310987b77146100fa578063290f8c9e146101115780633576147614610124575b600080fd5b6001545b6040519081526020015b60405180910390f35b6100fe61011f366004611563565b610237565b61013761013236600461158d565b610268565b005b61014c61014736600461158d565b61034a565b6040516101089e9d9c9b9a99989796959493929190611626565b6100fe610174366004611563565b6105fb565b610137610617565b6000546040516001600160a01b039091168152602001610108565b6100fe6101aa3660046117a3565b61062b565b6100fe60015481565b6100fe6101c6366004611563565b610ab7565b6101376101d936600461183d565b610ad3565b6101376101ec36600461183d565b610d29565b6101376101ff36600461158d565b610f02565b61021761021236600461158d565b611085565b6040516101089190611884565b6101376102323660046119b9565b611401565b6005602052816000526040600020818154811061025357600080fd5b90600052602060002001600091509150505481565b61027061143f565b6000818152600260205260409020600b81015460ff166102ab5760405162461bcd60e51b81526004016102a2906119db565b60405180910390fd5b6001600782015460ff1660048111156102c6576102c66115a6565b146103395760405162461bcd60e51b815260206004820152603760248201527f446973707574655265736f6c7574696f6e3a2064697370757465206d7573742060448201527f686176652065766964656e6365207375626d697474656400000000000000000060648201526084016102a2565b600701805460ff1916600217905550565b60026020819052600091825260409091208054600182015492820154600383015460048401805493956001600160a01b039081169590841694600160a01b90940460ff169390919061039b90611a24565b80601f01602080910402602001604051908101604052809291908181526020018280546103c790611a24565b80156104145780601f106103e957610100808354040283529160200191610414565b820191906000526020600020905b8154815290600101906020018083116103f757829003601f168201915b50505050509080600501805461042990611a24565b80601f016020809104026020016040519081016040528092919081815260200182805461045590611a24565b80156104a25780601f10610477576101008083540402835291602001916104a2565b820191906000526020600020905b81548152906001019060200180831161048557829003601f168201915b5050505050908060060180546104b790611a24565b80601f01602080910402602001604051908101604052809291908181526020018280546104e390611a24565b80156105305780601f1061050557610100808354040283529160200191610530565b820191906000526020600020905b81548152906001019060200180831161051357829003601f168201915b505050506007830154600884018054939460ff8316946101009093046001600160a01b031693509161056190611a24565b80601f016020809104026020016040519081016040528092919081815260200182805461058d90611a24565b80156105da5780601f106105af576101008083540402835291602001916105da565b820191906000526020600020905b8154815290600101906020018083116105bd57829003601f168201915b505050506009830154600a840154600b909401549293909290915060ff168e565b6003602052816000526040600020818154811061025357600080fd5b61061f61143f565b610629600061146c565b565b60006001600160a01b0386166106a25760405162461bcd60e51b815260206004820152603660248201527f446973707574655265736f6c7574696f6e3a20636f756e74657270617274792060448201527563616e6e6f74206265207a65726f206164647265737360501b60648201526084016102a2565b336001600160a01b0387160361070d5760405162461bcd60e51b815260206004820152602a60248201527f446973707574655265736f6c7574696f6e3a2063616e6e6f742064697370757460448201526932903cb7bab939b2b63360b11b60648201526084016102a2565b60008351116107755760405162461bcd60e51b815260206004820152602e60248201527f446973707574655265736f6c7574696f6e3a206465736372697074696f6e206360448201526d616e6e6f7420626520656d70747960901b60648201526084016102a2565b5060018054908190600061078883611a5e565b9190505550604051806101c00160405280828152602001336001600160a01b03168152602001876001600160a01b031681526020018660028111156107cf576107cf6115a6565b81526020018581526020018481526020018381526020016040518060200160405280600081525081526020016000600481111561080e5761080e6115a6565b815260006020808301829052604080518083018252838152818501524260608086019190915260808501849052600160a0909501859052868452600280845293829020865181559286015194830180546001600160a01b03199081166001600160a01b039788161790915591860151838501805493841691909616908117865590860151929492936001600160a81b03199092161790600160a01b9084908111156108bb576108bb6115a6565b02179055506080820151600382015560a082015160048201906108de9082611ad4565b5060c082015160058201906108f39082611ad4565b5060e082015160068201906109089082611ad4565b5061010082015160078201805460ff1916600183600481111561092d5761092d6115a6565b02179055506101208201516007820180546001600160a01b0390921661010002610100600160a81b031990921691909117905561014082015160088201906109759082611ad4565b506101608201516009820155610180820151600a8201556101a090910151600b909101805460ff1916911515919091179055336000818152600360209081526040808320805460018181018355918552838520018690558484526004835281842080548083018255908552838520018690556001600160a01b038b1680855282852080549283018155855292909320909201849055905190919083907f22673bb12e1b6d7bb42507f0610a0e6da7aba8bf64e25992cd5390073481bb0890610a40908a908a90611b93565b60405180910390a4815115610aae57336001600160a01b0316817fa49e7517d2b5714f7812f718444c5a2931d4fc670ed2d2aa2426ff2f42c5b44d84604051610a899190611bae565b60405180910390a36000818152600260205260409020600701805460ff191660011790555b95945050505050565b6004602052816000526040600020818154811061025357600080fd5b6000828152600260205260409020600b81015460ff16610b055760405162461bcd60e51b81526004016102a2906119db565b60018101546001600160a01b0316331480610b2c575060028101546001600160a01b031633145b610b945760405162461bcd60e51b815260206004820152603360248201527f446973707574655265736f6c7574696f6e3a206f6e6c7920706172746965732060448201527263616e207375626d69742065766964656e636560681b60648201526084016102a2565b6000600782015460ff166004811115610baf57610baf6115a6565b1480610bd357506001600782015460ff166004811115610bd157610bd16115a6565b145b610c3c5760405162461bcd60e51b815260206004820152603460248201527f446973707574655265736f6c7574696f6e3a2064697370757465206973206e6f6044820152737420616363657074696e672065766964656e636560601b60648201526084016102a2565b6000825111610ca15760405162461bcd60e51b815260206004820152602b60248201527f446973707574655265736f6c7574696f6e3a2065766964656e63652063616e6e60448201526a6f7420626520656d70747960a81b60648201526084016102a2565b60018101546001600160a01b03163303610cc95760058101610cc38382611ad4565b50610cd9565b60068101610cd78382611ad4565b505b60078101805460ff19166001179055604051339084907fa49e7517d2b5714f7812f718444c5a2931d4fc670ed2d2aa2426ff2f42c5b44d90610d1c908690611bae565b60405180910390a3505050565b610d3161143f565b6000828152600260205260409020600b81015460ff16610d635760405162461bcd60e51b81526004016102a2906119db565b6001600782015460ff166004811115610d7e57610d7e6115a6565b1480610da257506002600782015460ff166004811115610da057610da06115a6565b145b610e145760405162461bcd60e51b815260206004820152603f60248201527f446973707574655265736f6c7574696f6e3a20646973707574652063616e6e6f60448201527f74206265207265736f6c76656420696e2063757272656e74207374617475730060648201526084016102a2565b6000825111610e7b5760405162461bcd60e51b815260206004820152602d60248201527f446973707574655265736f6c7574696f6e3a207265736f6c7574696f6e20636160448201526c6e6e6f7420626520656d70747960981b60648201526084016102a2565b60078101805461010033026001600160a81b031990911617600317905560088101610ea68382611ad4565b5042600a820155336000818152600560209081526040808320805460018101825590845291909220018590555184907f7b71d2e00379bd165b2750d54298da2414376699827edca2bce2a096c491d2e990610d1c908690611bae565b6000818152600260205260409020600b81015460ff16610f345760405162461bcd60e51b81526004016102a2906119db565b60018101546001600160a01b0316331480610f5957506000546001600160a01b031633145b610fc35760405162461bcd60e51b815260206004820152603560248201527f446973707574655265736f6c7574696f6e3a206f6e6c7920696e69746961746f6044820152741c881bdc881bdddb995c8818d85b8818d85b98d95b605a1b60648201526084016102a2565b6003600782015460ff166004811115610fde57610fde6115a6565b036110455760405162461bcd60e51b815260206004820152603160248201527f446973707574655265736f6c7574696f6e3a2063616e6e6f742063616e63656c604482015270207265736f6c766564206469737075746560781b60648201526084016102a2565b60078101805460ff19166004179055604051339083907fa9c2f5372a198481024db5d759e3fe6f0b499f84953d1d226e54e66c2a02764790600090a35050565b61108d6114bc565b6000828152600260205260409020600b015460ff166110be5760405162461bcd60e51b81526004016102a2906119db565b60008281526002602081815260409283902083516101c0810185528154815260018201546001600160a01b03908116938201939093528184015492831694810194909452916060840191600160a01b900460ff1690811115611122576111226115a6565b6002811115611133576111336115a6565b81526020016003820154815260200160048201805461115190611a24565b80601f016020809104026020016040519081016040528092919081815260200182805461117d90611a24565b80156111ca5780601f1061119f576101008083540402835291602001916111ca565b820191906000526020600020905b8154815290600101906020018083116111ad57829003601f168201915b505050505081526020016005820180546111e390611a24565b80601f016020809104026020016040519081016040528092919081815260200182805461120f90611a24565b801561125c5780601f106112315761010080835404028352916020019161125c565b820191906000526020600020905b81548152906001019060200180831161123f57829003601f168201915b5050505050815260200160068201805461127590611a24565b80601f01602080910402602001604051908101604052809291908181526020018280546112a190611a24565b80156112ee5780601f106112c3576101008083540402835291602001916112ee565b820191906000526020600020905b8154815290600101906020018083116112d157829003601f168201915b5050509183525050600782015460209091019060ff166004811115611315576113156115a6565b6004811115611326576113266115a6565b8152600782015461010090046001600160a01b0316602082015260088201805460409092019161135590611a24565b80601f016020809104026020016040519081016040528092919081815260200182805461138190611a24565b80156113ce5780601f106113a3576101008083540402835291602001916113ce565b820191906000526020600020905b8154815290600101906020018083116113b157829003601f168201915b505050918352505060098201546020820152600a8201546040820152600b9091015460ff16151560609091015292915050565b61140961143f565b6001600160a01b03811661143357604051631e4fbdf760e01b8152600060048201526024016102a2565b61143c8161146c565b50565b6000546001600160a01b031633146106295760405163118cdaa760e01b81523360048201526024016102a2565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b604080516101c08101825260008082526020820181905291810182905290606082019081526020016000815260200160608152602001606081526020016060815260200160006004811115611513576115136115a6565b815260200160006001600160a01b031681526020016060815260200160008152602001600081526020016000151581525090565b80356001600160a01b038116811461155e57600080fd5b919050565b6000806040838503121561157657600080fd5b61157f83611547565b946020939093013593505050565b60006020828403121561159f57600080fd5b5035919050565b634e487b7160e01b600052602160045260246000fd5b600381106115cc576115cc6115a6565b9052565b6000815180845260005b818110156115f6576020818501810151868301820152016115da565b506000602082860101526020601f19601f83011685010191505092915050565b600581106115cc576115cc6115a6565b8e81526001600160a01b038e1660208201526001600160a01b038d166040820152611654606082018d6115bc565b8a60808201526101c060a082015260006116726101c083018c6115d0565b82810360c0840152611684818c6115d0565b905082810360e0840152611698818b6115d0565b90506116a861010084018a611616565b6001600160a01b0388166101208401528281036101408401526116cb81886115d0565b91505084610160830152836101808301526116eb6101a083018415159052565b9f9e505050505050505050505050505050565b634e487b7160e01b600052604160045260246000fd5b600082601f83011261172557600080fd5b813567ffffffffffffffff81111561173f5761173f6116fe565b604051601f8201601f19908116603f0116810167ffffffffffffffff8111828210171561176e5761176e6116fe565b60405281815283820160200185101561178657600080fd5b816020850160208301376000918101602001919091529392505050565b600080600080600060a086880312156117bb57600080fd5b6117c486611547565b94506020860135600381106117d857600080fd5b935060408601359250606086013567ffffffffffffffff8111156117fb57600080fd5b61180788828901611714565b925050608086013567ffffffffffffffff81111561182457600080fd5b61183088828901611714565b9150509295509295909350565b6000806040838503121561185057600080fd5b82359150602083013567ffffffffffffffff81111561186e57600080fd5b61187a85828601611714565b9150509250929050565b6020815281516020820152600060208301516118ab60408401826001600160a01b03169052565b5060408301516001600160a01b03811660608401525060608301516118d360808401826115bc565b50608083015160a083015260a08301516101c060c08401526118f96101e08401826115d0565b905060c0840151601f198483030160e085015261191682826115d0565b91505060e0840151601f198483030161010085015261193582826115d0565b91505061010084015161194c610120850182611616565b506101208401516001600160a01b03811661014085015250610140840151838203601f190161016085015261198182826115d0565b9150506101608401516101808401526101808401516101a08401526101a08401516119b16101c085018215159052565b509392505050565b6000602082840312156119cb57600080fd5b6119d482611547565b9392505050565b60208082526029908201527f446973707574655265736f6c7574696f6e3a206469737075746520646f6573206040820152681b9bdd08195e1a5cdd60ba1b606082015260800190565b600181811c90821680611a3857607f821691505b602082108103611a5857634e487b7160e01b600052602260045260246000fd5b50919050565b600060018201611a7e57634e487b7160e01b600052601160045260246000fd5b5060010190565b601f821115611acf57806000526020600020601f840160051c81016020851015611aac5750805b601f840160051c820191505b81811015611acc5760008155600101611ab8565b50505b505050565b815167ffffffffffffffff811115611aee57611aee6116fe565b611b0281611afc8454611a24565b84611a85565b6020601f821160018114611b365760008315611b1e5750848201515b600019600385901b1c1916600184901b178455611acc565b600084815260208120601f198516915b82811015611b665787850151825560209485019460019092019101611b46565b5084821015611b845786840151600019600387901b60f8161c191681555b50505050600190811b01905550565b60408101611ba182856115bc565b8260208301529392505050565b6020815260006119d460208301846115d056fea264697066735822122052e9d1f655d9dcae6d61003e40c4adbb964b1bebe544508fcfc15f933e3b001f64736f6c634300081c0033",
+  "devdoc": {
+    "details": "Step 8: Dispute Resolution contract owned by multisig  LEARNING POINT: This contract provides a structured way to handle disputes that may arise during collaboration. It allows parties to submit disputes, provide evidence, and have them resolved by the multisig (or governance).  Key concepts: - Disputes: Structured disagreements that need resolution - Evidence: IPFS CIDs or other proof submitted by parties - Resolution: Decision made by authorized resolver (multisig/governance) - Dispute types: Can be related to tasks, payments, or general collaboration",
+    "errors": {
+      "OwnableInvalidOwner(address)": [
+        {
+          "details": "The owner is not a valid owner account. (eg. `address(0)`)"
+        }
+      ],
+      "OwnableUnauthorizedAccount(address)": [
+        {
+          "details": "The caller account is not authorized to perform an operation."
+        }
+      ]
+    },
+    "kind": "dev",
+    "methods": {
+      "cancelDispute(uint256)": {
+        "details": "Can be called by initiator or owner",
+        "params": {
+          "disputeId": "The ID of the dispute to cancel  LEARNING POINT: Allows parties to withdraw disputes if they reach an agreement outside the system, or the owner can cancel invalid disputes."
+        }
+      },
+      "constructor": {
+        "params": {
+          "initialOwner": "The address that will own this contract (multisig)"
+        }
+      },
+      "createDispute(address,uint8,uint256,string,string)": {
+        "details": "Anyone can create a dispute, but they must specify a counterparty",
+        "params": {
+          "counterparty": "The other party in the dispute",
+          "description": "Description of the dispute",
+          "disputeType": "The type of dispute",
+          "evidence": "IPFS CID or initial evidence",
+          "relatedId": "Related task ID or other identifier (0 if none)"
+        },
+        "returns": {
+          "disputeId": "The ID of the newly created dispute  LEARNING POINT: Disputes can be created by anyone, allowing for transparent conflict resolution. The counterparty can then submit their own evidence. The multisig (or governance) acts as the resolver."
+        }
+      },
+      "getDispute(uint256)": {
+        "params": {
+          "disputeId": "The ID of the dispute"
+        },
+        "returns": {
+          "_0": "The dispute struct"
+        }
+      },
+      "getDisputeCount()": {
+        "returns": {
+          "_0": "The total dispute count"
+        }
+      },
+      "markUnderReview(uint256)": {
+        "details": "Only owner (multisig) can mark disputes as under review",
+        "params": {
+          "disputeId": "The ID of the dispute  LEARNING POINT: This allows the resolver to indicate they're actively reviewing the dispute, providing transparency in the resolution process."
+        }
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+      },
+      "resolveDispute(uint256,string)": {
+        "details": "Only owner (multisig) can resolve disputes",
+        "params": {
+          "disputeId": "The ID of the dispute to resolve",
+          "resolution": "Description of the resolution/outcome  LEARNING POINT: The multisig acts as the resolver, ensuring both parties must agree on dispute resolution. In a more advanced system, this could be delegated to governance or a jury system."
+        }
+      },
+      "submitEvidence(uint256,string)": {
+        "details": "Can be called by initiator or counterparty",
+        "params": {
+          "disputeId": "The ID of the dispute",
+          "evidence": "IPFS CID or evidence to submit  LEARNING POINT: Both parties can submit evidence to support their case. Evidence is stored as strings (typically IPFS CIDs) allowing for off-chain document storage with on-chain references."
+        }
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      }
+    },
+    "title": "DisputeResolution",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "cancelDispute(uint256)": {
+        "notice": "Cancel a dispute"
+      },
+      "constructor": {
+        "notice": "Constructor sets the initial owner"
+      },
+      "createDispute(address,uint8,uint256,string,string)": {
+        "notice": "Create a new dispute"
+      },
+      "getDispute(uint256)": {
+        "notice": "Get a dispute by ID"
+      },
+      "getDisputeCount()": {
+        "notice": "Get total number of disputes"
+      },
+      "markUnderReview(uint256)": {
+        "notice": "Mark a dispute as under review"
+      },
+      "resolveDispute(uint256,string)": {
+        "notice": "Resolve a dispute"
+      },
+      "submitEvidence(uint256,string)": {
+        "notice": "Submit evidence for a dispute"
+      }
+    },
+    "notice": "A contract for resolving disputes in collaborative work",
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 8,
+        "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 230,
+        "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+        "label": "disputeCount",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 235,
+        "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+        "label": "disputes",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_mapping(t_uint256,t_struct(Dispute)228_storage)"
+      },
+      {
+        "astId": 240,
+        "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+        "label": "disputesByInitiator",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)"
+      },
+      {
+        "astId": 245,
+        "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+        "label": "disputesByParty",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)"
+      },
+      {
+        "astId": 250,
+        "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+        "label": "disputesByResolver",
+        "offset": 0,
+        "slot": "5",
+        "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_uint256)dyn_storage": {
+        "base": "t_uint256",
+        "encoding": "dynamic_array",
+        "label": "uint256[]",
+        "numberOfBytes": "32"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_enum(DisputeStatus)191": {
+        "encoding": "inplace",
+        "label": "enum DisputeResolution.DisputeStatus",
+        "numberOfBytes": "1"
+      },
+      "t_enum(DisputeType)196": {
+        "encoding": "inplace",
+        "label": "enum DisputeResolution.DisputeType",
+        "numberOfBytes": "1"
+      },
+      "t_mapping(t_address,t_array(t_uint256)dyn_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256[])",
+        "numberOfBytes": "32",
+        "value": "t_array(t_uint256)dyn_storage"
+      },
+      "t_mapping(t_uint256,t_struct(Dispute)228_storage)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => struct DisputeResolution.Dispute)",
+        "numberOfBytes": "32",
+        "value": "t_struct(Dispute)228_storage"
+      },
+      "t_string_storage": {
+        "encoding": "bytes",
+        "label": "string",
+        "numberOfBytes": "32"
+      },
+      "t_struct(Dispute)228_storage": {
+        "encoding": "inplace",
+        "label": "struct DisputeResolution.Dispute",
+        "members": [
+          {
+            "astId": 199,
+            "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+            "label": "id",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 201,
+            "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+            "label": "initiator",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address"
+          },
+          {
+            "astId": 203,
+            "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+            "label": "counterparty",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address"
+          },
+          {
+            "astId": 206,
+            "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+            "label": "disputeType",
+            "offset": 20,
+            "slot": "2",
+            "type": "t_enum(DisputeType)196"
+          },
+          {
+            "astId": 208,
+            "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+            "label": "relatedId",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 210,
+            "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+            "label": "description",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 212,
+            "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+            "label": "initiatorEvidence",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 214,
+            "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+            "label": "counterpartyEvidence",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 217,
+            "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+            "label": "status",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_enum(DisputeStatus)191"
+          },
+          {
+            "astId": 219,
+            "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+            "label": "resolver",
+            "offset": 1,
+            "slot": "7",
+            "type": "t_address"
+          },
+          {
+            "astId": 221,
+            "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+            "label": "resolution",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 223,
+            "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+            "label": "createdAt",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 225,
+            "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+            "label": "resolvedAt",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 227,
+            "contract": "contracts/DisputeResolution.sol:DisputeResolution",
+            "label": "exists",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_bool"
+          }
+        ],
+        "numberOfBytes": "384"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}

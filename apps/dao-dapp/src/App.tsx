@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { useAccount, useSignMessage, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
-import { verifyMessage as verifyMessageViem } from 'viem'
+import { useAccount, useSignMessage, useWriteContract, useWaitForTransactionReceipt, useReadContract, useBalance, useSendTransaction } from 'wagmi'
+import { verifyMessage as verifyMessageViem, formatEther, parseEther } from 'viem'
 import { sepolia } from 'wagmi/chains'
-import CollaborationRegistryABI from './contracts/contracts/CollaborationRegistry.sol/CollaborationRegistry.json'
-
-// Contract address on Sepolia
-const COLLABORATION_REGISTRY_ADDRESS = '0x3160C2494Be65947F4a47fAF0ad0Dc3e2857DE25' as `0x${string}`
+import { CONTRACTS, CONTRACT_ABIS } from './config/contracts'
 
 type Theme = 'light' | 'dark' | 'system'
+type Tab = 'registry' | 'multisig' | 'treasury' | 'governance' | 'tasks' | 'disputes'
 
 export default function App() {
   const { address, isConnected } = useAccount()
+  const [activeTab, setActiveTab] = useState<Tab>('registry')
   const [message, setMessage] = useState('')
   const [signature, setSignature] = useState<string | null>(null)
   
@@ -237,8 +236,8 @@ export default function App() {
 
     try {
       writeContract({
-        address: COLLABORATION_REGISTRY_ADDRESS,
-        abi: CollaborationRegistryABI.abi,
+        address: CONTRACTS.CollaborationRegistry,
+        abi: CONTRACT_ABIS.CollaborationRegistry,
         functionName: 'submitAcknowledgment',
         args: [
           targetAddress as `0x${string}`,
@@ -316,8 +315,38 @@ export default function App() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto space-y-6">
-        {/* Signing Section */}
+      <main className="max-w-6xl mx-auto space-y-6">
+        {/* Tabs */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg dark:shadow-gray-900/50 p-2">
+          <div className="flex flex-wrap gap-2">
+            {[
+              { id: 'registry' as Tab, label: 'Registry', icon: '📝' },
+              { id: 'multisig' as Tab, label: 'Multisig', icon: '🔐' },
+              { id: 'treasury' as Tab, label: 'Treasury', icon: '💰' },
+              { id: 'governance' as Tab, label: 'Governance', icon: '🗳️' },
+              { id: 'tasks' as Tab, label: 'Tasks', icon: '✅' },
+              { id: 'disputes' as Tab, label: 'Disputes', icon: '⚖️' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  activeTab === tab.id
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
+              >
+                <span className="mr-2">{tab.icon}</span>
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Registry Tab */}
+        {activeTab === 'registry' && (
+          <div className="space-y-6">
+            {/* Signing Section */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg dark:shadow-gray-900/50 p-8">
           <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
             Sign Message with MetaMask
@@ -686,7 +715,348 @@ export default function App() {
             )}
           </div>
         </div>
+          </div>
+        )}
+
+        {/* Multisig Tab */}
+        {activeTab === 'multisig' && (
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg dark:shadow-gray-900/50 p-8">
+            <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
+              Multisig Wallet
+            </h2>
+            {!isConnected ? (
+              <div className="text-center py-8">
+                <p className="text-gray-600 dark:text-gray-400 mb-4">Please connect your wallet</p>
+                <ConnectButton />
+              </div>
+            ) : (
+              <div className="space-y-6">
+                <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    <strong>Address:</strong> <span className="font-mono text-xs">{CONTRACTS.SimpleMultisig}</span>
+                  </p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+                    💡 Use Blockscout to interact with the multisig. Create transactions, approve, and execute via the multisig interface.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Treasury Tab */}
+        {activeTab === 'treasury' && (
+          <TreasurySection />
+        )}
+
+        {/* Governance Tab */}
+        {activeTab === 'governance' && (
+          <GovernanceSection />
+        )}
+
+        {/* Tasks Tab */}
+        {activeTab === 'tasks' && (
+          <TasksSection />
+        )}
+
+        {/* Disputes Tab */}
+        {activeTab === 'disputes' && (
+          <DisputesSection />
+        )}
       </main>
+    </div>
+  )
+}
+
+// Treasury Section Component
+function TreasurySection() {
+  const { address, isConnected } = useAccount()
+  const { data: balance } = useBalance({ address: CONTRACTS.Treasury })
+  const { sendTransaction, data: txHash, isPending } = useSendTransaction()
+  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash: txHash })
+  const [depositAmount, setDepositAmount] = useState('')
+
+  const handleDeposit = async () => {
+    if (!depositAmount || parseFloat(depositAmount) <= 0) {
+      alert('Please enter a valid amount')
+      return
+    }
+    try {
+      // Treasury uses receive() function, so we send ETH directly
+      sendTransaction({
+        to: CONTRACTS.Treasury,
+        value: parseEther(depositAmount),
+      })
+    } catch (err: any) {
+      alert(err.message || 'Deposit failed')
+    }
+  }
+
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg dark:shadow-gray-900/50 p-8">
+      <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">Treasury</h2>
+      {!isConnected ? (
+        <div className="text-center py-8">
+          <p className="text-gray-600 dark:text-gray-400 mb-4">Please connect your wallet</p>
+          <ConnectButton />
+        </div>
+      ) : (
+        <div className="space-y-6">
+          <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+            <p className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+              Balance: {balance ? formatEther(balance.value) : '0'} ETH
+            </p>
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 font-mono">
+              {CONTRACTS.Treasury}
+            </p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Deposit ETH
+            </label>
+            <div className="flex gap-2">
+              <input
+                type="number"
+                step="0.001"
+                value={depositAmount}
+                onChange={(e) => setDepositAmount(e.target.value)}
+                placeholder="0.0"
+                className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              />
+              <button
+                onClick={handleDeposit}
+                disabled={isPending || isConfirming || !depositAmount}
+                className="px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold rounded-lg"
+              >
+                {isPending ? 'Depositing...' : isConfirming ? 'Confirming...' : 'Deposit'}
+              </button>
+            </div>
+            {isSuccess && (
+              <p className="mt-2 text-sm text-green-600 dark:text-green-400">✅ Deposit successful!</p>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// Governance Section Component
+function GovernanceSection() {
+  const { address, isConnected } = useAccount()
+  const { data: proposalCount } = useReadContract({
+    address: CONTRACTS.Governance,
+    abi: CONTRACT_ABIS.Governance,
+    functionName: 'proposalCount',
+  })
+
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg dark:shadow-gray-900/50 p-8">
+      <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">Governance</h2>
+      {!isConnected ? (
+        <div className="text-center py-8">
+          <p className="text-gray-600 dark:text-gray-400 mb-4">Please connect your wallet</p>
+          <ConnectButton />
+        </div>
+      ) : (
+        <div className="space-y-6">
+          <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              <strong>Total Proposals:</strong> {proposalCount?.toString() || '0'}
+            </p>
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+              💡 Use Blockscout to create proposals, vote, and execute governance actions.
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// Tasks Section Component
+function TasksSection() {
+  const { address, isConnected } = useAccount()
+  const { data: taskCount } = useReadContract({
+    address: CONTRACTS.TaskManagement,
+    abi: CONTRACT_ABIS.TaskManagement,
+    functionName: 'taskCount',
+  })
+  const { writeContract, data: txHash, isPending } = useWriteContract()
+  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash: txHash })
+  const [taskTitle, setTaskTitle] = useState('')
+  const [taskDescription, setTaskDescription] = useState('')
+  const [paymentAmount, setPaymentAmount] = useState('')
+
+  const handleCreateTask = async () => {
+    if (!taskTitle.trim() || !taskDescription.trim()) {
+      alert('Please fill in all fields')
+      return
+    }
+    try {
+      writeContract({
+        address: CONTRACTS.TaskManagement,
+        abi: CONTRACT_ABIS.TaskManagement,
+        functionName: 'createTask',
+        args: [
+          taskTitle,
+          taskDescription,
+          paymentAmount ? parseEther(paymentAmount) : BigInt(0),
+        ],
+      })
+    } catch (err: any) {
+      alert(err.message || 'Failed to create task')
+    }
+  }
+
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg dark:shadow-gray-900/50 p-8">
+      <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">Task Management</h2>
+      {!isConnected ? (
+        <div className="text-center py-8">
+          <p className="text-gray-600 dark:text-gray-400 mb-4">Please connect your wallet</p>
+          <ConnectButton />
+        </div>
+      ) : (
+        <div className="space-y-6">
+          <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              <strong>Total Tasks:</strong> {taskCount?.toString() || '0'}
+            </p>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Create Task</h3>
+            <div className="space-y-4">
+              <input
+                type="text"
+                value={taskTitle}
+                onChange={(e) => setTaskTitle(e.target.value)}
+                placeholder="Task Title"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              />
+              <textarea
+                value={taskDescription}
+                onChange={(e) => setTaskDescription(e.target.value)}
+                placeholder="Task Description"
+                rows={4}
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              />
+              <input
+                type="number"
+                step="0.001"
+                value={paymentAmount}
+                onChange={(e) => setPaymentAmount(e.target.value)}
+                placeholder="Payment Amount (ETH, optional)"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              />
+              <button
+                onClick={handleCreateTask}
+                disabled={isPending || isConfirming}
+                className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold rounded-lg"
+              >
+                {isPending ? 'Creating...' : isConfirming ? 'Confirming...' : 'Create Task'}
+              </button>
+              {isSuccess && (
+                <p className="text-sm text-green-600 dark:text-green-400">✅ Task created successfully!</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// Disputes Section Component
+function DisputesSection() {
+  const { address, isConnected } = useAccount()
+  const { data: disputeCount } = useReadContract({
+    address: CONTRACTS.DisputeResolution,
+    abi: CONTRACT_ABIS.DisputeResolution,
+    functionName: 'disputeCount',
+  })
+  const { writeContract, data: txHash, isPending } = useWriteContract()
+  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash: txHash })
+  const [counterparty, setCounterparty] = useState('')
+  const [disputeDescription, setDisputeDescription] = useState('')
+  const [evidence, setEvidence] = useState('')
+
+  const handleCreateDispute = async () => {
+    if (!counterparty.trim() || !disputeDescription.trim()) {
+      alert('Please fill in all required fields')
+      return
+    }
+    try {
+      writeContract({
+        address: CONTRACTS.DisputeResolution,
+        abi: CONTRACT_ABIS.DisputeResolution,
+        functionName: 'createDispute',
+        args: [
+          counterparty as `0x${string}`,
+          2, // DisputeType.General
+          BigInt(0), // relatedId
+          disputeDescription,
+          evidence || '',
+        ],
+      })
+    } catch (err: any) {
+      alert(err.message || 'Failed to create dispute')
+    }
+  }
+
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg dark:shadow-gray-900/50 p-8">
+      <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">Dispute Resolution</h2>
+      {!isConnected ? (
+        <div className="text-center py-8">
+          <p className="text-gray-600 dark:text-gray-400 mb-4">Please connect your wallet</p>
+          <ConnectButton />
+        </div>
+      ) : (
+        <div className="space-y-6">
+          <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              <strong>Total Disputes:</strong> {disputeCount?.toString() || '0'}
+            </p>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Create Dispute</h3>
+            <div className="space-y-4">
+              <input
+                type="text"
+                value={counterparty}
+                onChange={(e) => setCounterparty(e.target.value)}
+                placeholder="Counterparty Address (0x...)"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 font-mono text-sm"
+              />
+              <textarea
+                value={disputeDescription}
+                onChange={(e) => setDisputeDescription(e.target.value)}
+                placeholder="Dispute Description"
+                rows={4}
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              />
+              <input
+                type="text"
+                value={evidence}
+                onChange={(e) => setEvidence(e.target.value)}
+                placeholder="Evidence (IPFS CID, optional)"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              />
+              <button
+                onClick={handleCreateDispute}
+                disabled={isPending || isConfirming}
+                className="w-full px-6 py-3 bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white font-semibold rounded-lg"
+              >
+                {isPending ? 'Creating...' : isConfirming ? 'Confirming...' : 'Create Dispute'}
+              </button>
+              {isSuccess && (
+                <p className="text-sm text-green-600 dark:text-green-400">✅ Dispute created successfully!</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
